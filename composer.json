@@ -11,7 +11,8 @@
   "require": {
     "php": "^7.2",
     "bristol-su/support": "@dev",
-    "watr/typeform": "^1.5"
+    "watr/typeform": "^1.5",
+    "bristol-su/typeform-service": "@dev"
   },
   "require-dev": {
     "orchestra/testbench": "^4.0"
@@ -37,6 +38,10 @@
     {
       "type": "path",
       "url": "../../support/support"
+    },
+    {
+      "type": "path",
+      "url": "../../services/typeform"
     }
   ]
 }

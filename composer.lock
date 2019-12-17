@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7616662ac7cef497c6aa6389fcbbab62",
+    "content-hash": "6249862251765dc2a47d59cc8678c12a",
     "packages": [
         {
             "name": "brianium/habitat",
@@ -117,7 +117,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../support/support",
-                "reference": "b4300493914552666d22abee35b98810f06d7fa4"
+                "reference": "e2f652419d6faf7a7982a3b7ed207ffe8c2d2852"
             },
             "require": {
                 "brianium/paratest": "^3.0",
@@ -168,6 +168,50 @@
                     "email": "toby.twigger@bristol.ac.uk"
                 }
             ]
+        },
+        {
+            "name": "bristol-su/typeform-service",
+            "version": "dev-master",
+            "dist": {
+                "type": "path",
+                "url": "../../services/typeform",
+                "reference": "385ed6f841ddf38a74d9f8dfbcb5784484e8129b"
+            },
+            "require": {
+                "bristol-su/support": "@dev",
+                "php": "^7.2"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^4.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "BristolSU\\Service\\Typeform\\TypeformServiceServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "BristolSU\\Service\\Typeform\\": "app/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "BristolSU\\Service\\Tests\\Typeform\\": "tests/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Toby Twigger",
+                    "email": "toby.twigger@bristol.ac.uk"
+                }
+            ],
+            "description": "A third party service for typeform"
         },
         {
             "name": "composer/semver",
@@ -6007,7 +6051,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "bristol-su/support": 20
+        "bristol-su/support": 20,
+        "bristol-su/typeform-service": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

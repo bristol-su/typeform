@@ -94,7 +94,6 @@
 /***/ (function(module, exports) {
 
 // Register components here
-console.log('Loaded');
 
 /***/ }),
 

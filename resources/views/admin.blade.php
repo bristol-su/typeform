@@ -7,11 +7,10 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12" style="text-align: center;">
-                    
+                    @dd($responses)
+                    We've loaded your user information from typeform: {{$userinfo}}
                     @if(settings('collect_responses'))
-                        <webhook-setup-alert>
-                            
-                        </webhook-setup-alert>
+
                     @endif
                     
                     <h2 class="">{{settings('title')}}</h2>

@@ -2,7 +2,6 @@ import Vue from 'vue';
 import BootstrapVue from 'bootstrap-vue';
 import http from 'http-client';
 import AWN from "awesome-notifications";
-import WebhookSetupAlert from './components/webhook/WebhookSetupAlert';
 
 import TypeformEmbedWidget from './components/embed/TypeformEmbedWidget';
 import TypeformEmbedPopup from './components/embed/TypeformEmbedPopup';
@@ -17,7 +16,5 @@ let vue = new Vue({
     components: {
         TypeformEmbedWidget,
         TypeformEmbedPopup,
-
-        WebhookSetupAlert
     }
 });

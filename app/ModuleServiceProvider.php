@@ -3,9 +3,12 @@
 namespace BristolSU\Module\Typeform;
 
 use BristolSU\Module\Typeform\Commands\CreateWebhooks;
+use BristolSU\Module\Typeform\CompletionConditions\Dummy;
 use BristolSU\Module\Typeform\Connectors\Typeform as TypeformApiKeyConnector;
+use BristolSU\Module\Typeform\Connectors\TypeformOauth;
 use BristolSU\Module\Typeform\Support\Webhooks\Contracts\WebhookLinker as WebhookLinkerContract;
 use BristolSU\Module\Typeform\Support\Webhooks\WebhookLinker;
+use BristolSU\Support\Completion\Contracts\CompletionConditionManager;
 use BristolSU\Support\Connection\Contracts\ConnectorStore;
 use BristolSU\Support\Connection\Contracts\ServiceRequest;
 use BristolSU\Support\Module\ModuleServiceProvider as ServiceProvider;
@@ -71,15 +74,7 @@ class ModuleServiceProvider extends ServiceProvider
             return File::findOrFail($id);
         });
         
-        /** @var ConnectorStore $connectorStore */
-        $connectorStore = app(ConnectorStore::class);
-        $connectorStore->register(
-            'Typeform API Key', 'Connect to Typeform using an API Key',
-            'typeform_api_key', 'typeform', 
-            TypeformApiKeyConnector::class);
-        
-        $this->registerGlobalScript('modules/typeform/js/components.js');
-        
+        app(CompletionConditionManager::class)->register('typeform', 'dummy', Dummy::class);
         app(ServiceRequest::class)->required($this->alias(), ['typeform']);
         
     }
