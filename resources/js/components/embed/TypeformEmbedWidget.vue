@@ -76,6 +76,8 @@
                 hiddenUrl.query.portal_group_id = this.getPortalProperty('group', 'id');
                 hiddenUrl.query.portal_group_email = this.getPortalProperty('group', 'email');
                 hiddenUrl.query.portal_role_name = this.getPortalProperty('role', 'name');
+                hiddenUrl.query.activity_instance = this.getPortalProperty('activityinstance', 'id');
+                hiddenUrl.query.module_instance = this.getPortalProperty('moduleinstance', 'id');
                 hiddenUrl.query.portal_role_position_name = this.getPortalProperty('role', 'position', 'name');
                 return hiddenUrl;
             }

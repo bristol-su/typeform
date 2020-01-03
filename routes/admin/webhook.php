@@ -13,6 +13,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::namespace('AdminApi')->group(function() {
-    Route::post('response/refresh', 'ResponseRefreshController@refresh');
+Route::namespace('Webhook')->group(function() {
+    Route::post('webhook/responses', 'IncomingWebhookController@store');
 });

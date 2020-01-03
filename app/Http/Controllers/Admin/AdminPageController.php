@@ -4,11 +4,10 @@ namespace BristolSU\Module\Typeform\Http\Controllers\Admin;
 
 
 use BristolSU\Module\Typeform\Http\Controllers\Controller;
+use BristolSU\Module\Typeform\Models\Response;
 use BristolSU\Support\Activity\Activity;
 use BristolSU\Support\ModuleInstance\ModuleInstance;
 use BristolSU\Support\Permissions\Contracts\PermissionStore;
-use BristolSU\Support\Permissions\Contracts\PermissionTester;
-use BristolSU\Support\ModuleInstance\Contracts\Connection\ModuleInstanceServiceRepository;
 
 class AdminPageController extends Controller
 {
@@ -17,11 +16,9 @@ class AdminPageController extends Controller
     {
         $this->authorize('admin.view-form');
         
-        $connector = app(ModuleInstanceServiceRepository::class)->getConnectorForService('typeform', $moduleInstance->id);
-        $response = $connector->request('get', sprintf('/forms/%s/responses', settings('form_id')));
+        $responses = Response::where('module_instance_id', $moduleInstance->id)->with(['answers', 'answers.field'])->get();
         
-        
-        return view(alias() . '::admin')->with('responses', $response->getBody()->getContents());
+        return view(alias() . '::admin')->with('responses', $responses);
     }
     
 }

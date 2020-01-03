@@ -3,6 +3,7 @@ import BootstrapVue from 'bootstrap-vue';
 import http from 'http-client';
 import AWN from "awesome-notifications";
 
+import Responses from './components/responses/Responses';
 import TypeformEmbedWidget from './components/embed/TypeformEmbedWidget';
 import TypeformEmbedPopup from './components/embed/TypeformEmbedPopup';
 Vue.prototype.$http = http;
@@ -16,5 +17,6 @@ let vue = new Vue({
     components: {
         TypeformEmbedWidget,
         TypeformEmbedPopup,
+        Responses
     }
 });

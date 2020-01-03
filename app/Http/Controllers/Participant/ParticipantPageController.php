@@ -3,6 +3,7 @@
 namespace BristolSU\Module\Typeform\Http\Controllers\Participant;
 
 use BristolSU\Module\Typeform\Http\Controllers\Controller;
+use BristolSU\Module\Typeform\Models\Response;
 
 class ParticipantPageController extends Controller
 {
@@ -10,8 +11,10 @@ class ParticipantPageController extends Controller
     public function index()
     {
         $this->authorize('view-form');
-        
-        return view(alias() . '::participant');
+
+        $responses = Response::forResource()->with(['answers', 'answers.field'])->get();
+
+        return view(alias() . '::participant')->with('responses', $responses);
     }
     
 }

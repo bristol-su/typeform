@@ -2,24 +2,20 @@
 
 namespace BristolSU\Module\Typeform;
 
-use BristolSU\Module\Typeform\Commands\CreateWebhooks;
+use BristolSU\Module\Typeform\Commands\CheckResponses;
+use BristolSU\Module\Typeform\Commands\SyncWebhookStatus;
 use BristolSU\Module\Typeform\CompletionConditions\Dummy;
-use BristolSU\Module\Typeform\Connectors\Typeform as TypeformApiKeyConnector;
-use BristolSU\Module\Typeform\Connectors\TypeformOauth;
-use BristolSU\Module\Typeform\Support\Webhooks\Contracts\WebhookLinker as WebhookLinkerContract;
-use BristolSU\Module\Typeform\Support\Webhooks\WebhookLinker;
+use BristolSU\Module\Typeform\Http\Controllers\Webhook\IncomingWebhookController;
+use BristolSU\Module\Typeform\Typeform\Contracts\ResponseHandler;
+use BristolSU\Module\Typeform\Typeform\WebhookHandler;
 use BristolSU\Support\Completion\Contracts\CompletionConditionManager;
-use BristolSU\Support\Connection\Contracts\ConnectorStore;
 use BristolSU\Support\Connection\Contracts\ServiceRequest;
 use BristolSU\Support\Module\ModuleServiceProvider as ServiceProvider;
 use FormSchema\Generator\Field;
 use FormSchema\Generator\Form as FormGenerator;
 use FormSchema\Generator\Group;
 use FormSchema\Schema\Form;
-use Illuminate\Contracts\View\Factory;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\View;
-use WATR\Typeform;
 
 class ModuleServiceProvider extends ServiceProvider
 {
@@ -34,6 +30,11 @@ class ModuleServiceProvider extends ServiceProvider
             'name' => 'View Form',
             'description' => 'View the form.',
             'admin' => true
+        ],
+        'admin.refresh-form-responses' => [
+            'name' => 'Refresh Form Responses',
+            'description' => 'Manually refresh the form responses.',
+            'admin' => true
         ]
     ];
 
@@ -41,7 +42,13 @@ class ModuleServiceProvider extends ServiceProvider
     ];
     
     protected $commands = [
-        CreateWebhooks::class
+        SyncWebhookStatus::class,
+        CheckResponses::class
+    ];
+    
+    protected $scheduledCommands = [
+        SyncWebhookStatus::class => '* * * * *',
+        CheckResponses::class => '*/5 * * * *'
     ];
     
     public function alias(): string
@@ -62,10 +69,8 @@ class ModuleServiceProvider extends ServiceProvider
     public function register()
     {
         parent::register();
-        
-        $this->app->bind(WebhookLinkerContract::class, WebhookLinker::class);
     }
-
+    
     public function boot()
     {
         parent::boot();
@@ -76,6 +81,11 @@ class ModuleServiceProvider extends ServiceProvider
         
         app(CompletionConditionManager::class)->register('typeform', 'dummy', Dummy::class);
         app(ServiceRequest::class)->required($this->alias(), ['typeform']);
+        
+        Route::prefix('/api/a/{activity_slug}/{module_instance_slug}/' . $this->alias())
+            ->middleware(['api'])
+            ->namespace($this->namespace())
+            ->group($this->baseDirectory() . '/routes/admin/webhook.php');
         
     }
 
@@ -108,11 +118,14 @@ class ModuleServiceProvider extends ServiceProvider
         )->withGroup(
             Group::make('Responses')->withField(
                 Field::switch('collect_responses')->label('Save responses?')->hint('Do you want responses to be saved on the portal? You will always be able to see responses on typeform.')
-                    ->textOn('Save')->textOff('Do not save')->default(true)
+                    ->textOn('Save')->textOff('Do not save')->default(false)
             )->withField(
                 Field::input('form_id')->inputType('text')->label('Form ID')->hint('ID of the form so we can collect responses')
+            )->withField(
+                Field::switch('use_webhook')->label('Use webhook?')->hint('Use a webhook for instant responses?')
+                    ->textOn('Use')->textOff('Do not use')->default(true)
             )
         )->getSchema();
     }
-    
+
 }

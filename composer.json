@@ -12,7 +12,8 @@
     "php": "^7.2",
     "bristol-su/support": "@dev",
     "watr/typeform": "^1.5",
-    "bristol-su/typeform-service": "@dev"
+    "bristol-su/typeform-service": "@dev",
+    "ext-json": "*"
   },
   "require-dev": {
     "orchestra/testbench": "^4.0"
@@ -33,15 +34,5 @@
         "BristolSU\\Module\\Typeform\\ModuleServiceProvider"
       ]
     }
-  },
-  "repositories": [
-    {
-      "type": "path",
-      "url": "../../support/support"
-    },
-    {
-      "type": "path",
-      "url": "../../services/typeform"
-    }
-  ]
+  }
 }
