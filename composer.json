@@ -10,7 +10,7 @@
   ],
   "require": {
     "php": "^7.2",
-    "bristol-su/support": "@dev",
+    "bristol-su/support": "dev-master",
     "watr/typeform": "^1.5",
     "bristol-su/typeform-service": "@dev",
     "ext-json": "*"
