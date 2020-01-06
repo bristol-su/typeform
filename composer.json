@@ -2,6 +2,8 @@
   "name": "bristol-su/typeform",
   "description": "",
   "license": "MIT",
+  "prefer-stable": false,
+  "minimum-stability": "dev",
   "authors": [
     {
       "name": "Toby Twigger",
