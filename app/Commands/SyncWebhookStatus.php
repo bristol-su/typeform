@@ -38,6 +38,11 @@ class SyncWebhookStatus extends Command
     public function handle()
     {
         foreach ($this->moduleInstances() as $moduleInstance) {
+            if(! in_array('typeform', array_merge(
+                $serviceRequest->getRequired($moduleInstance->alias()), $serviceRequest->getOptional($moduleInstance->alias())
+            ))) {
+                continue;
+            }
             $client = app(Client::class, ['connector' => app(ModuleInstanceServiceRepository::class)->getConnectorForService('typeform', $moduleInstance->id)]);
             if($this->usesWebhook($moduleInstance)) {
                 $webhook = $this->getWebhook($moduleInstance);
