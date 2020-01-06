@@ -65,11 +65,6 @@ class ModuleServiceProvider extends ServiceProvider
     {
         return __DIR__ . '/..';
     }
-
-    public function register()
-    {
-        parent::register();
-    }
     
     public function boot()
     {
