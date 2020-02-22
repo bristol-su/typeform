@@ -1,40 +1,40 @@
 {
-  "name": "bristol-su/typeform",
-  "description": "",
-  "license": "MIT",
-  "prefer-stable": false,
-  "minimum-stability": "dev",
-  "authors": [
-    {
-      "name": "Toby Twigger",
-      "email": "toby.twigger@bristol.ac.uk"
+    "name": "bristol-su/typeform",
+    "description": "",
+    "license": "MIT",
+    "prefer-stable": true,
+    "minimum-stability": "dev",
+    "authors": [
+        {
+            "name": "Toby Twigger",
+            "email": "toby.twigger@bristol.ac.uk"
+        }
+    ],
+    "require": {
+        "php": "^7.2",
+        "bristol-su/support": "^3.0",
+        "watr/typeform": "^1.5",
+        "bristol-su/typeform-service": "dev-master",
+        "ext-json": "*"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "BristolSU\\Module\\Typeform\\": "app/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "BristolSU\\Module\\Tests\\Typeform\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "BristolSU\\Module\\Typeform\\ModuleServiceProvider"
+            ]
+        }
     }
-  ],
-  "require": {
-    "php": "^7.2",
-    "bristol-su/support": "^1.0",
-    "watr/typeform": "^1.5",
-    "bristol-su/typeform-service": "dev-master",
-    "ext-json": "*"
-  },
-  "require-dev": {
-    "orchestra/testbench": "^4.0"
-  },
-  "autoload": {
-    "psr-4": {
-      "BristolSU\\Module\\Typeform\\": "app/"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "BristolSU\\Module\\Tests\\Typeform\\": "tests/"
-    }
-  },
-  "extra": {
-    "laravel": {
-      "providers": [
-        "BristolSU\\Module\\Typeform\\ModuleServiceProvider"
-      ]
-    }
-  }
 }

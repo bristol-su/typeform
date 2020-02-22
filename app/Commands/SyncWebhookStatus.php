@@ -37,6 +37,7 @@ class SyncWebhookStatus extends Command
 
     public function handle()
     {
+        $serviceRequest = app(ServiceRequest::class);
         foreach ($this->moduleInstances() as $moduleInstance) {
             if(! in_array('typeform', array_merge(
                 $serviceRequest->getRequired($moduleInstance->alias()), $serviceRequest->getOptional($moduleInstance->alias())

@@ -69,8 +69,9 @@
             url() {
                 let hiddenUrl = new Url(this.formUrl);
                 hiddenUrl.query.portal_user_id = this.getPortalProperty('user', 'id');
-                hiddenUrl.query.portal_user_forename = this.getPortalProperty('data_user', 'forename');
-                hiddenUrl.query.portal_user_surname = this.getPortalProperty('data_user', 'surname');
+                hiddenUrl.query.portal_user_forename = this.getPortalProperty('data_user', 'first_name');
+                hiddenUrl.query.portal_user_surname = this.getPortalProperty('data_user', 'last_name');
+                hiddenUrl.query.portal_user_preferred_name = this.getPortalProperty('data_user', 'preferred_name');
                 hiddenUrl.query.portal_user_email = this.getPortalProperty('data_user', 'email');
                 hiddenUrl.query.portal_group_name = this.getPortalProperty('group', 'name');
                 hiddenUrl.query.portal_group_id = this.getPortalProperty('group', 'id');

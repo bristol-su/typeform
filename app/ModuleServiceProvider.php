@@ -4,7 +4,7 @@ namespace BristolSU\Module\Typeform;
 
 use BristolSU\Module\Typeform\Commands\CheckResponses;
 use BristolSU\Module\Typeform\Commands\SyncWebhookStatus;
-use BristolSU\Module\Typeform\CompletionConditions\Dummy;
+use BristolSU\Module\Typeform\CompletionConditions\NumberOfResponsesSubmitted;
 use BristolSU\Module\Typeform\Http\Controllers\Webhook\IncomingWebhookController;
 use BristolSU\Module\Typeform\Typeform\Contracts\ResponseHandler;
 use BristolSU\Module\Typeform\Typeform\WebhookHandler;
@@ -74,7 +74,7 @@ class ModuleServiceProvider extends ServiceProvider
             return File::findOrFail($id);
         });
         
-        app(CompletionConditionManager::class)->register('typeform', 'dummy', Dummy::class);
+        app(CompletionConditionManager::class)->register('typeform', 'number_of_responses_submitted', NumberOfResponsesSubmitted::class);
         app(ServiceRequest::class)->required($this->alias(), ['typeform']);
         
         Route::prefix('/api/a/{activity_slug}/{module_instance_slug}/' . $this->alias())
