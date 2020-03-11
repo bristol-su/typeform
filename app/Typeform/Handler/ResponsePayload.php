@@ -1,6 +1,6 @@
 <?php
 
-namespace BristolSU\Module\Typeform\Typeform;
+namespace BristolSU\Module\Typeform\Typeform\Handler;
 
 use BristolSU\Module\Typeform\Typeform\Contracts\Payload;
 use Carbon\Carbon;
@@ -53,4 +53,8 @@ class ResponsePayload extends Payload
         return $this->property('answers');
     }
 
+    public function moduleInstanceId()
+    {
+        return $this->property('hidden.module_instance');
+    }
 }

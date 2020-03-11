@@ -13,6 +13,10 @@ class Answer extends Model
         'field_id', 'response_id', 'type', 'answer'
     ];
 
+    protected $casts = [
+        'encoded' => 'boolean'
+    ];
+    
     public function setAnswerAttribute($answer)
     {
         if(is_array($answer)) {
@@ -26,7 +30,7 @@ class Answer extends Model
     public function getAnswerAttribute()
     {
         if(($this->attributes['encoded']??false)) {
-            return json_decode($this->attributes['answer']);
+            return json_decode($this->attributes['answer'], true);
         }
         return $this->attributes['answer'];
     }

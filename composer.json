@@ -14,7 +14,7 @@
         "php": "^7.2",
         "bristol-su/support": "^3.0",
         "watr/typeform": "^1.5",
-        "bristol-su/typeform-service": "dev-master",
+        "bristol-su/typeform-service": "^1.0",
         "ext-json": "*"
     },
     "require-dev": {

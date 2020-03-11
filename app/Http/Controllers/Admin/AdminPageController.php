@@ -15,7 +15,7 @@ class AdminPageController extends Controller
         
         $responses = Response::forModuleInstance()->with(['answers', 'answers.field'])->get();
         
-        return view(alias() . '::admin')->with('responses', $responses);
+        return view('typeform::admin')->with('responses', $responses);
     }
     
 }

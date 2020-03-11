@@ -35,37 +35,22 @@ class SyncWebhookStatus extends Command
      */
     protected $description = 'Syncronise the webhook settings with Typeform for a module instance. Creates and removes webhooks.';
 
+    /**
+     * Syncronise the webhook status for each of the module instances requested
+     */
     public function handle()
     {
-        $serviceRequest = app(ServiceRequest::class);
         foreach ($this->moduleInstances() as $moduleInstance) {
-            if(! in_array('typeform', array_merge(
-                $serviceRequest->getRequired($moduleInstance->alias()), $serviceRequest->getOptional($moduleInstance->alias())
-            ))) {
-                continue;
-            }
-            $client = app(Client::class, ['connector' => app(ModuleInstanceServiceRepository::class)->getConnectorForService('typeform', $moduleInstance->id)]);
-            if($this->usesWebhook($moduleInstance)) {
-                $webhook = $this->getWebhook($moduleInstance);
-                if(! $client->webhookExists($webhook)) {
-                    $client->webhookCreate($webhook);
-                }
-                if(!$client->webhookEnabled($webhook)) {
-                    $client->webhookEnable($webhook);
-                }
-            } elseif(Webhook::fromModuleInstance($moduleInstance)->count() > 0){
-                $webhook = $this->getWebhook($moduleInstance);
-                if($client->webhookExists($webhook) && $client->webhookEnabled($webhook)) {
-                    $client->webhookDisable($webhook);
-                }
-//                if($client->webhookExists($webhook)) {
-//                    $client->webhookDelete($webhook);
-//                }
-            }
+            dispatch(new \BristolSU\Module\Typeform\Jobs\SyncWebhookStatus($moduleInstance));
         }
     }
 
-    public function moduleInstances()
+    /**
+     * Get the module instances to syncronise
+     * 
+     * @return array|ModuleInstance[]
+     */
+    private function moduleInstances()
     {
         $id = $this->argument('moduleinstance');
         return ($id === null
@@ -73,26 +58,4 @@ class SyncWebhookStatus extends Command
             : [app(ModuleInstanceRepository::class)->getById($id)]);
     }
 
-    public function getWebhook(ModuleInstance $moduleInstance)
-    {
-        try {
-            return Webhook::fromModuleInstance($moduleInstance)->firstOrFail();
-        } catch (ModelNotFoundException $e) {
-            return Webhook::create([
-                'module_instance_id' => $moduleInstance->id,
-                'tag' => Webhook::generatedTag($moduleInstance),
-                'form_id' => $moduleInstance->moduleInstanceSettings()->where('key', 'form_id')->firstOrFail()->value
-            ]);
-        }
-    }
-
-    public function usesWebhook(ModuleInstance $moduleInstance)
-    {
-        try {
-            return $moduleInstance->moduleInstanceSettings()->where('key', 'collect_responses')->firstOrFail()->value
-                && $moduleInstance->moduleInstanceSettings()->where('key', 'use_webhook')->firstOrFail()->value;
-        } catch (ModelNotFoundException $e) {
-            return false;
-        }
-    }
 }

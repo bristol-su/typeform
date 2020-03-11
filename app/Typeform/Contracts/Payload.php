@@ -21,11 +21,19 @@ abstract class Payload
     }
 
     abstract public function formId();
+
     abstract public function responseId();
+
     abstract public function submitterId();
+
     abstract public function submittedAt();
+
     abstract public function activityInstanceId();
+
     abstract public function fields();
+
     abstract public function answers();
-    
+
+    abstract public function moduleInstanceId();
+
 }

@@ -70,14 +70,10 @@ class ModuleServiceProvider extends ServiceProvider
     {
         parent::boot();
         
-        Route::bind($this->alias() . '_file', function($id) {
-            return File::findOrFail($id);
-        });
-        
         app(CompletionConditionManager::class)->register('typeform', 'number_of_responses_submitted', NumberOfResponsesSubmitted::class);
         app(ServiceRequest::class)->required($this->alias(), ['typeform']);
         
-        Route::prefix('/api/a/{activity_slug}/{module_instance_slug}/' . $this->alias())
+        Route::prefix('/api/a/{activity_slug}/{module_instance_slug}/typeform')
             ->middleware(['api'])
             ->namespace($this->namespace())
             ->group($this->baseDirectory() . '/routes/admin/webhook.php');

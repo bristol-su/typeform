@@ -5,7 +5,6 @@ namespace BristolSU\Module\Typeform\Typeform;
 use BristolSU\Module\Typeform\Models\Webhook;
 use BristolSU\Support\Connection\Contracts\Connector;
 use GuzzleHttp\Exception\ClientException;
-use Illuminate\Contracts\Cache\Repository;
 
 class Client
 {
@@ -17,11 +16,6 @@ class Client
     public function __construct(Connector $connector)
     {
         $this->connector = $connector;
-    }
-
-    public function request($method, $uri, $options = [])
-    {
-        return $this->connector->request($method, $uri, $options);
     }
 
     public function webhookExists(Webhook $webhook)
@@ -52,7 +46,6 @@ class Client
                 'enabled' => true
             ]
         ]);
-
     }
 
     public function webhookDelete(Webhook $webhook)

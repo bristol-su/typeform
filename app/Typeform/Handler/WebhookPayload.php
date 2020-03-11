@@ -1,6 +1,6 @@
 <?php
 
-namespace BristolSU\Module\Typeform\Typeform;
+namespace BristolSU\Module\Typeform\Typeform\Handler;
 
 use BristolSU\Module\Typeform\Typeform\Contracts\Payload;
 use Carbon\Carbon;
@@ -31,6 +31,11 @@ class WebhookPayload extends Payload
     public function activityInstanceId()
     {
         return $this->property('form_response.hidden.activity_instance');
+    }
+
+    public function moduleInstanceId()
+    {
+        return $this->property('form_response.hidden.module_instance');
     }
 
     public function fields()

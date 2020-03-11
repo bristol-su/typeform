@@ -2,7 +2,6 @@
 
 namespace BristolSU\Module\Typeform\Models;
 
-use BristolSU\Support\Authentication\HasResource;
 use Illuminate\Database\Eloquent\Model;
 
 class Field extends Model

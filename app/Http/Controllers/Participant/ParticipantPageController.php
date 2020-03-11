@@ -14,7 +14,7 @@ class ParticipantPageController extends Controller
 
         $responses = Response::forResource()->with(['answers', 'answers.field'])->get();
 
-        return view(alias() . '::participant')->with('responses', $responses);
+        return view('typeform::participant')->with('responses', $responses);
     }
     
 }

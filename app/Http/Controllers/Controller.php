@@ -19,7 +19,7 @@ class Controller
     public function authorize($ability, $arguments = [])
     {
         return $this->baseAuthorize(
-            alias() . '.' . $ability,
+            'typeform.' . $ability,
             $arguments
         );
     }
