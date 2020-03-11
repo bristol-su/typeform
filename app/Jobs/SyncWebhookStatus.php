@@ -4,6 +4,7 @@ namespace BristolSU\Module\Typeform\Jobs;
 
 use BristolSU\Module\Typeform\Models\Webhook;
 use BristolSU\Module\Typeform\Typeform\Client;
+use BristolSU\Support\ModuleInstance\Connection\NoConnectionAvailable;
 use BristolSU\Support\ModuleInstance\Contracts\Connection\ModuleInstanceServiceRepository;
 use BristolSU\Support\ModuleInstance\ModuleInstance;
 use Illuminate\Bus\Queueable;
@@ -28,9 +29,13 @@ class SyncWebhookStatus implements ShouldQueue
 
     public function handle()
     {
-        $client = app(Client::class, 
-            ['connector' => app(ModuleInstanceServiceRepository::class)->getConnectorForService('typeform', $this->moduleInstance->id)]
-        );
+        try {
+            $client = app(Client::class,
+                ['connector' => app(ModuleInstanceServiceRepository::class)->getConnectorForService('typeform', $this->moduleInstance->id)]
+            );
+        } catch (NoConnectionAvailable $e) {
+            return;
+        }
 
         // If the module should use a webhook, ensure it exists and is enabled
         if($this->usesWebhook()) {

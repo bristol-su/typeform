@@ -6,6 +6,7 @@ use BristolSU\Module\Typeform\Models\Response;
 use BristolSU\Module\Typeform\Typeform\Client;
 use BristolSU\Module\Typeform\Typeform\Handler\ResponseHandler;
 use BristolSU\Module\Typeform\Typeform\Handler\ResponsePayload;
+use BristolSU\Support\ModuleInstance\Connection\NoConnectionAvailable;
 use BristolSU\Support\ModuleInstance\Contracts\Connection\ModuleInstanceServiceRepository;
 use BristolSU\Support\ModuleInstance\ModuleInstance;
 use Illuminate\Bus\Queueable;
@@ -30,9 +31,13 @@ class UpdateResponses implements ShouldQueue
 
     public function handle()
     {
-        $client = app(Client::class,
-            ['connector' => app(ModuleInstanceServiceRepository::class)->getConnectorForService('typeform', $this->moduleInstance->id)]
-        );
+        try {
+            $client = app(Client::class,
+                ['connector' => app(ModuleInstanceServiceRepository::class)->getConnectorForService('typeform', $this->moduleInstance->id)]
+            );
+        } catch (NoConnectionAvailable $e) {
+            return;
+        }
         
         $formId = $this->moduleInstance->setting('form_id');
         if($formId === null) {
