@@ -2,6 +2,7 @@
 
 namespace BristolSU\Module\Typeform\Typeform\Handler;
 
+use BristolSU\Module\Typeform\Events\NewResponse;
 use BristolSU\Module\Typeform\Models\Answer;
 use BristolSU\Module\Typeform\Models\Field;
 use BristolSU\Module\Typeform\Models\Response;
@@ -40,6 +41,8 @@ class ResponseHandler
             }
         }
 
+        event(new NewResponse($response));
+        
         return $response;
     }
 

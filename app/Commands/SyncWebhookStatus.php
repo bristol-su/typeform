@@ -54,7 +54,7 @@ class SyncWebhookStatus extends Command
     {
         $id = $this->argument('moduleinstance');
         return ($id === null
-            ? app(ModuleInstanceRepository::class)->all()
+            ? app(ModuleInstanceRepository::class)->allWithAlias('typeform')
             : [app(ModuleInstanceRepository::class)->getById($id)]);
     }
 

@@ -43,7 +43,7 @@ class CheckResponses extends Command
     {
         $id = $this->argument('moduleinstance');
         if($id === null) {
-            return collect(app(ModuleInstanceRepository::class)->all())->filter(function(ModuleInstance $moduleInstance) {
+            return collect(app(ModuleInstanceRepository::class)->allWithAlias('typeform'))->filter(function(ModuleInstance $moduleInstance) {
                 return $moduleInstance->setting('collect_responses', false)
                     && !$moduleInstance->setting('use_webhook', true)
                     && $moduleInstance->setting('form_id');

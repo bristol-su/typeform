@@ -6,6 +6,6 @@ $factory->define(\BristolSU\Module\Typeform\Models\Webhook::class, function(\Fak
             return factory(\BristolSU\Support\ModuleInstance\ModuleInstance::class)->create()->id;
         },
         'tag' => $faker->word,
-        'form_id' => $faker->unique()->numberBetween(0, 1000000)
+        'form_id' => $faker->bothify('##???#')
     ];
 });

@@ -22,7 +22,7 @@ class UpdateResponses implements ShouldQueue
     /**
      * @var ModuleInstance
      */
-    private $moduleInstance;
+    public $moduleInstance;
 
     public function __construct(ModuleInstance $moduleInstance)
     {
@@ -32,9 +32,7 @@ class UpdateResponses implements ShouldQueue
     public function handle()
     {
         try {
-            $client = app(Client::class,
-                ['connector' => app(ModuleInstanceServiceRepository::class)->getConnectorForService('typeform', $this->moduleInstance->id)]
-            );
+            $client = $this->resolveClient();
         } catch (NoConnectionAvailable $e) {
             return;
         }
@@ -52,10 +50,18 @@ class UpdateResponses implements ShouldQueue
             return false;
         })->values();
 
+        $fields = $client->allFields($formId);
         foreach($responses as $response) {
-            $payload = new ResponsePayload($response, $formId, $client->allFields($formId));
-            (new ResponseHandler())->handle($payload);
+            $payload = new ResponsePayload($response, $formId, $fields);
+            app(ResponseHandler::class)->handle($payload);
         }
+    }
+
+    protected function resolveClient()
+    {
+        return app(Client::class,
+            ['connector' => app(ModuleInstanceServiceRepository::class)->getConnectorForService('typeform', $this->moduleInstance->id)]
+        );
     }
 
 }

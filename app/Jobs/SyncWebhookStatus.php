@@ -20,7 +20,7 @@ class SyncWebhookStatus implements ShouldQueue
     /**
      * @var ModuleInstance
      */
-    private $moduleInstance;
+    public $moduleInstance;
 
     public function __construct(ModuleInstance $moduleInstance)
     {
@@ -30,13 +30,11 @@ class SyncWebhookStatus implements ShouldQueue
     public function handle()
     {
         try {
-            $client = app(Client::class,
-                ['connector' => app(ModuleInstanceServiceRepository::class)->getConnectorForService('typeform', $this->moduleInstance->id)]
-            );
+            $client = $this->resolveClient();
         } catch (NoConnectionAvailable $e) {
             return;
         }
-
+        
         // If the module should use a webhook, ensure it exists and is enabled
         if($this->usesWebhook()) {
             $webhook = $this->getWebhook();
@@ -83,5 +81,12 @@ class SyncWebhookStatus implements ShouldQueue
     {
         return $this->moduleInstance->setting('collect_responses', false) 
             && $this->moduleInstance->setting('use_webhook', true);
+    }
+    
+    protected function resolveClient()
+    {
+        return app(Client::class,
+            ['connector' => app(ModuleInstanceServiceRepository::class)->getConnectorForService('typeform', $this->moduleInstance->id)]
+        );
     }
 }

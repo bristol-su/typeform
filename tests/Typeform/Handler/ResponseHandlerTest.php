@@ -3,12 +3,14 @@
 namespace BristolSU\Module\Tests\Typeform\Typeform\Handler;
 
 use BristolSU\Module\Tests\Typeform\TestCase;
+use BristolSU\Module\Typeform\Events\NewResponse;
 use BristolSU\Module\Typeform\Models\Answer;
 use BristolSU\Module\Typeform\Models\Field;
 use BristolSU\Module\Typeform\Models\Response;
 use BristolSU\Module\Typeform\Typeform\Contracts\Payload;
 use BristolSU\Module\Typeform\Typeform\Handler\ResponseHandler;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Event;
 
 class ResponseHandlerTest extends TestCase
 {
@@ -253,6 +255,22 @@ class ResponseHandlerTest extends TestCase
 
         $handler = new ResponseHandler();
         $this->assertNull($handler->handle($payload->reveal()));
+    }
+
+    /** @test */
+    public function it_fires_an_event_for_a_new_response_created(){
+        Event::fake(NewResponse::class);
+        
+        $payload = new DummyPayload([
+            'fields' => [], 'answers' => []
+        ]);
+
+        $handler = new ResponseHandler();
+        $handler->handle($payload);
+
+        Event::assertDispatched(NewResponse::class, function($event) {
+            return $event instanceof NewResponse && $event->response->id === 'some-response-id';
+        });
     }
 }
 

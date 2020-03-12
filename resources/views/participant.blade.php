@@ -1,6 +1,6 @@
 @extends('typeform::layouts.app')
 
-@section('title', settings('title'))
+@section('title', settings('title', 'Typeform'))
 
 @section('module-content')
     <div class="py-5">
