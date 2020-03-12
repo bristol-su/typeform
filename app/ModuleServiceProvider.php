@@ -5,6 +5,7 @@ namespace BristolSU\Module\Typeform;
 use BristolSU\Module\Typeform\Commands\CheckResponses;
 use BristolSU\Module\Typeform\Commands\SyncWebhookStatus;
 use BristolSU\Module\Typeform\CompletionConditions\NumberOfResponsesSubmitted;
+use BristolSU\Module\Typeform\Events\NewResponse;
 use BristolSU\Module\Typeform\Http\Controllers\Webhook\IncomingWebhookController;
 use BristolSU\Module\Typeform\Typeform\Contracts\ResponseHandler;
 use BristolSU\Module\Typeform\Typeform\WebhookHandler;
@@ -39,6 +40,10 @@ class ModuleServiceProvider extends ServiceProvider
     ];
 
     protected $events = [
+        NewResponse::class => [
+            'name' => 'New Response',
+            'description' => 'When a new response is submitted'
+        ]
     ];
     
     protected $commands = [
