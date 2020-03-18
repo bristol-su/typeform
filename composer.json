@@ -12,9 +12,9 @@
     ],
     "require": {
         "php": "^7.2",
-        "bristol-su/support": "^3.0",
+        "bristol-su/support": "^4.0",
         "watr/typeform": "^1.5",
-        "bristol-su/typeform-service": "^1.0",
+        "bristol-su/typeform-service": "^1.0.1",
         "ext-json": "*"
     },
     "require-dev": {
