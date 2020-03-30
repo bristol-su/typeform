@@ -5,7 +5,7 @@
 @section('module-content')
     <div class="py-5">
         <div class="container">
-            <div class="row">
+            <div class="row" style="margin: 80px;">
                 <div class="col-md-12" style="text-align: center;">
                     <h2 class="">{{settings('title')}}</h2>
                     <p class="">{!! settings('description') !!}</p>
@@ -33,9 +33,12 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    @if(settings('collect_responses'))
+                    @if(settings('collect_responses') && count($responses) > 0)
+                        <h4>Previous Responses</h4>
                         <responses
-                                :responses="{{$responses}}"></responses>
+                                :responses="{{$responses}}"
+                                :show-approved-status="{{(settings('approval', false)?'true':'false')}}"
+                                query-string="{{url()->getAuthQueryString()}}"></responses>
                     @endif
                 </div>
             </div>

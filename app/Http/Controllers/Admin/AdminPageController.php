@@ -5,6 +5,7 @@ namespace BristolSU\Module\Typeform\Http\Controllers\Admin;
 
 use BristolSU\Module\Typeform\Http\Controllers\Controller;
 use BristolSU\Module\Typeform\Models\Response;
+use BristolSU\Support\ActivityInstance\ActivityInstance;
 
 class AdminPageController extends Controller
 {
@@ -14,7 +15,7 @@ class AdminPageController extends Controller
         $this->authorize('admin.view-form');
         
         $responses = Response::forModuleInstance()->with(['answers', 'answers.field'])->get();
-        
+
         return view('typeform::admin')->with('responses', $responses);
     }
     

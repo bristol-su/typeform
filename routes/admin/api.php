@@ -15,4 +15,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::namespace('AdminApi')->group(function() {
     Route::post('response/refresh', 'ResponseRefreshController@refresh');
+    Route::post('response/{typeform_response_id}/approve', 'StatusController@approve');
+    Route::post('response/{typeform_response_id}/reject', 'StatusController@reject');
 });

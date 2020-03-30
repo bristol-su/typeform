@@ -4,9 +4,13 @@ namespace BristolSU\Module\Typeform;
 
 use BristolSU\Module\Typeform\Commands\CheckResponses;
 use BristolSU\Module\Typeform\Commands\SyncWebhookStatus;
+use BristolSU\Module\Typeform\CompletionConditions\NumberOfResponsesApproved;
+use BristolSU\Module\Typeform\CompletionConditions\NumberOfResponsesRejected;
 use BristolSU\Module\Typeform\CompletionConditions\NumberOfResponsesSubmitted;
 use BristolSU\Module\Typeform\Events\NewResponse;
 use BristolSU\Module\Typeform\Http\Controllers\Webhook\IncomingWebhookController;
+use BristolSU\Module\Typeform\Models\Answer;
+use BristolSU\Module\Typeform\Models\Response;
 use BristolSU\Module\Typeform\Typeform\Contracts\ResponseHandler;
 use BristolSU\Module\Typeform\Typeform\WebhookHandler;
 use BristolSU\Support\Completion\Contracts\CompletionConditionManager;
@@ -16,6 +20,7 @@ use FormSchema\Generator\Field;
 use FormSchema\Generator\Form as FormGenerator;
 use FormSchema\Generator\Group;
 use FormSchema\Schema\Form;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Route;
 
 class ModuleServiceProvider extends ServiceProvider
@@ -32,9 +37,19 @@ class ModuleServiceProvider extends ServiceProvider
             'description' => 'View the form.',
             'admin' => true
         ],
+        'admin.download-file' => [
+            'name' => 'Download File',
+            'description' => 'Download a file attached to the form.',
+            'admin' => true
+        ],
         'admin.refresh-form-responses' => [
             'name' => 'Refresh Form Responses',
             'description' => 'Manually refresh the form responses.',
+            'admin' => true
+        ],
+        'admin.approve' => [
+            'name' => 'Approve Responses',
+            'description' => 'Can approve responses',
             'admin' => true
         ]
     ];
@@ -74,9 +89,31 @@ class ModuleServiceProvider extends ServiceProvider
     public function boot()
     {
         parent::boot();
-        
+
         app(CompletionConditionManager::class)->register('typeform', 'number_of_responses_submitted', NumberOfResponsesSubmitted::class);
+        app(CompletionConditionManager::class)->register('typeform', 'number_of_responses_approved', NumberOfResponsesApproved::class);
+        app(CompletionConditionManager::class)->register('typeform', 'number_of_responses_rejected', NumberOfResponsesRejected::class);
         app(ServiceRequest::class)->required($this->alias(), ['typeform']);
+        
+        Route::bind('typeform_response_id', function($id) {
+            return Response::findOrFail($id);
+        });
+        Route::bind('typeform_answer_id_admin', function($id) {
+            $answer = Answer::findOrFail($id);
+            if($answer->response->module_instance_id === request()->route('module_instance_slug')->id()) {
+                return $answer;
+            }
+            throw (new ModelNotFoundException)->setModel(Answer::class, $id);
+        });
+        Route::bind('typeform_answer_id_user', function($id) {
+            $answer = Answer::findOrFail($id);
+            if($answer->response->module_instance_id === request()->route('module_instance_slug')->id()
+                && $answer->response->activity_instance_id === Response::activityInstanceId()
+            ) {
+                return $answer;
+            }
+            throw (new ModelNotFoundException)->setModel(Answer::class, $id);
+        });
         
         Route::prefix('/api/a/{activity_slug}/{module_instance_slug}/typeform')
             ->middleware(['api'])
@@ -120,6 +157,10 @@ class ModuleServiceProvider extends ServiceProvider
             )->withField(
                 Field::switch('use_webhook')->label('Use webhook?')->hint('Use a webhook for instant responses?')
                     ->textOn('Use')->textOff('Do not use')->default(true)
+            )->withField(
+                Field::switch('approval')->label('Approval Stage?')->hint('Turn on approval of responses?')
+                ->textOn('Approval Enabled')->textOff('Approval Disabled')->default(false)
+                ->help('Turning on approval allows you to delay completion of the module until you\'ve approved a response')
             )
         )->getSchema();
     }

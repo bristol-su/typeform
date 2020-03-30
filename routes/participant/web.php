@@ -15,4 +15,5 @@ use Illuminate\Support\Facades\Route;
 
 Route::namespace('Participant')->group(function() {
     Route::get('/', 'ParticipantPageController@index');
+    Route::get('/file/{typeform_answer_id_user}/download', 'DownloadFileController@download');
 });

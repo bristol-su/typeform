@@ -2,6 +2,7 @@
 
 namespace BristolSU\Module\Typeform\Typeform;
 
+use BristolSU\Module\Typeform\Models\Answer;
 use BristolSU\Module\Typeform\Models\Webhook;
 use BristolSU\Support\Connection\Contracts\Connector;
 use GuzzleHttp\Exception\ClientException;
@@ -86,5 +87,16 @@ class Client
     {
         $response = $this->connector->request('GET', 'https://api.typeform.com/forms/'.  $formId);
         return json_decode((string) $response->getBody(), true)['fields'];
+    }
+
+    public function downloadFileFromAnswer(Answer $answer, $file)
+    {
+        return $this->connector->request('GET', $answer->answer, [
+            'sink' => $file,
+            'curl.options' => array(
+                'CURLOPT_RETURNTRANSFER' => true,
+                'CURLOPT_FILE' => $file
+            )
+        ]);
     }
 }

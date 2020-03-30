@@ -45,7 +45,7 @@ class ResponsePayload extends Payload
 
     public function fields()
     {
-        return $this->fields;
+        return ($this->fields ?? []);
     }
 
     public function answers()

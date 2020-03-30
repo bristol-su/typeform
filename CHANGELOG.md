@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+## [1.1] - (31/03/2020)
+
+### Added
+- Field types - URL, File URL, Choices, Email, Phone Number
+- Ability to approve and reject responses
+- Completion Conditions based on number of approved or rejected responses
 
 ## [1.0.2] - (18/03/2020)
 

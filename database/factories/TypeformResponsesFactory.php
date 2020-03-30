@@ -13,6 +13,7 @@ $factory->define(\BristolSU\Module\Typeform\Models\Response::class, function(\Fa
         'activity_instance_id' => function() {
             return factory(\BristolSU\Support\ActivityInstance\ActivityInstance::class)->create()->id;
         },
-        'submitted_at' => $faker->dateTime
+        'submitted_at' => $faker->dateTime,
+        'approved' => $faker->boolean
     ];
 });

@@ -16,7 +16,7 @@ use Illuminate\Queue\SerializesModels;
 
 class UpdateResponses implements ShouldQueue
 {
-    
+
     use Dispatchable, Queueable, SerializesModels;
 
     /**
@@ -36,27 +36,36 @@ class UpdateResponses implements ShouldQueue
         } catch (NoConnectionAvailable $e) {
             return;
         }
-        
+
         $formId = $this->moduleInstance->setting('form_id');
-        if($formId === null) {
+        if ($formId === null) {
             return null;
         }
         
-        $responses = collect($client->allResponses($formId))->filter(function($response) {
-            if(isset($response['hidden']) && isset($response['hidden']['module_instance'])) {
+        $responses = collect($client->allResponses($formId))->filter(function ($response) {
+            if (
+                isset($response['hidden']) 
+                && isset($response['hidden']['module_instance']) 
+                && isset($response['hidden']['activity_instance']) 
+                && isset($response['hidden']['portal_user_id'])
+            ) {
                 return Response::where('id', $response['token'])->count() === 0
                     && $response['hidden']['module_instance'] == $this->moduleInstance->id();
             }
             return false;
         })->values();
-
+        
         $fields = $client->allFields($formId);
-        foreach($responses as $response) {
+        
+        foreach ($responses as $response) {
             $payload = new ResponsePayload($response, $formId, $fields);
             app(ResponseHandler::class)->handle($payload);
         }
     }
 
+    /**
+     * @return Client
+     */
     protected function resolveClient()
     {
         return app(Client::class,

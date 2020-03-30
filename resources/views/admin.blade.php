@@ -14,7 +14,11 @@
                     @if(settings('collect_responses'))
                         <responses
                                 :responses="{{$responses}}"
-                                :can-refresh-responses="{{(\BristolSU\Support\Permissions\Facade\PermissionTester::evaluate('typeform.admin.refresh-form-responses')?'true':'false')}}"></responses>
+                                :can-refresh-responses="{{(\BristolSU\Support\Permissions\Facade\PermissionTester::evaluate('typeform.admin.refresh-form-responses')?'true':'false')}}"
+                                :show-approved-status="{{(settings('approval', false)?'true':'false')}}"
+                                :allow-approval="{{(\BristolSU\Support\Permissions\Facade\PermissionTester::evaluate('typeform.admin.approve')?'true':'false')}}"
+                                query-string="{{url()->getAuthQueryString()}}"
+                                :show-activity-instance-by="true"></responses>
                     @endif
                 </div>
             </div>

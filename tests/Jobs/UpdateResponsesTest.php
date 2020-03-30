@@ -72,23 +72,23 @@ class UpdateResponsesTest extends TestCase
         $client = $this->prophesize(Client::class);
         $client->allResponses('form-123')->shouldBeCalled()->willReturn([
             [
-                'hidden' => ['module_instance' => $this->getModuleInstance()->id()],
+                'hidden' => ['module_instance' => $this->getModuleInstance()->id(), 'activity_instance' => $this->getActivityInstance()->id, 'portal_user_id' => $this->getControlUser()->id()],
                 'token' => '123'
             ],
             [
-                'hidden' => ['module_instance' => $this->getModuleInstance()->id()],
+                'hidden' => ['module_instance' => $this->getModuleInstance()->id(), 'activity_instance' => $this->getActivityInstance()->id, 'portal_user_id' => $this->getControlUser()->id()],
                 'token' => '1234'
             ],
             [
-                'hidden' => ['module_instance' => $this->getModuleInstance()->id()],
+                'hidden' => ['module_instance' => $this->getModuleInstance()->id(), 'activity_instance' => $this->getActivityInstance()->id, 'portal_user_id' => $this->getControlUser()->id()],
                 'token' => '12345'
             ],
             [
-                'hidden' => ['module_instance' => $otherModuleInstance->id()],
+                'hidden' => ['module_instance' => $otherModuleInstance->id(), 'activity_instance' => $this->getActivityInstance()->id, 'portal_user_id' => $this->getControlUser()->id()],
                 'token' => '123456'
             ],
             [
-                'hidden' => ['module_instance' => $this->getModuleInstance()->id()],
+                'hidden' => ['module_instance' => $this->getModuleInstance()->id(), 'activity_instance' => $this->getActivityInstance()->id, 'portal_user_id' => $this->getControlUser()->id()],
                 'token' => '1234567'
             ],
             [
