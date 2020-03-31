@@ -7,9 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.3] - (31/03/2020)
+
 ### Fixed
 - Binding the activity instance and module instance for an incoming webhook
 - Only process an incoming webhook if the module instance ID matches
+- Return a 400 response if the webhook does not match the module instance ID
 
 ## [1.1.2] - (31/03/2020)
 
@@ -43,7 +46,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Initial Release
 
-[Unreleased]: https://github.com/bristol-su/typeform/compare/v1.1.2...HEAD
+[Unreleased]: https://github.com/bristol-su/typeform/compare/v1.1.3...HEAD
+[1.1.3]: https://github.com/bristol-su/typeform/compare/v1.1.2...v1.1.3
 [1.1.2]: https://github.com/bristol-su/typeform/compare/v1.1.1...v1.1.2
 [1.1.1]: https://github.com/bristol-su/typeform/compare/v1.1...v1.1.1
 [1.1]: https://github.com/bristol-su/typeform/compare/v1.0.2...v1.1
