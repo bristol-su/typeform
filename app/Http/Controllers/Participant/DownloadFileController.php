@@ -30,6 +30,7 @@ class DownloadFileController extends Controller
         if($typeformResponse->getStatusCode() === 200) {
             $response = \Illuminate\Support\Facades\Response::download($tmpFile);
             $response->headers->set('content-disposition', $typeformResponse->getHeader('content-disposition'));
+            $response->headers->set('X-Vapor-Base64-Encode', 'True');
             return $response;
         }
         
