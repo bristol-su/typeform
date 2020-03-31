@@ -32,9 +32,10 @@ class ResponseHandler
                 return isset($answer['field']) && isset($answer['field']['id']) && $answer['field']['id'] === $field['id'];
             });
             if ($answer !== null) {
-                Answer::create([
+                Answer::updateOrCreate([
                     'field_id' => $field->id,
                     'response_id' => $response->id,
+                ], [
                     'type' => $answer['type'],
                     'answer' => $answer[$answer['type']]
                 ]);
@@ -48,8 +49,9 @@ class ResponseHandler
 
     private function createResponse(Payload $payload): Response
     {
-        return Response::create([
-            'id' => $payload->responseId(),
+        return Response::firstOrCreate([
+            'id' => $payload->responseId()
+        ], [
             'form_id' => $payload->formId(),
             'submitted_by' => $payload->submitterId(),
             'submitted_at' => $payload->submittedAt(),

@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.2] - (31/03/2020)
+
+### Fixed
+- Response handler now updates responses/answers as well as saving them
+
 ## [1.1.1] - (31/03/2020)
 
 ### Changed
@@ -34,7 +39,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Initial Release
 
-[Unreleased]: https://github.com/bristol-su/typeform/compare/v1.1...HEAD
+[Unreleased]: https://github.com/bristol-su/typeform/compare/v1.1.2...HEAD
+[1.1.2]: https://github.com/bristol-su/typeform/compare/v1.1.1...v1.1.2
+[1.1.1]: https://github.com/bristol-su/typeform/compare/v1.1...v1.1.1
 [1.1]: https://github.com/bristol-su/typeform/compare/v1.0.2...v1.1
 [1.0.2]: https://github.com/bristol-su/typeform/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/bristol-su/typeform/compare/v1.0...v1.0.1
