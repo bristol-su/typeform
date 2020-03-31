@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.4] - (31/03/2020)
+
+### Added
+- Headers to file downloads for Vapor
+
 ## [1.1.3] - (31/03/2020)
 
 ### Fixed
