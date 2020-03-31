@@ -15,7 +15,10 @@ class IncomingWebhookControllerTest extends TestCase
     public function it_creates_a_payload_and_passes_it_to_the_handler(){
         $bundle = [
             'form_response' => [
-                'token' => 'response_id'
+                'token' => 'response_id',
+                'hidden' => [
+                    'module_instance' => $this->getModuleInstance()->id()
+                ]
             ]
         ];
         
