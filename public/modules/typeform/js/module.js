@@ -64232,7 +64232,7 @@ var render = function() {
                       tag: "component",
                       attrs: { value: data.value.answer }
                     })
-                  : data.value.type !== null
+                  : data.value.type
                   ? _c("div", [
                       _vm._v(
                         "\n                Field Type " +

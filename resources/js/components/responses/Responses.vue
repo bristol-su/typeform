@@ -20,7 +20,7 @@
                 <component v-else-if="componentExists(data.value.type)" :is="componentName(data.value.type)"
                     :value="data.value.answer">
                 </component>
-                <div v-else-if="data.value.type !== null">
+                <div v-else-if="data.value.type">
                     Field Type {{data.value.type}} not supported
                 </div>
                 <div v-else>
