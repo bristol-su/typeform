@@ -11112,6 +11112,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 
@@ -64229,13 +64232,15 @@ var render = function() {
                       tag: "component",
                       attrs: { value: data.value.answer }
                     })
-                  : _c("div", [
+                  : data.value.type !== null
+                  ? _c("div", [
                       _vm._v(
                         "\n                Field Type " +
                           _vm._s(data.value.type) +
                           " not supported\n            "
                       )
                     ])
+                  : _c("div", [_vm._v("\n                N/A\n            ")])
               ]
             }
           }

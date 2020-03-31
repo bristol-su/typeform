@@ -20,8 +20,11 @@
                 <component v-else-if="componentExists(data.value.type)" :is="componentName(data.value.type)"
                     :value="data.value.answer">
                 </component>
-                <div v-else>
+                <div v-else-if="data.value.type !== null">
                     Field Type {{data.value.type}} not supported
+                </div>
+                <div v-else>
+                    N/A
                 </div>
             </template>
         </b-table>
