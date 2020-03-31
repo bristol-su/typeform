@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- Binding the activity instance and module instance for an incoming webhook
+- Only process an incoming webhook if the module instance ID matches
+
 ## [1.1.2] - (31/03/2020)
 
 ### Fixed
