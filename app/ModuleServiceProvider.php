@@ -13,9 +13,11 @@ use BristolSU\Module\Typeform\Models\Answer;
 use BristolSU\Module\Typeform\Models\Response;
 use BristolSU\Module\Typeform\Typeform\Contracts\ResponseHandler;
 use BristolSU\Module\Typeform\Typeform\WebhookHandler;
+use BristolSU\Support\Activity\Middleware\InjectActivity;
 use BristolSU\Support\Completion\Contracts\CompletionConditionManager;
 use BristolSU\Support\Connection\Contracts\ServiceRequest;
 use BristolSU\Support\Module\ModuleServiceProvider as ServiceProvider;
+use BristolSU\Support\ModuleInstance\Middleware\InjectModuleInstance;
 use FormSchema\Generator\Field;
 use FormSchema\Generator\Form as FormGenerator;
 use FormSchema\Generator\Group;
@@ -116,7 +118,7 @@ class ModuleServiceProvider extends ServiceProvider
         });
         
         Route::prefix('/api/a/{activity_slug}/{module_instance_slug}/typeform')
-            ->middleware(['api'])
+            ->middleware(['api', InjectModuleInstance::class, InjectActivity::class])
             ->namespace($this->namespace())
             ->group($this->baseDirectory() . '/routes/admin/webhook.php');
         
