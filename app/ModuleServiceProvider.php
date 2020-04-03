@@ -31,7 +31,12 @@ class ModuleServiceProvider extends ServiceProvider
     protected $permissions = [
         'view-form' => [
             'name' => 'View Form',
-            'description' => 'View the form.',
+            'description' => 'View and submit the form.',
+            'admin' => false
+        ],
+        'view-responses' => [
+            'name' => 'View Responses',
+            'description' => 'View the responses for the form.',
             'admin' => false
         ],
         'admin.view-form' => [
