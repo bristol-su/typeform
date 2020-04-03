@@ -9,16 +9,8 @@ class ParticipantPageControllerTest extends TestCase
 {
     
     /** @test */
-    public function index_returns_a_403_if_the_permission_is_not_owned(){
-        $this->revokePermissionTo('typeform.view-form');
-        
-        $response = $this->get($this->userUrl('/'));
-        $response->assertStatus(403);
-    }
-
-    /** @test */
     public function index_returns_a_200_if_the_permission_is_owned(){
-        $this->givePermissionTo('typeform.view-form');
+        $this->bypassAuthorization();
 
         $response = $this->get($this->userUrl('/'));
         $response->assertStatus(200);
@@ -33,8 +25,8 @@ class ParticipantPageControllerTest extends TestCase
     }
 
     /** @test */
-    public function index_passes_the_responses_to_the_view(){
-        $this->bypassAuthorization();
+    public function index_passes_the_responses_to_the_view_if_the_permission_is_owned(){
+        $this->givePermissionTo('typeform.view-responses');
 
         $responses = factory(Response::class, 5)->create(['module_instance_id' => $this->getModuleInstance()->id(), 'activity_instance_id' => $this->getActivityInstance()->id]);
         factory(Response::class, 4)->create(['module_instance_id' => $this->getModuleInstance()->id()]);
@@ -47,6 +39,20 @@ class ParticipantPageControllerTest extends TestCase
         foreach($responses as $formResponse) {
             $this->assertModelEquals($formResponse, $viewData->shift());
         }
+    }
+
+    /** @test */
+    public function index_passes_no_responses_to_the_view_if_the_permission_is_not_owned(){
+        $this->revokePermissionTo('typeform.view-responses');
+
+        $responses = factory(Response::class, 5)->create(['module_instance_id' => $this->getModuleInstance()->id(), 'activity_instance_id' => $this->getActivityInstance()->id]);
+        factory(Response::class, 4)->create(['module_instance_id' => $this->getModuleInstance()->id()]);
+        factory(Response::class, 4)->create();
+
+        $response = $this->get($this->userUrl('/'));
+        $response->assertViewHas('responses');
+        $viewData = $response->viewData('responses');
+        $this->assertCount(0, $viewData);
     }
 
 }
