@@ -26,6 +26,8 @@
                                     mode="{{settings('embed_type')}}">
                             </typeform-embed-popup>
                         @endif
+                    @elseif(!\BristolSU\Support\Permissions\Facade\PermissionTester::evaluate('typeform.view-form'))
+                        You don't have permission to submit the form
                     @else
                         No form found
                     @endif
