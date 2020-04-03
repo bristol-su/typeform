@@ -79,7 +79,11 @@ class Client
                 'page_size' => 1000
             ]
         ]);
-        return json_decode((string) $response->getBody(), true)['items'];
+        $responses = json_decode((string) $response->getBody(), true);
+        if($responses && array_key_exists('items', $responses)) {
+            return $responses['items'];
+        }
+        return [];
 
     }
 
