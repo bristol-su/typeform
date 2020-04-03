@@ -90,7 +90,11 @@ class Client
     public function allFields(string $formId)
     {
         $response = $this->connector->request('GET', 'https://api.typeform.com/forms/'.  $formId);
-        return json_decode((string) $response->getBody(), true)['fields'];
+        $responses = json_decode((string) $response->getBody(), true);
+        if($responses && array_key_exists('fields', $responses)) {
+            return $responses['fields'];
+        }
+        return [];
     }
 
     public function downloadFileFromAnswer(Answer $answer, $file)

@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.6] - (03/04/2020)
+
+### Fixed
+- Fixed handling error if no fields given by typeform
+
 ## [1.1.5] - (03/04/2020)
 
 ### Fixed
@@ -56,7 +61,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Initial Release
 
-[Unreleased]: https://github.com/bristol-su/typeform/compare/v1.1.5...HEAD
+[Unreleased]: https://github.com/bristol-su/typeform/compare/v1.1.6...HEAD
+[1.1.6]: https://github.com/bristol-su/typeform/compare/v1.1.5...v1.1.6
 [1.1.5]: https://github.com/bristol-su/typeform/compare/v1.1.4...v1.1.5
 [1.1.4]: https://github.com/bristol-su/typeform/compare/v1.1.3...v1.1.4
 [1.1.3]: https://github.com/bristol-su/typeform/compare/v1.1.2...v1.1.3
