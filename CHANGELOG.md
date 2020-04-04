@@ -7,7 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [1.1.7]
+## [1.1.8] - (04/04/2020)
+
+### Changed
+- Updated npm dependencies
+
+## [1.1.7] - (03/04/2020)
 
 ### Added
 - View responses permission to just view responses
