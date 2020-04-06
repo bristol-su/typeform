@@ -84,7 +84,6 @@ class Client
             return $responses['items'];
         }
         return [];
-
     }
 
     public function allFields(string $formId)

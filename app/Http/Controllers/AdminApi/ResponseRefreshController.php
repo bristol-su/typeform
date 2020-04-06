@@ -14,7 +14,7 @@ class ResponseRefreshController extends Controller
     {
         $this->authorize('admin.refresh-form-responses');
         
-        dispatch(new UpdateResponses($moduleInstance));
+        dispatch_now(new UpdateResponses($moduleInstance));
     }
     
 }
