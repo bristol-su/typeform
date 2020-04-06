@@ -39,7 +39,7 @@ class Webhook extends Model
      */
     public static function generatedTag(ModuleInstance $moduleInstance)
     {
-        return $moduleInstance->activity->slug . '-' . $moduleInstance->slug . '-' . $moduleInstance->setting('form_id');
+        return app()->environment() . '-' . $moduleInstance->activity->slug . '-' . $moduleInstance->slug . '-' . $moduleInstance->setting('form_id');
     }
 
     /**
