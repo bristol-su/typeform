@@ -13,6 +13,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class UpdateResponses implements ShouldQueue
 {
@@ -53,10 +54,12 @@ class UpdateResponses implements ShouldQueue
                 && isset($response['hidden']['portal_user_id'])
             ) {
                 return Response::where('id', $response['token'])->count() === 0
-                    && $response['hidden']['module_instance'] == $this->moduleInstance->id();
+                    && (int) $response['hidden']['module_instance'] === $this->moduleInstance->id();
             }
             return false;
         })->values();
+        
+        Log::info(sprintf('Updating %d responses', $responses->count()));
         
         $fields = $client->allFields($formId);
         

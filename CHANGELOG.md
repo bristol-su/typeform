@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Cast the module instance, activity instance and user ID to an integer in payloads
+- Rebind the module instance in the UpdateResposes job handle method (if necessary) not __construct
 
 ### Changed
 - Webhook tag now includes the environment
