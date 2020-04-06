@@ -20,7 +20,7 @@ class WebhookPayload extends Payload
 
     public function submitterId()
     {
-        return $this->property('form_response.hidden.portal_user_id');
+        return (int) $this->property('form_response.hidden.portal_user_id');
     }
 
     public function submittedAt()
@@ -30,12 +30,12 @@ class WebhookPayload extends Payload
 
     public function activityInstanceId()
     {
-        return $this->property('form_response.hidden.activity_instance');
+        return (int) $this->property('form_response.hidden.activity_instance');
     }
 
     public function moduleInstanceId()
     {
-        return $this->property('form_response.hidden.module_instance');
+        return (int) $this->property('form_response.hidden.module_instance');
     }
 
     public function fields()
