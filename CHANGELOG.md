@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.11] - (06/04/2020)
+
+### Fixed
+- Cast the module instance, activity instance and user ID to an integer in payloads
+
+### Changed
+- Webhook tag now includes the environment
+
 ## [1.1.10] - (06/04/2020)
 
 ### Fixed
@@ -84,7 +92,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Initial Release
 
-[Unreleased]: https://github.com/bristol-su/typeform/compare/v1.1.9...HEAD
+[Unreleased]: https://github.com/bristol-su/typeform/compare/v1.1.11...HEAD
+[1.1.11]: https://github.com/bristol-su/typeform/compare/v1.1.10...v1.1.11
+[1.1.10]: https://github.com/bristol-su/typeform/compare/v1.1.9...v1.1.10
 [1.1.9]: https://github.com/bristol-su/typeform/compare/v1.1.8...v1.1.9
 [1.1.8]: https://github.com/bristol-su/typeform/compare/v1.1.7...v1.1.8
 [1.1.7]: https://github.com/bristol-su/typeform/compare/v1.1.6...v1.1.7

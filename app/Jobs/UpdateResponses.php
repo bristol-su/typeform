@@ -27,13 +27,13 @@ class UpdateResponses implements ShouldQueue
     public function __construct(ModuleInstance $moduleInstance)
     {
         $this->moduleInstance = $moduleInstance;
-        if(!app(ModuleInstance::class)->exists) {
-            app()->instance(ModuleInstance::class, $moduleInstance);
-        }
     }
 
     public function handle()
     {
+        if(!app(ModuleInstance::class)->exists) {
+            app()->instance(ModuleInstance::class, $this->moduleInstance);
+        }
         try {
             $client = $this->resolveClient();
         } catch (NoConnectionAvailable $e) {
