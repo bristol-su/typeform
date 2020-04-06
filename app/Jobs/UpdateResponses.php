@@ -27,6 +27,9 @@ class UpdateResponses implements ShouldQueue
     public function __construct(ModuleInstance $moduleInstance)
     {
         $this->moduleInstance = $moduleInstance;
+        if(!app(ModuleInstance::class)->exists) {
+            app()->instance(ModuleInstance::class, $moduleInstance);
+        }
     }
 
     public function handle()

@@ -7,7 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.10] - (06/04/2020)
+
+### Fixed
+- Bind module instance in job to ensure action can be dispatched
+
 ## [1.1.9] - (06/04/2020)
+
+### Added
 - Added comments on responses
 
 ## [1.1.8] - (04/04/2020)
