@@ -47,6 +47,7 @@ class UpdateResponses implements ShouldQueue
         }
         
         $responses = collect($client->allResponses($formId))->filter(function ($response) {
+            Log::info(json_encode($response));
             if (
                 isset($response['hidden']) 
                 && isset($response['hidden']['module_instance']) 
