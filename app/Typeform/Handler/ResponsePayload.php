@@ -30,7 +30,7 @@ class ResponsePayload extends Payload
 
     public function submitterId()
     {
-        return $this->property('hidden.portal_user_id');
+        return (int) $this->property('hidden.portal_user_id');
     }
 
     public function submittedAt()
@@ -40,7 +40,7 @@ class ResponsePayload extends Payload
 
     public function activityInstanceId()
     {
-        return $this->property('hidden.activity_instance');
+        return (int) $this->property('hidden.activity_instance');
     }
 
     public function fields()
@@ -55,6 +55,6 @@ class ResponsePayload extends Payload
 
     public function moduleInstanceId()
     {
-        return $this->property('hidden.module_instance');
+        return (int) $this->property('hidden.module_instance');
     }
 }
