@@ -15,6 +15,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::namespace('AdminApi')->group(function() {
     Route::post('response/refresh', 'ResponseRefreshController@refresh');
-    Route::post('response/{typeform_response_id}/approve', 'StatusController@approve');
-    Route::post('response/{typeform_response_id}/reject', 'StatusController@reject');
+    Route::prefix('response/{typeform_response_id}')->group(function() {
+        Route::post('approve', 'StatusController@approve');
+        Route::post('reject', 'StatusController@reject');
+        Route::apiResource('comment', 'CommentController')->only(['index', 'store'])->parameters(['comment' => 'typeform_comment']);
+    });
+    Route::apiResource('comment', 'CommentController')->only(['update', 'destroy'])->parameters(['comment' => 'typeform_comment']);
+    
 });

@@ -14,7 +14,7 @@ class AdminPageController extends Controller
     {
         $this->authorize('admin.view-form');
         
-        $responses = Response::forModuleInstance()->with(['answers', 'answers.field'])->get();
+        $responses = Response::forModuleInstance()->with(['answers', 'answers.field', 'comments'])->get();
 
         return view('typeform::admin')->with('responses', $responses);
     }

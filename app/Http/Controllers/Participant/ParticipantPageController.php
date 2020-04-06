@@ -14,7 +14,7 @@ class ParticipantPageController extends Controller
     public function index(Activity $activity, ModuleInstance $moduleInstance, PermissionTester $permissionTester)
     {
         $responses = ($permissionTester->evaluate('typeform.view-responses') ?
-            Response::forResource()->with(['answers', 'answers.field'])->get() : collect());
+            Response::forResource()->with(['answers', 'answers.field', 'comments'])->get() : collect());
 
         return view('typeform::participant')->with('responses', $responses);
     }

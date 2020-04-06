@@ -27,6 +27,14 @@
                     N/A
                 </div>
             </template>
+            <template v-slot:cell(comments)="data">
+                <comment-button v-if="canSeeComments"
+                          :can-add-comments="canAddComments"
+                          :can-delete-comments="canDeleteComments"
+                          :can-update-comments="canUpdateComments"
+                          :response-id="data.item.responseId"
+                          :comment-count="data.item.commentcount"></comment-button>
+            </template>
         </b-table>
     </div>
 </template>
@@ -43,6 +51,8 @@
     import CellUrl from './CellStyles/CellUrl';
     import CellEmail from './CellStyles/CellEmail';
     import CellChoices from './CellStyles/CellChoices';
+    import Comments from './Comments';
+    import CommentButton from './CommentButton';
     
     export default {
         name: "Responses",
@@ -77,10 +87,28 @@
             showActivityInstanceBy: {
                 required: false,
                 default: false
+            },
+            canAddComments: {
+                required: false,
+                default: false
+            },
+            canSeeComments: {
+                required: false,
+                default: false                
+            },
+            canDeleteComments: {
+                required: false,
+                default: false
+            },
+            canUpdateComments: {
+                required: false,
+                default: false
             }
         },
 
         components: {
+            CommentButton,
+            Comments,
             Approval,
             'cell-boolean': CellBoolean,
             'cell-choice': CellChoice,
@@ -146,6 +174,9 @@
                 if(this.allowApproval) {
                     fields.push({key: 'approved', label: 'Approval'})
                 }
+                if(this.canSeeComments) {
+                    fields.push({key: 'comments', label: 'Comments'})
+                }
                 return fields;
             },
             
@@ -160,6 +191,7 @@
                         };
                     });
                     row['approved'] = response.approved;
+                    row['commentcount'] = response.comments.length;
                     row['responseId'] = response.id;
                     if(response.activity_instance.resource_type === 'user') {
                         row['identifier'] = response.activity_instance.participant.data.first_name + ' ' + response.activity_instance.participant.data.last_name;

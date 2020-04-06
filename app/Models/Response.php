@@ -59,5 +59,10 @@ class Response extends Model
     {
         return $this->activityInstance();
     }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
     
 }

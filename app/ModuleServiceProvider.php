@@ -8,11 +8,12 @@ use BristolSU\Module\Typeform\CompletionConditions\NumberOfResponsesApproved;
 use BristolSU\Module\Typeform\CompletionConditions\NumberOfResponsesRejected;
 use BristolSU\Module\Typeform\CompletionConditions\NumberOfResponsesSubmitted;
 use BristolSU\Module\Typeform\Events\NewResponse;
-use BristolSU\Module\Typeform\Http\Controllers\Webhook\IncomingWebhookController;
 use BristolSU\Module\Typeform\Models\Answer;
 use BristolSU\Module\Typeform\Models\Response;
-use BristolSU\Module\Typeform\Typeform\Contracts\ResponseHandler;
-use BristolSU\Module\Typeform\Typeform\WebhookHandler;
+use BristolSU\Module\Typeform\Events\CommentCreated;
+use BristolSU\Module\Typeform\Events\CommentDeleted;
+use BristolSU\Module\Typeform\Events\CommentUpdated;
+use BristolSU\Module\Typeform\Models\Comment;
 use BristolSU\Support\Activity\Middleware\InjectActivity;
 use BristolSU\Support\Completion\Contracts\CompletionConditionManager;
 use BristolSU\Support\Connection\Contracts\ServiceRequest;
@@ -58,13 +59,67 @@ class ModuleServiceProvider extends ServiceProvider
             'name' => 'Approve Responses',
             'description' => 'Can approve responses',
             'admin' => true
-        ]
+        ],
+        'admin.comment.index' => [
+            'name' => 'See comments',
+            'description' => 'Allow the admin to see comments',
+            'admin' => true
+        ],
+        'admin.comment.store' => [
+            'name' => 'Comment',
+            'description' => 'Allow the admin to comment on responses',
+            'admin' => true
+        ],
+        'admin.comment.destroy' => [
+            'name' => 'Delete a Comment',
+            'description' => 'Allow the admin to delete a comment.',
+            'admin' => true
+        ],
+        'admin.comment.update' => [
+            'name' => 'Update a Comment',
+            'description' => 'Allow the admin to update a comment.',
+            'admin' => true
+        ],
+
+        // Comments
+        'comment.index' => [
+            'name' => 'See comments',
+            'description' => 'Allow the user to see comments',
+            'admin' => false
+        ],
+        'comment.store' => [
+            'name' => 'Comment',
+            'description' => 'Allow the user to comment on responses',
+            'admin' => false
+        ],
+        'comment.destroy' => [
+            'name' => 'Delete a Comment',
+            'description' => 'Allow the user to delete a comment.',
+            'admin' => false
+        ],
+        'comment.update' => [
+            'name' => 'Update a Comment',
+            'description' => 'Allow the user to update a comment.',
+            'admin' => false
+        ],
     ];
 
     protected $events = [
         NewResponse::class => [
             'name' => 'New Response',
             'description' => 'When a new response is submitted'
+        ],
+        CommentCreated::class => [
+            'name' => 'Comment Left',
+            'description' => 'When a comment has been left'
+        ],
+        CommentDeleted::class => [
+            'name' => 'Comment Deleted',
+            'description' => 'When a comment has been deleted'
+        ],
+        CommentUpdated::class => [
+            'name' => 'Comment Updated',
+            'description' => 'When a comment has been updated'
         ]
     ];
     
@@ -120,6 +175,14 @@ class ModuleServiceProvider extends ServiceProvider
                 return $answer;
             }
             throw (new ModelNotFoundException)->setModel(Answer::class, $id);
+        });
+
+        Route::bind('typeform_comment', function($id) {
+            $comment = Comment::findOrFail($id);
+            if(request()->route('module_instance_slug') && (int) $comment->response->module_instance_id === request()->route('module_instance_slug')->id()) {
+                return $comment;
+            }
+            throw (new ModelNotFoundException)->setModel(Comment::class);
         });
         
         Route::prefix('/api/a/{activity_slug}/{module_instance_slug}/typeform')

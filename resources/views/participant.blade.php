@@ -40,6 +40,10 @@
                         <responses
                                 :responses="{{$responses}}"
                                 :show-approved-status="{{(settings('approval', false)?'true':'false')}}"
+                                :can-add-comments="{{(\BristolSU\Support\Permissions\Facade\PermissionTester::evaluate('typeform.comment.store')?'true':'false')}}"
+                                :can-see-comments="{{(\BristolSU\Support\Permissions\Facade\PermissionTester::evaluate('typeform.comment.index')?'true':'false')}}"
+                                :can-delete-comments="{{(\BristolSU\Support\Permissions\Facade\PermissionTester::evaluate('typeform.comment.destroy')?'true':'false')}}"
+                                :can-update-comments="{{(\BristolSU\Support\Permissions\Facade\PermissionTester::evaluate('typeform.comment.update')?'true':'false')}}"
                                 query-string="{{url()->getAuthQueryString()}}"></responses>
                     @endif
                 </div>
