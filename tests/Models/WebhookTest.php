@@ -42,7 +42,7 @@ class WebhookTest extends TestCase
             'value' => 'abc123'
         ]);
         
-        $this->assertEquals('ActSlug-ModInstSlug-abc123', Webhook::generatedTag($moduleInstance));
+        $this->assertEquals('testing-ActSlug-ModInstSlug-abc123', Webhook::generatedTag($moduleInstance));
     }
     
     /** @test */
@@ -77,9 +77,9 @@ class WebhookTest extends TestCase
         $moduleInstance2 = factory(ModuleInstance::class)->create(['activity_id' => $activity->id, 'slug' => 'M2']);
         $moduleInstance3 = factory(ModuleInstance::class)->create(['activity_id' => $activity->id, 'slug' => 'M3']);
 
-        $webhook1 = factory(Webhook::class)->create(['module_instance_id' => $moduleInstance1->id(), 'form_id' => 'abc123', 'tag' => 'A-M1-abc123']);
-        $webhook2 = factory(Webhook::class)->create(['module_instance_id' => $moduleInstance2->id(), 'form_id' => 'abc123', 'tag' => 'A-M2-abc123']);
-        $webhook3 = factory(Webhook::class)->create(['module_instance_id' => $moduleInstance3->id(), 'form_id' => '123abc', 'tag' => 'A-M3-123abc']);
+        $webhook1 = factory(Webhook::class)->create(['module_instance_id' => $moduleInstance1->id(), 'form_id' => 'abc123', 'tag' => 'testing-A-M1-abc123']);
+        $webhook2 = factory(Webhook::class)->create(['module_instance_id' => $moduleInstance2->id(), 'form_id' => 'abc123', 'tag' => 'testing-A-M2-abc123']);
+        $webhook3 = factory(Webhook::class)->create(['module_instance_id' => $moduleInstance3->id(), 'form_id' => '123abc', 'tag' => 'testing-A-M3-123abc']);
         
         ModuleInstanceSetting::create(['module_instance_id' => $moduleInstance1->id, 'key' => 'form_id', 'value' => 'abc123']);
         ModuleInstanceSetting::create(['module_instance_id' => $moduleInstance2->id, 'key' => 'form_id', 'value' => 'abc123']);
