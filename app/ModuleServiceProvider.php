@@ -8,6 +8,8 @@ use BristolSU\Module\Typeform\CompletionConditions\NumberOfResponsesApproved;
 use BristolSU\Module\Typeform\CompletionConditions\NumberOfResponsesRejected;
 use BristolSU\Module\Typeform\CompletionConditions\NumberOfResponsesSubmitted;
 use BristolSU\Module\Typeform\Events\NewResponse;
+use BristolSU\Module\Typeform\Events\ResponseApproved;
+use BristolSU\Module\Typeform\Events\ResponseRejected;
 use BristolSU\Module\Typeform\Models\Answer;
 use BristolSU\Module\Typeform\Models\Response;
 use BristolSU\Module\Typeform\Events\CommentCreated;
@@ -120,7 +122,15 @@ class ModuleServiceProvider extends ServiceProvider
         CommentUpdated::class => [
             'name' => 'Comment Updated',
             'description' => 'When a comment has been updated'
-        ]
+        ],
+        ResponseApproved::class => [
+            'name' => 'Response Approved',
+            'description' => 'When a response has been approved'
+        ],
+        ResponseRejected::class => [
+            'name' => 'Response Rejected',
+            'description' => 'When a response has been rejected'
+        ],
     ];
     
     protected $commands = [

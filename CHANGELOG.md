@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.12] - (07/04/2020)
+
+### Added
+- Response Approved and Rejected events
+
 ## [1.1.11] - (06/04/2020)
 
 ### Fixed
@@ -93,7 +98,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Initial Release
 
-[Unreleased]: https://github.com/bristol-su/typeform/compare/v1.1.11...HEAD
+[Unreleased]: https://github.com/bristol-su/typeform/compare/v1.1.12...HEAD
+[1.1.12]: https://github.com/bristol-su/typeform/compare/v1.1.11...v1.1.12
 [1.1.11]: https://github.com/bristol-su/typeform/compare/v1.1.10...v1.1.11
 [1.1.10]: https://github.com/bristol-su/typeform/compare/v1.1.9...v1.1.10
 [1.1.9]: https://github.com/bristol-su/typeform/compare/v1.1.8...v1.1.9
