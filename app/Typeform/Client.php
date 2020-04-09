@@ -30,29 +30,52 @@ class Client
                 return false;
             }
             throw $e;
-        } 
+        } catch (ServerException $e) {
+            if($e->getCode() !== 504 && $e->getCode() !== 502) {
+                throw $e;
+            }
+        }
     }
 
     public function webhookEnabled(Webhook $webhook)
     {
-        $response = $this->connector->request('GET', 'https://api.typeform.com/forms/'. $webhook->form_id .'/webhooks/' . $webhook->tag);
-        $response = json_decode((string) $response->getBody(), true);
-        return (isset($response['enabled'])?$response['enabled']:false);
+        try {
+            $response = $this->connector->request('GET', 'https://api.typeform.com/forms/'. $webhook->form_id .'/webhooks/' . $webhook->tag);
+            $response = json_decode((string) $response->getBody(), true);
+            return (isset($response['enabled'])?$response['enabled']:false);    
+        } catch (ServerException $e) {
+            if($e->getCode() !== 504 && $e->getCode() !== 502) {
+                throw $e;
+            }
+        }
+        
     }
 
     public function webhookCreate(Webhook $webhook)
     {
-        $this->connector->request('PUT', 'https://api.typeform.com/forms/'. $webhook->form_id .'/webhooks/' . $webhook->tag, [
-            'json' => [
-                'url' => $webhook->url(),
-                'enabled' => true
-            ]
-        ]);
+        try {
+            $this->connector->request('PUT', 'https://api.typeform.com/forms/'. $webhook->form_id .'/webhooks/' . $webhook->tag, [
+                'json' => [
+                    'url' => $webhook->url(),
+                    'enabled' => true
+                ]
+            ]);
+        } catch (ServerException $e) {
+            if($e->getCode() !== 504 && $e->getCode() !== 502) {
+                throw $e;
+            }
+        }
     }
 
     public function webhookDelete(Webhook $webhook)
     {
-        $this->connector->request('DELETE', 'https://api.typeform.com/forms/'. $webhook->form_id .'/webhooks/' . $webhook->tag);
+        try {
+            $this->connector->request('DELETE', 'https://api.typeform.com/forms/'. $webhook->form_id .'/webhooks/' . $webhook->tag);
+        } catch (ServerException $e) {
+            if($e->getCode() !== 504 && $e->getCode() !== 502) {
+                throw $e;
+            }
+        }
     }
 
     public function webhookEnable(Webhook $webhook)
@@ -72,20 +95,32 @@ class Client
 
     public function webhookDisable(Webhook $webhook)
     {
-        $this->connector->request('PUT', 'https://api.typeform.com/forms/'. $webhook->form_id .'/webhooks/' . $webhook->tag, [
-            'json' => [
-                'enabled' => false
-            ]
-        ]);
+        try {
+            $this->connector->request('PUT', 'https://api.typeform.com/forms/'. $webhook->form_id .'/webhooks/' . $webhook->tag, [
+                'json' => [
+                    'enabled' => false
+                ]
+            ]);
+        } catch (ServerException $e) {
+            if($e->getCode() !== 504 && $e->getCode() !== 502) {
+                throw $e;
+            }
+        }
     }
 
     public function allResponses(string $formId)
     {
-        $response = $this->connector->request('GET', 'https://api.typeform.com/forms/'.  $formId .'/responses', [
-            'query' => [
-                'page_size' => 1000
-            ]
-        ]);
+        try {
+            $response = $this->connector->request('GET', 'https://api.typeform.com/forms/'.  $formId .'/responses', [
+                'query' => [
+                    'page_size' => 1000
+                ]
+            ]);
+        } catch (ServerException $e) {
+            if($e->getCode() !== 504 && $e->getCode() !== 502) {
+                throw $e;
+            }
+        }
         $responses = json_decode((string) $response->getBody(), true);
         if($responses && array_key_exists('items', $responses)) {
             return $responses['items'];
@@ -95,7 +130,13 @@ class Client
 
     public function allFields(string $formId)
     {
-        $response = $this->connector->request('GET', 'https://api.typeform.com/forms/'.  $formId);
+        try {
+            $response = $this->connector->request('GET', 'https://api.typeform.com/forms/'.  $formId);
+        } catch (ServerException $e) {
+            if($e->getCode() !== 504 && $e->getCode() !== 502) {
+                throw $e;
+            }
+        }
         $responses = json_decode((string) $response->getBody(), true);
         if($responses && array_key_exists('fields', $responses)) {
             return $responses['fields'];
