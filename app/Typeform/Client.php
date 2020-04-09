@@ -56,11 +56,17 @@ class Client
 
     public function webhookEnable(Webhook $webhook)
     {
-        $this->connector->request('PUT', 'https://api.typeform.com/forms/'. $webhook->form_id .'/webhooks/' . $webhook->tag, [
-            'json' => [
-                'enabled' => true
-            ]
-        ]);
+        try {
+            $this->connector->request('PUT', 'https://api.typeform.com/forms/'. $webhook->form_id .'/webhooks/' . $webhook->tag, [
+                'json' => [
+                    'enabled' => true
+                ]
+            ]);
+        } catch (ClientException $e) {
+            if($e->getCode() !== 504 && $e->getCode() !== 502) {
+                throw $e;
+            }
+        }
     }
 
     public function webhookDisable(Webhook $webhook)
