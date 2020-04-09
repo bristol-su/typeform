@@ -139,7 +139,7 @@ class ModuleServiceProvider extends ServiceProvider
     ];
     
     protected $scheduledCommands = [
-        SyncWebhookStatus::class => '* * * * *',
+        SyncWebhookStatus::class => '*/4 * * * *',
         CheckResponses::class => '*/5 * * * *'
     ];
     

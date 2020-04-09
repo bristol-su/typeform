@@ -10,6 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.1.13] - (09/04/2020)
 
 ### Changed
+- Reduce frequency of webhook syncing
+
+## [1.1.13] - (09/04/2020)
+
+### Changed
 - Suppress 502 and 504 responses from Typeform
 
 ## [1.1.12] - (07/04/2020)
@@ -103,7 +108,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Initial Release
 
-[Unreleased]: https://github.com/bristol-su/typeform/compare/v1.1.13...HEAD
+[Unreleased]: https://github.com/bristol-su/typeform/compare/v1.1.14...HEAD
+[1.1.14]: https://github.com/bristol-su/typeform/compare/v1.1.13...v1.1.14
 [1.1.13]: https://github.com/bristol-su/typeform/compare/v1.1.12...v1.1.13
 [1.1.12]: https://github.com/bristol-su/typeform/compare/v1.1.11...v1.1.12
 [1.1.11]: https://github.com/bristol-su/typeform/compare/v1.1.10...v1.1.11
