@@ -6,6 +6,7 @@ use BristolSU\Module\Typeform\Models\Answer;
 use BristolSU\Module\Typeform\Models\Webhook;
 use BristolSU\Support\Connection\Contracts\Connector;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ServerException;
 
 class Client
 {
@@ -62,7 +63,7 @@ class Client
                     'enabled' => true
                 ]
             ]);
-        } catch (ClientException $e) {
+        } catch (ServerException $e) {
             if($e->getCode() !== 504 && $e->getCode() !== 502) {
                 throw $e;
             }
