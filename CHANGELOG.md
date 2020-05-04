@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.16] - (04/05/2020)
+
+### Added
+- Responses table now shows date time submitted at
+
 ## [1.1.15] - (04/05/2020)
 
 ### Changed
@@ -113,7 +118,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Initial Release
 
-[Unreleased]: https://github.com/bristol-su/typeform/compare/v1.1.15...HEAD
+[Unreleased]: https://github.com/bristol-su/typeform/compare/v1.1.16...HEAD
+[1.1.16]: https://github.com/bristol-su/typeform/compare/v1.1.15...v1.1.16
 [1.1.15]: https://github.com/bristol-su/typeform/compare/v1.1.14...v1.1.15
 [1.1.14]: https://github.com/bristol-su/typeform/compare/v1.1.13...v1.1.14
 [1.1.13]: https://github.com/bristol-su/typeform/compare/v1.1.12...v1.1.13
