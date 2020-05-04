@@ -171,6 +171,7 @@
                     }
                     return false;
                 }));
+                fields.push({key: 'submitted_at', label: 'Submitted At'})
                 if(this.allowApproval) {
                     fields.push({key: 'approved', label: 'Approval'})
                 }
@@ -190,6 +191,7 @@
                             type: answer.type
                         };
                     });
+                    row['submitted_at'] = response.submitted_at;
                     row['approved'] = response.approved;
                     row['commentcount'] = response.comments.length;
                     row['responseId'] = response.id;
