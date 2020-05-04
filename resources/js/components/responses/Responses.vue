@@ -13,6 +13,9 @@
             <template v-slot:cell(activityInstanceBy)="data">
                 <span>{{data.item.identifier}}</span>
             </template>
+            <template v-slot:cell(submittedAt)="data">
+                <span>{{data.item.submitted_at}}</span>
+            </template>
             <template v-slot:cell()="data">
                 <div v-if="data.value.type === 'file_url'">
                     <cell-file_url :value="data.value.id" :query-string="queryString"></cell-file_url>
@@ -171,7 +174,7 @@
                     }
                     return false;
                 }));
-                fields.push({key: 'submitted_at', label: 'Submitted At'})
+                fields.push({key: 'submittedAt', label: 'Submitted At'})
                 if(this.allowApproval) {
                     fields.push({key: 'approved', label: 'Approval'})
                 }
