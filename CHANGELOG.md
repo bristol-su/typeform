@@ -114,7 +114,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Initial Release
 
 [Unreleased]: https://github.com/bristol-su/typeform/compare/v1.1.15...HEAD
-[1.1.14]: https://github.com/bristol-su/typeform/compare/v1.1.14...v1.1.15
+[1.1.15]: https://github.com/bristol-su/typeform/compare/v1.1.14...v1.1.15
 [1.1.14]: https://github.com/bristol-su/typeform/compare/v1.1.13...v1.1.14
 [1.1.13]: https://github.com/bristol-su/typeform/compare/v1.1.12...v1.1.13
 [1.1.12]: https://github.com/bristol-su/typeform/compare/v1.1.11...v1.1.12
