@@ -185,7 +185,7 @@
                     }
                     return false;
                 }));
-                fields.push({key: 'submittedAt ', label: 'Submitted At'})
+                fields.push({key: 'submittedAt', label: 'Submitted At'})
                 if(this.allowApproval) {
                     fields.push({key: 'approved', label: 'Approval'})
                 }
