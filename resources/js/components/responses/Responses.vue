@@ -3,7 +3,17 @@
         <div style="text-align: right;" v-if="canRefreshResponses">
             <b-button variant="outline-secondary" :disabled="refreshingResponses" @click="refreshResponses" size="sm"><i class="fa fa-refresh" /> Refresh</b-button>
         </div>
-        <b-table :fields="columns" :items="rows">
+        <b-table :fields="columns" :items="filteredRows">
+            <template v-slot:head(approved)="data">
+                Approval
+                <b-form-select v-model="approvalFiltering">
+                    <b-form-select-option :value="null">No Filtering</b-form-select-option>
+                    <b-form-select-option value="approved">Only Approved</b-form-select-option>
+                    <b-form-select-option value="rejected">Only Rejected</b-form-select-option>
+                    <b-form-select-option value="awaiting">Awaiting Approval</b-form-select-option>
+                </b-form-select>
+            </template>
+            
             <template v-slot:cell(approved)="data">
                 <approval :can-change="allowApproval" :response-id="data.item.responseId" :status="data.item.approved"></approval>
             </template>
@@ -127,7 +137,8 @@
         
         data() {
             return {
-                refreshingResponses: false
+                refreshingResponses: false,
+                approvalFiltering: null
             }
         },
 
@@ -174,7 +185,7 @@
                     }
                     return false;
                 }));
-                fields.push({key: 'submittedAt', label: 'Submitted At'})
+                fields.push({key: 'submittedAt ', label: 'Submitted At'})
                 if(this.allowApproval) {
                     fields.push({key: 'approved', label: 'Approval'})
                 }
@@ -209,6 +220,18 @@
                     }
                     row['user'] = response.submitted_by_user.data;
                     return row;
+                })
+            },
+            filteredRows() {
+                return this.rows.filter(row => {
+                    if(this.approvalFiltering === 'approved') {
+                        return row.approved === true;
+                    } if(this.approvalFiltering === 'rejected') {
+                        return row.approved === false;
+                    } if(this.approvalFiltering === 'awaiting') {
+                        return row.approved === null;
+                    }
+                    return true;
                 })
             }
         }

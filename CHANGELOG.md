@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.17] - (06/05/2020)
+
+### Added
+- Enable filtering on response status
+
 ## [1.1.16] - (04/05/2020)
 
 ### Added
@@ -118,7 +123,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Initial Release
 
-[Unreleased]: https://github.com/bristol-su/typeform/compare/v1.1.16...HEAD
+[Unreleased]: https://github.com/bristol-su/typeform/compare/v1.1.17...HEAD
+[1.1.17]: https://github.com/bristol-su/typeform/compare/v1.1.16...v1.1.17
 [1.1.16]: https://github.com/bristol-su/typeform/compare/v1.1.15...v1.1.16
 [1.1.15]: https://github.com/bristol-su/typeform/compare/v1.1.14...v1.1.15
 [1.1.14]: https://github.com/bristol-su/typeform/compare/v1.1.13...v1.1.14
