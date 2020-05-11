@@ -173,9 +173,9 @@
                 let fieldIds = [];
                 let fields = [];
                 if(this.showActivityInstanceBy) {
-                    fields.push({key: 'activityInstanceBy', label: 'Submission For'})
+                    fields.push({key: 'activityInstanceBy', label: 'Submission For', sortable: true})
                 }
-                fields.push({key: 'submittedBy', label: 'Submitted By'});
+                fields.push({key: 'submittedBy', label: 'Submitted By', sortable: true});
                 fields = fields.concat(this.fields.map(field => {
                     return {key: field.id, label: field.title};
                 }).filter(cols => {
@@ -185,7 +185,7 @@
                     }
                     return false;
                 }));
-                fields.push({key: 'submittedAt', label: 'Submitted At'})
+                fields.push({key: 'submittedAt', label: 'Submitted At', sortable: true})
                 if(this.allowApproval) {
                     fields.push({key: 'approved', label: 'Approval'})
                 }
