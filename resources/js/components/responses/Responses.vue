@@ -3,7 +3,7 @@
         <div style="text-align: right;" v-if="canRefreshResponses">
             <b-button variant="outline-secondary" :disabled="refreshingResponses" @click="refreshResponses" size="sm"><i class="fa fa-refresh" /> Refresh</b-button>
         </div>
-        <b-table :fields="columns" :items="filteredRows">
+        <b-table :fields="columns" :items="filteredRows" :sort-compare="sortCompare">
             <template v-slot:head(approved)="data">
                 Approval
                 <b-form-select v-model="approvalFiltering">
@@ -155,6 +155,19 @@
                     .then(response => this.$notify.success('Refresh the page to see any new changes'))
                     .catch(error => this.$notify.alert('Could not refresh responses: ' + error.message))
                     .then(() => this.refreshingResponses = false );
+            },
+            sortCompare(a, b, key) {
+                if(key === 'submittedAt') {
+                    console.log('Submitted At: ', a, b);
+                    let aDate = new Date(a);
+                    let bDate = new Date(b);
+                    return aDate < bDate ? -1 : aDate > bDate ? 1 : 0
+                }
+                if(key === 'activityInstanceBy') {
+                    console.log('Act Inst: ', a, b);
+                    return a.prototype.localeCompare(b)
+                }
+                return null;
             }
         },
 
@@ -175,7 +188,7 @@
                 if(this.showActivityInstanceBy) {
                     fields.push({key: 'activityInstanceBy', label: 'Submission For', sortable: true})
                 }
-                fields.push({key: 'submittedBy', label: 'Submitted By', sortable: true});
+                fields.push({key: 'submittedBy', label: 'Submitted By'});
                 fields = fields.concat(this.fields.map(field => {
                     return {key: field.id, label: field.title};
                 }).filter(cols => {
