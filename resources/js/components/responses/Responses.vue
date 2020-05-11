@@ -163,7 +163,7 @@
                     return aDate < bDate ? -1 : aDate > bDate ? 1 : 0
                 }
                 if(key === 'activityInstanceBy') {
-                    return (a.identifier).prototype.localeCompare(b.identifier)
+                    return (a.identifier).localeCompare(b.identifier)
                 }
                 return null;
             }
