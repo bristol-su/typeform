@@ -3,7 +3,7 @@
         <div style="text-align: right;" v-if="canRefreshResponses">
             <b-button variant="outline-secondary" :disabled="refreshingResponses" @click="refreshResponses" size="sm"><i class="fa fa-refresh" /> Refresh</b-button>
         </div>
-        <b-table :fields="columns" :items="filteredRows">
+        <b-table :fields="columns" :items="filteredRows" :sort-compare="sortCompare">
             <template v-slot:head(approved)="data">
                 Approval
                 <b-form-select v-model="approvalFiltering">
@@ -155,6 +155,17 @@
                     .then(response => this.$notify.success('Refresh the page to see any new changes'))
                     .catch(error => this.$notify.alert('Could not refresh responses: ' + error.message))
                     .then(() => this.refreshingResponses = false );
+            },
+            sortCompare(a, b, key) {
+                if(key === 'submittedAt') {
+                    let aDate = new Date(a.submitted_at);
+                    let bDate = new Date(b.submitted_at);
+                    return aDate < bDate ? -1 : aDate > bDate ? 1 : 0
+                }
+                if(key === 'activityInstanceBy') {
+                    return (a.identifier).localeCompare(b.identifier)
+                }
+                return null;
             }
         },
 
@@ -173,7 +184,7 @@
                 let fieldIds = [];
                 let fields = [];
                 if(this.showActivityInstanceBy) {
-                    fields.push({key: 'activityInstanceBy', label: 'Submission For'})
+                    fields.push({key: 'activityInstanceBy', label: 'Submission For', sortable: true})
                 }
                 fields.push({key: 'submittedBy', label: 'Submitted By'});
                 fields = fields.concat(this.fields.map(field => {
@@ -185,7 +196,7 @@
                     }
                     return false;
                 }));
-                fields.push({key: 'submittedAt', label: 'Submitted At'})
+                fields.push({key: 'submittedAt', label: 'Submitted At', sortable: true})
                 if(this.allowApproval) {
                     fields.push({key: 'approved', label: 'Approval'})
                 }
