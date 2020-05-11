@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.18] - (11/05/2020)
+
+### Changed
+- Enable sorting on participant name and submitted at time for responses
+
 ## [1.1.17] - (06/05/2020)
 
 ### Added
