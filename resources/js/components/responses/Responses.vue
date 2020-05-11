@@ -158,14 +158,12 @@
             },
             sortCompare(a, b, key) {
                 if(key === 'submittedAt') {
-                    console.log('Submitted At: ', a, b);
                     let aDate = new Date(a.submitted_at);
                     let bDate = new Date(b.submitted_at);
                     return aDate < bDate ? -1 : aDate > bDate ? 1 : 0
                 }
                 if(key === 'activityInstanceBy') {
-                    console.log('Act Inst: ', a, b);
-                    return a.identifier.prototype.localeCompare(b.identifier)
+                    return (a.identifier).prototype.localeCompare(b.identifier)
                 }
                 return null;
             }
