@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.19] - (09/08/2020)
+
+### Fixed
+- portal-8: Reduced the space used by the responses table
+
 ## [1.1.18] - (11/05/2020)
 
 ### Changed
@@ -128,7 +133,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Initial Release
 
-[Unreleased]: https://github.com/bristol-su/typeform/compare/v1.1.17...HEAD
+[Unreleased]: https://github.com/bristol-su/typeform/compare/v1.1.19...HEAD
+[1.1.19]: https://github.com/bristol-su/typeform/compare/v1.1.18...v1.1.19
+[1.1.18]: https://github.com/bristol-su/typeform/compare/v1.1.17...v1.1.18
 [1.1.17]: https://github.com/bristol-su/typeform/compare/v1.1.16...v1.1.17
 [1.1.16]: https://github.com/bristol-su/typeform/compare/v1.1.15...v1.1.16
 [1.1.15]: https://github.com/bristol-su/typeform/compare/v1.1.14...v1.1.15

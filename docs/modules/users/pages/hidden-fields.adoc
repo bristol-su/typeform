@@ -1,0 +1,27 @@
+= Hidden Fields
+
+Since the portal knows who a user is, we no longer need to ask users for
+their email, name etc in the typeform. Instead, the portal can pass this
+information through so it can still be collected.
+
+To do so, add the following hidden fields to typeform. The table below
+shows the hidden field to add, an example value for the field and a
+description. portal_user_id, activity_instance and module_instance are
+*REQUIRED* for any typeform to work with the portal.
+
+[width="100%",cols="34%,33%,33%",]
+|===
+|Hidden Field |Description |Example Value
+|portal_user_id * |ID of the user. Required! |1
+|portal_user_forename |Forename of the user |Toby
+|portal_user_surname |Surname of the user |Twigger
+|portal_user_email |Email of the user |tobytwigger@hotmail.co.uk
+|portal_user_preferred_name |Preferred name of the user |Toby Twigger
+|portal_group_name |Name of the group |CHAOS (Physics)
+|portal_group_id |ID of the group |2
+|portal_group_email |Email of the group |chaos@bristol.ac.uk
+|portal_role_name |Custom name for the role |Social Sec
+|activity_instance * |ID of the activity instance. Required! |1
+|module_instance * + |ID of the module instance. Required! |1
+|portal_role_position_name |Name of the position |Social Secretary
+|===
