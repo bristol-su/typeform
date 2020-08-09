@@ -13,7 +13,7 @@
                     <b-form-select-option value="awaiting">Awaiting Approval</b-form-select-option>
                 </b-form-select>
             </template>
-            
+
             <template v-slot:cell(approved)="data">
                 <approval :can-change="allowApproval" :response-id="data.item.responseId" :status="data.item.approved"></approval>
             </template>
@@ -29,6 +29,7 @@
             <template v-slot:cell()="data">
                 <div v-if="data.value.type === 'file_url'">
                     <cell-file_url :value="data.value.id" :query-string="queryString"></cell-file_url>
+
                 </div>
                 <component v-else-if="componentExists(data.value.type)" :is="componentName(data.value.type)"
                     :value="data.value.answer">
@@ -48,6 +49,12 @@
                           :response-id="data.item.responseId"
                           :comment-count="data.item.commentcount"></comment-button>
             </template>
+
+            <template v-slot:head()="data">
+                <span v-if="data.hasOwnProperty('fullLabel')">{{data.label}}</span>
+                <span v-else></span>
+            </template>
+
         </b-table>
     </div>
 </template>
@@ -66,7 +73,7 @@
     import CellChoices from './CellStyles/CellChoices';
     import Comments from './Comments';
     import CommentButton from './CommentButton';
-    
+
     export default {
         name: "Responses",
 
@@ -107,7 +114,7 @@
             },
             canSeeComments: {
                 required: false,
-                default: false                
+                default: false
             },
             canDeleteComments: {
                 required: false,
@@ -134,7 +141,7 @@
             'cell-url': CellUrl,
             'cell-choices': CellChoices
         },
-        
+
         data() {
             return {
                 refreshingResponses: false,
@@ -179,7 +186,7 @@
                 }));
                 return fields;
             },
-            
+
             columns() {
                 let fieldIds = [];
                 let fields = [];
@@ -188,7 +195,7 @@
                 }
                 fields.push({key: 'submittedBy', label: 'Submitted By'});
                 fields = fields.concat(this.fields.map(field => {
-                    return {key: field.id, label: field.title};
+                    return {key: field.id, label: field.title.substring(0, 35), fullLabel: field.title};
                 }).filter(cols => {
                     if(fieldIds.indexOf(cols.key) === -1) {
                         fieldIds.push(cols.key);
@@ -205,7 +212,7 @@
                 }
                 return fields;
             },
-            
+
             rows() {
                 return this.responses.map(response => {
                     let row = {};
