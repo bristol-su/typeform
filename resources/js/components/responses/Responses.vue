@@ -51,8 +51,7 @@
             </template>
 
             <template v-slot:head()="data">
-                <span v-if="data.hasOwnProperty('fullLabel')">{{data.label}}</span>
-                <span v-else></span>
+                <span>{{data.label}}</span>
             </template>
 
         </b-table>
