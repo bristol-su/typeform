@@ -35,7 +35,6 @@ class SyncWebhookStatus implements ShouldQueue
             return;
         }
 
-
         if(!$this->isReady()) {
             return;
         }
