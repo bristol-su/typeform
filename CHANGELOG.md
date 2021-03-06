@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.20] - (06/03/2020)
+
+- portal-305: Don't attempt typeform connection if information not given 
+
 ## [1.1.19] - (09/08/2020)
 
 ### Fixed
@@ -133,7 +137,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Initial Release
 
-[Unreleased]: https://github.com/bristol-su/typeform/compare/v1.1.19...HEAD
+[Unreleased]: https://github.com/bristol-su/typeform/compare/v1.1.20...HEAD
+[1.1.20]: https://github.com/bristol-su/typeform/compare/v1.1.19...v1.1.20
 [1.1.19]: https://github.com/bristol-su/typeform/compare/v1.1.18...v1.1.19
 [1.1.18]: https://github.com/bristol-su/typeform/compare/v1.1.17...v1.1.18
 [1.1.17]: https://github.com/bristol-su/typeform/compare/v1.1.16...v1.1.17

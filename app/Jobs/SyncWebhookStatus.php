@@ -34,7 +34,11 @@ class SyncWebhookStatus implements ShouldQueue
         } catch (NoConnectionAvailable $e) {
             return;
         }
-        
+
+        if(!$this->isReady()) {
+            return;
+        }
+
         // If the module should use a webhook, ensure it exists and is enabled
         if($this->usesWebhook()) {
             $webhook = $this->getWebhook();
@@ -50,7 +54,7 @@ class SyncWebhookStatus implements ShouldQueue
                 $client->webhookDisable($webhook);
             }
         }
-        
+
     }
 
 
@@ -79,14 +83,19 @@ class SyncWebhookStatus implements ShouldQueue
      */
     private function usesWebhook(): bool
     {
-        return $this->moduleInstance->setting('collect_responses', false) 
+        return $this->moduleInstance->setting('collect_responses', false)
             && $this->moduleInstance->setting('use_webhook', true);
     }
-    
+
     protected function resolveClient()
     {
         return app(Client::class,
             ['connector' => app(ModuleInstanceServiceRepository::class)->getConnectorForService('typeform', $this->moduleInstance->id)]
         );
+    }
+
+    private function isReady()
+    {
+        return (bool) $this->moduleInstance->setting('form_id', null);
     }
 }
