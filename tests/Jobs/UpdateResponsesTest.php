@@ -34,7 +34,7 @@ class UpdateResponsesTest extends TestCase
             $job->handle()
         );
     }
-    
+
     /** @test */
     public function it_returns_null_if_the_form_id_is_null(){
         ModuleInstanceSetting::create(['module_instance_id' => $this->getModuleInstance()->id, 'key' => 'collect_responses', 'value' => true]);
@@ -54,11 +54,32 @@ class UpdateResponsesTest extends TestCase
             $job->handle()
         );
     }
-    
+
+    /** @test */
+    public function it_returns_null_if_the_form_id_is_an_empty_string(){
+        ModuleInstanceSetting::create(['module_instance_id' => $this->getModuleInstance()->id, 'key' => 'collect_responses', 'value' => true]);
+        ModuleInstanceSetting::create(['module_instance_id' => $this->getModuleInstance()->id, 'key' => 'use_webhook', 'value' => true]);
+        ModuleInstanceSetting::create(['module_instance_id' => $this->getModuleInstance()->id, 'key' => 'form_id', 'value' => '']);
+
+        $webhook = factory(Webhook::class)->create([
+            'module_instance_id' => $this->getModuleInstance()->id(),
+            'tag' => Webhook::generatedTag($this->getModuleInstance()),
+            'form_id' => 'dd'
+        ]);
+
+        $client = $this->prophesize(Client::class);
+
+        $job = new DummyUpdateResponsesJob($this->getModuleInstance());
+        $job->setClient($client->reveal());
+        $this->assertNull(
+            $job->handle()
+        );
+    }
+
     /** @test */
     public function it_handles_all_responses_which_have_not_been_handled_and_have_the_right_module_instance(){
         $otherModuleInstance = factory(ModuleInstance::class)->create();
-        
+
         ModuleInstanceSetting::create(['module_instance_id' => $this->getModuleInstance()->id, 'key' => 'collect_responses', 'value' => true]);
         ModuleInstanceSetting::create(['module_instance_id' => $this->getModuleInstance()->id, 'key' => 'use_webhook', 'value' => true]);
         ModuleInstanceSetting::create(['module_instance_id' => $this->getModuleInstance()->id, 'key' => 'form_id', 'value' => 'form-123']);
@@ -97,7 +118,7 @@ class UpdateResponsesTest extends TestCase
         ]);
         factory(Response::class)->create(['id' => '1234567']);
         $client->allFields('form-123')->shouldBeCalled()->willReturn([]);
-        
+
         $handler = $this->prophesize(ResponseHandler::class);
         $handler->handle(Argument::that(function($arg) {
             return $arg instanceof ResponsePayload && $arg->responseId() === '123';
@@ -118,18 +139,18 @@ class UpdateResponsesTest extends TestCase
             return $arg instanceof ResponsePayload && $arg->responseId() === '12345678';
         }))->shouldNotBeCalled();
         $this->instance(ResponseHandler::class, $handler->reveal());
-        
+
         $job = new DummyUpdateResponsesJob($this->getModuleInstance());
         $job->setClient($client->reveal());
         $job->handle();
     }
-    
+
 }
 
 class DummyUpdateResponsesJob extends UpdateResponses {
 
     protected $client;
-    
+
     public function setClient(Client $client)
     {
         $this->client = $client;
