@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.21] - (20/03/2021)
+
 ### Fixed
 - portal-313: Implement rate limiting to avoid typeform API rate limits
 
@@ -141,7 +143,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Initial Release
 
-[Unreleased]: https://github.com/bristol-su/typeform/compare/v1.1.20...HEAD
+[Unreleased]: https://github.com/bristol-su/typeform/compare/v1.1.21...HEAD
+[1.1.21]: https://github.com/bristol-su/typeform/compare/v1.1.20...v1.1.21
 [1.1.20]: https://github.com/bristol-su/typeform/compare/v1.1.19...v1.1.20
 [1.1.19]: https://github.com/bristol-su/typeform/compare/v1.1.18...v1.1.19
 [1.1.18]: https://github.com/bristol-su/typeform/compare/v1.1.17...v1.1.18
