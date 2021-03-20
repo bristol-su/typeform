@@ -132,17 +132,17 @@ class ModuleServiceProvider extends ServiceProvider
             'description' => 'When a response has been rejected'
         ],
     ];
-    
+
     protected $commands = [
         SyncWebhookStatus::class,
         CheckResponses::class
     ];
-    
+
     protected $scheduledCommands = [
-        SyncWebhookStatus::class => '*/4 * * * *',
-        CheckResponses::class => '*/5 * * * *'
+        SyncWebhookStatus::class => '*/10 * * * *',
+        CheckResponses::class => '*/6 * * * *'
     ];
-    
+
     public function alias(): string
     {
         return 'typeform';
@@ -152,12 +152,12 @@ class ModuleServiceProvider extends ServiceProvider
     {
         return '\BristolSU\Module\Typeform\Http\Controllers';
     }
-    
+
     public function baseDirectory()
     {
         return __DIR__ . '/..';
     }
-    
+
     public function boot()
     {
         parent::boot();
@@ -166,7 +166,7 @@ class ModuleServiceProvider extends ServiceProvider
         app(CompletionConditionManager::class)->register('typeform', 'number_of_responses_approved', NumberOfResponsesApproved::class);
         app(CompletionConditionManager::class)->register('typeform', 'number_of_responses_rejected', NumberOfResponsesRejected::class);
         app(ServiceRequest::class)->required($this->alias(), ['typeform']);
-        
+
         Route::bind('typeform_response_id', function($id) {
             return Response::findOrFail($id);
         });
@@ -194,12 +194,12 @@ class ModuleServiceProvider extends ServiceProvider
             }
             throw (new ModelNotFoundException)->setModel(Comment::class);
         });
-        
+
         Route::prefix('/api/a/{activity_slug}/{module_instance_slug}/typeform')
             ->middleware(['api', InjectModuleInstance::class, InjectActivity::class])
             ->namespace($this->namespace())
             ->group($this->baseDirectory() . '/routes/admin/webhook.php');
-        
+
     }
 
     public function settings(): Form

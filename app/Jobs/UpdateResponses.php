@@ -30,6 +30,17 @@ class UpdateResponses implements ShouldQueue
         $this->moduleInstance = $moduleInstance;
     }
 
+    public function middleware()
+    {
+        $rateLimitedMiddleware = (new RateLimited())
+            ->key('typeform')
+            ->allow(1)
+            ->everySeconds(1)
+            ->releaseAfterSeconds(3);
+
+        return [$rateLimitedMiddleware];
+    }
+
     public function handle()
     {
         if(!app(ModuleInstance::class)->exists) {
@@ -45,12 +56,12 @@ class UpdateResponses implements ShouldQueue
         if ($formId === null) {
             return null;
         }
-        
+
         $responses = collect($client->allResponses($formId))->filter(function ($response) {
             if (
-                isset($response['hidden']) 
-                && isset($response['hidden']['module_instance']) 
-                && isset($response['hidden']['activity_instance']) 
+                isset($response['hidden'])
+                && isset($response['hidden']['module_instance'])
+                && isset($response['hidden']['activity_instance'])
                 && isset($response['hidden']['portal_user_id'])
             ) {
                 return Response::where('id', $response['token'])->count() === 0
@@ -58,9 +69,9 @@ class UpdateResponses implements ShouldQueue
             }
             return false;
         })->values();
-        
+
         $fields = $client->allFields($formId);
-        
+
         foreach ($responses as $response) {
             $payload = new ResponsePayload($response, $formId, $fields);
             app(ResponseHandler::class)->handle($payload);
