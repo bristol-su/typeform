@@ -80,6 +80,11 @@ class UpdateResponses implements ShouldQueue
         }
     }
 
+    public function retryUntil(): \DateTime
+    {
+        return now()->addMinutes(5);
+    }
+
     /**
      * @return Client
      */

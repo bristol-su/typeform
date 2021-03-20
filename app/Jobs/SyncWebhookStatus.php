@@ -70,6 +70,10 @@ class SyncWebhookStatus implements ShouldQueue
 
     }
 
+    public function retryUntil(): \DateTime
+    {
+        return now()->addMinutes(5);
+    }
 
     /**
      * Find or create a webhook for a module instance
