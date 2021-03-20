@@ -15,10 +15,12 @@
         "bristol-su/support": "^4.0",
         "watr/typeform": "^1.5",
         "bristol-su/typeform-service": "^1.0.1",
-        "ext-json": "*"
+        "ext-json": "*",
+        "spatie/laravel-rate-limited-job-middleware": "^1.4"
     },
     "require-dev": {
-        "orchestra/testbench": "^4.0"
+        "orchestra/testbench": "^4.0",
+        "phpspec/prophecy-phpunit": "^2.0"
     },
     "autoload": {
         "psr-4": {

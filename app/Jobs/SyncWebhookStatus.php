@@ -12,6 +12,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Spatie\RateLimitedMiddleware\RateLimited;
 
 class SyncWebhookStatus implements ShouldQueue
 {
@@ -25,6 +26,17 @@ class SyncWebhookStatus implements ShouldQueue
     public function __construct(ModuleInstance $moduleInstance)
     {
         $this->moduleInstance = $moduleInstance;
+    }
+
+    public function middleware()
+    {
+        $rateLimitedMiddleware = (new RateLimited())
+            ->key('typeform')
+            ->allow(1)
+            ->everySeconds(1)
+            ->releaseAfterSeconds(3);
+
+        return [$rateLimitedMiddleware];
     }
 
     public function handle()
