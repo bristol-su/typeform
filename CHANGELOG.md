@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.22] - (20/03/2021)
+
+### Fixed
+- portal-332: Fix undefined method bug with webhook syncing caused by rate limiting
+
 ## [1.1.21] - (20/03/2021)
 
 ### Fixed
@@ -143,7 +148,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Initial Release
 
-[Unreleased]: https://github.com/bristol-su/typeform/compare/v1.1.21...HEAD
+[Unreleased]: https://github.com/bristol-su/typeform/compare/v1.1.22...HEAD
+[1.1.22]: https://github.com/bristol-su/typeform/compare/v1.1.21...v1.1.22
 [1.1.21]: https://github.com/bristol-su/typeform/compare/v1.1.20...v1.1.21
 [1.1.20]: https://github.com/bristol-su/typeform/compare/v1.1.19...v1.1.20
 [1.1.19]: https://github.com/bristol-su/typeform/compare/v1.1.18...v1.1.19
