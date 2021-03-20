@@ -7,8 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [1.1.20] - (06/03/2020)
+### Fixed
+- portal-313: Implement rate limiting to avoid typeform API rate limits
 
+## [1.1.20] - (06/03/2021)
+
+### Fixed
 - portal-305: Don't attempt typeform connection if information not given 
 
 ## [1.1.19] - (09/08/2020)
