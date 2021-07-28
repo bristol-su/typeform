@@ -33,7 +33,6 @@
             "BristolSU\\Module\\Tests\\Typeform\\": "tests/"
         }
     },
-    "repositories": [{"type":  "path", "url":  "./../typeform-service"}],
     "extra": {
         "laravel": {
             "providers": [

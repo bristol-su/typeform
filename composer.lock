@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ed5479d9b724d5b1207ee3e4689d557e",
+    "content-hash": "df341849eb5123eb8d5c49afdf0a6f7a",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -292,10 +292,16 @@
         {
             "name": "bristol-su/typeform-service",
             "version": "dev-feature/port-modules",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bristol-su/typeform-service.git",
+                "reference": "8636363c5c06e64c5afd15ed79d140388f9d9e99"
+            },
             "dist": {
-                "type": "path",
-                "url": "./../typeform-service",
-                "reference": "30677b0cc701b347959b3cb55600bf6ab3e150e3"
+                "type": "zip",
+                "url": "https://api.github.com/repos/bristol-su/typeform-service/zipball/8636363c5c06e64c5afd15ed79d140388f9d9e99",
+                "reference": "8636363c5c06e64c5afd15ed79d140388f9d9e99",
+                "shasum": ""
             },
             "require": {
                 "bristol-su/support": "dev-portal-v4 as 4.0",
@@ -320,11 +326,7 @@
                     "BristolSU\\Service\\Typeform\\": "src/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "BristolSU\\Service\\Tests\\Typeform\\": "tests/"
-                }
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -335,9 +337,11 @@
                 }
             ],
             "description": "A third party service for typeform",
-            "transport-options": {
-                "relative": true
-            }
+            "support": {
+                "issues": "https://github.com/bristol-su/typeform-service/issues",
+                "source": "https://github.com/bristol-su/typeform-service/tree/feature/port-modules"
+            },
+            "time": "2021-07-28T11:43:14+00:00"
         },
         {
             "name": "dflydev/dot-access-data",
@@ -7252,16 +7256,16 @@
         },
         {
             "name": "theseer/tokenizer",
-            "version": "1.2.0",
+            "version": "1.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/theseer/tokenizer.git",
-                "reference": "75a63c33a8577608444246075ea0af0d052e452a"
+                "reference": "34a41e998c2183e22995f158c581e7b5e755ab9e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/theseer/tokenizer/zipball/75a63c33a8577608444246075ea0af0d052e452a",
-                "reference": "75a63c33a8577608444246075ea0af0d052e452a",
+                "url": "https://api.github.com/repos/theseer/tokenizer/zipball/34a41e998c2183e22995f158c581e7b5e755ab9e",
+                "reference": "34a41e998c2183e22995f158c581e7b5e755ab9e",
                 "shasum": ""
             },
             "require": {
@@ -7290,7 +7294,7 @@
             "description": "A small library for converting tokenized PHP source code into XML and potentially other formats",
             "support": {
                 "issues": "https://github.com/theseer/tokenizer/issues",
-                "source": "https://github.com/theseer/tokenizer/tree/master"
+                "source": "https://github.com/theseer/tokenizer/tree/1.2.1"
             },
             "funding": [
                 {
@@ -7298,7 +7302,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-07-12T23:59:07+00:00"
+            "time": "2021-07-28T10:34:58+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
