@@ -9,13 +9,13 @@ use Illuminate\Database\Eloquent\Model;
 class Response extends Model
 {
     use HasResource;
-    
+
     protected $table = 'typeform_responses';
-    
+
     protected $keyType = 'string';
-    
+
     public $incrementing = false;
-    
+
     protected $fillable = [
         'id',
         'form_id',
@@ -25,12 +25,12 @@ class Response extends Model
         'activity_instance_id',
         'approved'
     ];
-    
+
     protected $casts = [
         'submitted_at' => 'datetime',
         'approved' => 'boolean'
     ];
-    
+
     protected $appends = [
         'activity_instance', 'submitted_by_user'
     ];
@@ -64,5 +64,16 @@ class Response extends Model
     {
         return $this->hasMany(Comment::class);
     }
-    
+
+    /**
+     * Prepare a date for array / JSON serialization.
+     *
+     * @param  \DateTimeInterface  $date
+     * @return string
+     */
+    protected function serializeDate(\DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d H:i:s');
+    }
+
 }

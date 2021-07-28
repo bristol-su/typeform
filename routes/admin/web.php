@@ -13,7 +13,5 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::namespace('Admin')->group(function() {
-    Route::get('/', 'AdminPageController@index');
-    Route::get('/file/{typeform_answer_id_admin}/download', 'DownloadFileController@download');
-});
+Route::get('/', [\BristolSU\Module\Typeform\Http\Controllers\Admin\AdminPageController::class, 'index']);
+Route::get('/file/{typeform_answer_id_admin}/download', [\BristolSU\Module\Typeform\Http\Controllers\Admin\DownloadFileController::class, 'download']);
