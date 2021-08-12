@@ -13,13 +13,10 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::namespace('AdminApi')->group(function() {
-    Route::post('response/refresh', 'ResponseRefreshController@refresh');
-    Route::prefix('response/{typeform_response_id}')->group(function() {
-        Route::post('approve', 'StatusController@approve');
-        Route::post('reject', 'StatusController@reject');
-        Route::apiResource('comment', 'CommentController')->only(['index', 'store'])->parameters(['comment' => 'typeform_comment']);
-    });
-    Route::apiResource('comment', 'CommentController')->only(['update', 'destroy'])->parameters(['comment' => 'typeform_comment']);
-    
+Route::post('response/refresh', [\BristolSU\Module\Typeform\Http\Controllers\AdminApi\ResponseRefreshController::class, 'refresh']);
+Route::prefix('response/{typeform_response_id}')->group(function() {
+    Route::post('approve', [\BristolSU\Module\Typeform\Http\Controllers\AdminApi\StatusController::class, 'approve']);
+    Route::post('reject', [\BristolSU\Module\Typeform\Http\Controllers\AdminApi\StatusController::class, 'reject']);
+    Route::apiResource('comment', \BristolSU\Module\Typeform\Http\Controllers\AdminApi\CommentController::class)->only(['index', 'store'])->parameters(['comment' => 'typeform_comment']);
 });
+Route::apiResource('comment', \BristolSU\Module\Typeform\Http\Controllers\AdminApi\CommentController::class)->only(['update', 'destroy'])->parameters(['comment' => 'typeform_comment']);

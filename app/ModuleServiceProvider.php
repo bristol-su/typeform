@@ -150,7 +150,7 @@ class ModuleServiceProvider extends ServiceProvider
 
     public function namespace()
     {
-        return '\BristolSU\Module\Typeform\Http\Controllers';
+        return null;
     }
 
     public function baseDirectory()

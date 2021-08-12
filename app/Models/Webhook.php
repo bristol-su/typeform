@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Represents a webhook
- * 
+ *
  * @method static Builder fromModuleInstance(ModuleInstance $moduleInstance) Retrieve a webhook from a module instance
  */
 class Webhook extends Model
@@ -44,7 +44,7 @@ class Webhook extends Model
 
     /**
      * Get the URL to send responses to
-     * 
+     *
      * @return \Illuminate\Contracts\Routing\UrlGenerator|string
      */
     public function url()
@@ -53,8 +53,8 @@ class Webhook extends Model
     }
 
     /**
-     * Get the module instance 
-     * 
+     * Get the module instance
+     *
      * @return \BristolSU\Support\ModuleInstance\Contracts\ModuleInstance
      */
     public function moduleInstance()
@@ -62,5 +62,15 @@ class Webhook extends Model
         return app(ModuleInstanceRepository::class)->getById($this->module_instance_id);
     }
 
-    
+    /**
+     * Prepare a date for array / JSON serialization.
+     *
+     * @param  \DateTimeInterface  $date
+     * @return string
+     */
+    protected function serializeDate(\DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d H:i:s');
+    }
+
 }

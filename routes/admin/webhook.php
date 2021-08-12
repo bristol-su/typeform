@@ -13,6 +13,4 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::namespace('Webhook')->group(function() {
-    Route::post('webhook/responses', 'IncomingWebhookController@store');
-});
+Route::post('webhook/responses', [\BristolSU\Module\Typeform\Http\Controllers\Webhook\IncomingWebhookController::class, 'store']);
