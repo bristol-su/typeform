@@ -12,9 +12,9 @@
     ],
     "require": {
         "php": "^8.0",
-        "bristol-su/support": "dev-portal-v4 as 4.0",
+        "bristol-su/support": "^5.0.0",
         "watr/typeform": "^1.5",
-        "bristol-su/typeform-service": "dev-feature/port-modules as 1.0.1",
+        "bristol-su/typeform-service": "^2.0.0",
         "ext-json": "*",
         "spatie/laravel-rate-limited-job-middleware": "^1.4"
     },
