@@ -11193,7 +11193,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         sortable: true
       });
 
-      if (this.allowApproval) {
+      if (this.showApprovedStatus) {
         fields.push({
           key: 'approvals',
           label: 'Approval'
@@ -34352,7 +34352,7 @@ var render = function() {
             fn: function(ref) {
               var row = ref.row
               return [
-                _vm.allowApproval
+                _vm.showApprovedStatus
                   ? _c("approval", {
                       attrs: {
                         "can-change": _vm.allowApproval,

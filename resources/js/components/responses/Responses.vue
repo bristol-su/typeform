@@ -11,7 +11,7 @@
             </template>
 
             <template #cell(approvals)="{row}">
-                <approval v-if="allowApproval" :can-change="allowApproval" :response-id="row.responseId" :status="row.approved"></approval>
+                <approval v-if="showApprovedStatus" :can-change="allowApproval" :response-id="row.responseId" :status="row.approved"></approval>
             </template>
 
             <template #actions="{row}">
@@ -212,7 +212,7 @@
                     return false;
                 }));
                 fields.push({key: 'submittedAt', label: 'Submitted At', sortable: true})
-                if(this.allowApproval) {
+                if(this.showApprovedStatus) {
                     fields.push({key: 'approvals', label: 'Approval'});
                 }
                 return fields;
