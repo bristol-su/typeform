@@ -42,13 +42,13 @@ class Client
         try {
             $response = $this->connector->request('GET', 'https://api.typeform.com/forms/'. $webhook->form_id .'/webhooks/' . $webhook->tag);
             $response = json_decode((string) $response->getBody(), true);
-            return (isset($response['enabled'])?$response['enabled']:false);    
+            return (isset($response['enabled'])?$response['enabled']:false);
         } catch (ServerException $e) {
             if($e->getCode() !== 504 && $e->getCode() !== 502) {
                 throw $e;
             }
         }
-        
+
     }
 
     public function webhookCreate(Webhook $webhook)
@@ -113,7 +113,8 @@ class Client
         try {
             $response = $this->connector->request('GET', 'https://api.typeform.com/forms/'.  $formId .'/responses', [
                 'query' => [
-                    'page_size' => 1000
+                    'page_size' => 1000,
+                    'completed' => true
                 ]
             ]);
         } catch (ServerException $e) {
@@ -121,7 +122,12 @@ class Client
                 throw $e;
             }
         }
-        $responses = json_decode((string) $response->getBody(), true);
+
+        try {
+            $responses = json_decode((string) $response->getBody(), true);
+        } catch (\TypeError $e) {
+            $responses = null;
+        }
         if($responses && array_key_exists('items', $responses)) {
             return $responses['items'];
         }

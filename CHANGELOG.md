@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Alter how form responses are saved in the cache
+
 ## [2.0.0] - (12/08/2021)
 
 ### Changed

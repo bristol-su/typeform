@@ -1,60 +1,59 @@
 <template>
     <div>
         <div style="text-align: right;" v-if="canRefreshResponses">
-            <b-button variant="outline-secondary" :disabled="refreshingResponses" @click="refreshResponses" size="sm"><i class="fa fa-refresh" /> Refresh</b-button>
+            <p-button variant="secondary" :disabled="refreshingResponses" @click="refreshResponses"><i class="fa fa-refresh" /> Refresh</p-button>
         </div>
-        <b-table :fields="columns" :items="filteredRows" :sort-compare="sortCompare">
-            <template v-slot:head(approved)="data">
-                Approval
-                <b-form-select v-model="approvalFiltering">
-                    <b-form-select-option :value="null">No Filtering</b-form-select-option>
-                    <b-form-select-option value="approved">Only Approved</b-form-select-option>
-                    <b-form-select-option value="rejected">Only Rejected</b-form-select-option>
-                    <b-form-select-option value="awaiting">Awaiting Approval</b-form-select-option>
-                </b-form-select>
+        <p-table :columns="columns" :items="filteredRows">
+            <template #head(approvals)>
+                Approval Filter
+                <p-select id="approval-filtering" v-model="approvalFiltering" :select-options="filterOptions" null-label="No Filtering" :null-value="null">
+                </p-select>
             </template>
 
-            <template v-slot:cell(approved)="data">
-                <approval :can-change="allowApproval" :response-id="data.item.responseId" :status="data.item.approved"></approval>
+            <template #cell(approvals)="{row}">
+                <approval v-if="allowApproval" :can-change="allowApproval" :response-id="row.responseId" :status="row.approved"></approval>
             </template>
-            <template v-slot:cell(submittedBy)="data">
-                <span>{{data.item.user.first_name}} {{data.item.user.last_name}}</span>
-            </template>
-            <template v-slot:cell(activityInstanceBy)="data">
-                <span>{{data.item.identifier}}</span>
-            </template>
-            <template v-slot:cell(submittedAt)="data">
-                <span>{{data.item.submitted_at}}</span>
-            </template>
-            <template v-slot:cell()="data">
-                <div v-if="data.value.type === 'file_url'">
-                    <cell-file_url :value="data.value.id" :query-string="queryString"></cell-file_url>
 
+            <template #actions="{row}">
+                <a href="#" @click="showComments(row)" v-if="canSeeComments"><i class="fa fa-comments"></i> Comments ({{row.comments.length}})</a>
+            </template>
+
+            <template #cell(submittedBy)="{row}">
+                <span>{{row.user.first_name}} {{row.user.last_name}}</span>
+            </template>
+            <template #cell(activityInstanceBy)="{row}">
+                <span>{{row.identifier}}</span>
+            </template>
+            <template #cell(submittedAt)="{row}">
+                <span>{{row.submitted_at}}</span>
+            </template>
+
+            <template #cell()="{row, column}">
+                <div v-if="row.hasOwnProperty(column.key)">
+                    <div v-if="row[column.key].type === 'file_url'">
+                        <cell-file_url :value="row[column.key].id"></cell-file_url>
+                    </div>
+                    <component v-else-if="componentExists(row[column.key].type)" :is="componentName(row[column.key].type)"
+                               :value="row[column.key].answer">
+                    </component>
+                    <div v-else-if="row[column.key].type">
+                        Field Type {{row[column.key].type}} not supported
+                    </div>
+                    <div v-else>
+                        N/A
+                    </div>
                 </div>
-                <component v-else-if="componentExists(data.value.type)" :is="componentName(data.value.type)"
-                    :value="data.value.answer">
-                </component>
-                <div v-else-if="data.value.type">
-                    Field Type {{data.value.type}} not supported
-                </div>
-                <div v-else>
-                    N/A
-                </div>
             </template>
-            <template v-slot:cell(comments)="data">
-                <comment-button v-if="canSeeComments"
-                          :can-add-comments="canAddComments"
-                          :can-delete-comments="canDeleteComments"
-                          :can-update-comments="canUpdateComments"
-                          :response-id="data.item.responseId"
-                          :comment-count="data.item.commentcount"></comment-button>
-            </template>
+        </p-table>
 
-            <template v-slot:head()="data">
-                <span>{{data.label}}</span>
-            </template>
-
-        </b-table>
+        <p-modal id="commentsModal" title="Comments" @hide="responseBeingCommented = null">
+            <comments :can-add-comments="canAddComments"
+                      :can-delete-comments="canDeleteComments"
+                      :can-update-comments="canUpdateComments"
+                      :response="responseBeingCommented"
+                      v-if="responseBeingCommented !== null"
+                      @commentUpdated="updateComments"></comments>
+        </p-modal>
     </div>
 </template>
 
@@ -71,7 +70,6 @@
     import CellEmail from './CellStyles/CellEmail';
     import CellChoices from './CellStyles/CellChoices';
     import Comments from './Comments';
-    import CommentButton from './CommentButton';
 
     export default {
         name: "Responses",
@@ -99,10 +97,6 @@
                 type: Boolean,
                 default: false
             },
-            queryString: {
-                required: true,
-                type: String
-            },
             showActivityInstanceBy: {
                 required: false,
                 default: false
@@ -126,7 +120,6 @@
         },
 
         components: {
-            CommentButton,
             Comments,
             Approval,
             'cell-boolean': CellBoolean,
@@ -144,7 +137,13 @@
         data() {
             return {
                 refreshingResponses: false,
-                approvalFiltering: null
+                approvalFiltering: null,
+                filterOptions: [
+                    {id: 'approved', value: 'Only Approved'},
+                    {id: 'rejected', value: 'Only Rejected'},
+                    {id: 'awaiting', value: 'Awaiting Approval'}
+                ],
+                responseBeingCommented: null
             }
         },
 
@@ -172,6 +171,16 @@
                     return (a.identifier).localeCompare(b.identifier)
                 }
                 return null;
+            },
+            showComments(file) {
+                this.responseBeingCommented = file;
+                this.$ui.modal.show('commentsModal');
+            },
+
+            updateComments(comments) {
+                let response = _.cloneDeep(this.responseBeingCommented);
+                response.comments = comments;
+                this.responses.splice(this.responses.indexOf(this.responses.filter(r => r.id === response.id)[0]), 1, response);
             }
         },
 
@@ -203,17 +212,12 @@
                     return false;
                 }));
                 fields.push({key: 'submittedAt', label: 'Submitted At', sortable: true})
-                if(this.allowApproval) {
-                    fields.push({key: 'approved', label: 'Approval'})
-                }
-                if(this.canSeeComments) {
-                    fields.push({key: 'comments', label: 'Comments'})
-                }
+                fields.push({key: 'approvals', label: 'Approval'});
                 return fields;
             },
 
             rows() {
-                return this.responses.map(response => {
+                return [...this.responses.map(response => {
                     let row = {};
                     response.answers.forEach(answer => {
                         row[answer.field_id] = {
@@ -224,7 +228,7 @@
                     });
                     row['submitted_at'] = response.submitted_at;
                     row['approved'] = response.approved;
-                    row['commentcount'] = response.comments.length;
+                    row['comments'] = response.comments;
                     row['responseId'] = response.id;
                     if(response.activity_instance.resource_type === 'user') {
                         row['identifier'] = response.activity_instance.participant.data.first_name + ' ' + response.activity_instance.participant.data.last_name;
@@ -237,7 +241,7 @@
                     }
                     row['user'] = response.submitted_by_user.data;
                     return row;
-                })
+                })].sort(this.sortCompare);
             },
             filteredRows() {
                 return this.rows.filter(row => {

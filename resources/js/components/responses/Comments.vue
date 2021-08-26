@@ -12,95 +12,98 @@
             No comments have been left.
         </div>
 
-        <b-form @submit.prevent="postComment" inline v-if="canAddComments">
-            <label class="sr-only" for="comment">Comment: </label>
-            <b-input
-                    id="comment"
-                    class="mb-2 mr-sm-2 mb-sm-0"
-                    placeholder="Leave a comment..."
-                    v-model="newComment"
-            ></b-input>
+        <p-api-form :schema="form" @submit="postComment" v-if="canAddComments" button-text="Post Comment">
 
-            <b-button type="submit" variant="outline-success">Post Comment</b-button>
-
-        </b-form>
+        </p-api-form>
     </div>
 </template>
 
 <script>
-    import Comment from './Comment';
-    export default {
-        name: "Comments",
-        components: {Comment},
-        props: {
-            responseId: {
-                required: false
-            },
-            canAddComments: {
-                type: Boolean,
-                required: true,
-                default: false
-            },
-            canDeleteComments: {
-                type: Boolean,
-                required: true,
-                default: false
-            },
-            canUpdateComments: {
-                type: Boolean,
-                required: true,
-                default: false
-            },
+import Comment from './Comment';
+export default {
+    name: "Comments",
+    components: {Comment},
+    props: {
+        response: {
+            required: true,
+            type: Object
+        },
+        canAddComments: {
+            type: Boolean,
+            required: true,
+            default: false
+        },
+        canDeleteComments: {
+            type: Boolean,
+            required: true,
+            default: false
+        },
+        canUpdateComments: {
+            type: Boolean,
+            required: true,
+            default: false
+        },
+    },
+
+    data() {
+        return {
+            comments: [],
+        }
+    },
+
+    created() {
+        this.loadComments();
+    },
+
+    methods: {
+        loadComments() {
+            this.$http.get('/response/' + this.response.responseId + '/comment')
+                .then(response => {
+                    this.comments = response.data;
+                    this.$emit('commentUpdated', response.data);
+                })
+                .catch(error => this.$notify.alert('Could not load comments'));
         },
 
-        data() {
-            return {
-                comments: [],
-                newComment: ''
-            }
-        },
+        postComment(data) {
+            this.$http.post('/response/' + this.response.responseId + '/comment', {comment: data.comment})
+                .then(response => {
+                    this.comments.push(response.data);
+                    this.$emit('commentUpdated', this.comments);
+                })
+                .catch(error => this.$notify.alert('Could not post the comment'));
+        }
+    },
 
-        created() {
-            this.loadComments();
-        },
-
-        methods: {
-            loadComments() {
-                this.$http.get('/response/' + this.responseId + '/comment')
-                    .then(response => {
-                        this.comments = response.data;
-                        this.$emit('set-comment-count', response.data.length);
-                    })
-                    .catch(error => this.$notify.alert('Could not load comments'));
-            },
-
-            postComment() {
-                this.$http.post('/response/' + this.responseId + '/comment', {comment: this.newComment})
-                    .then(response => {
-                        this.comments.push(response.data);
-                        this.newComment = '';
-                        this.$emit('comment-added', response.data);
-                    })
-                    .catch(error => this.$notify.alert('Could not post the comment'));
-            }
-        },
-
-        computed: {}
+    computed: {
+        form() {
+            return this.$tools.generator.form.newForm()
+                .withGroup(this.$tools.generator.group.newGroup()
+                    .withField(
+                        this.$tools.generator.field.text('comment')
+                            .label('Your comment')
+                            .required(true)
+                    )
+                )
+                .generate()
+                .asJson();
+        }
     }
+}
 </script>
 
 <style scoped>
 
-    .commentList {
-        padding: 0;
-        list-style: none;
-        overflow: auto;
-    }
+.commentList {
+    padding: 0;
+    list-style: none;
+    overflow: auto;
+}
 
-    .commentList li {
-        margin: 0;
-        margin-top: 10px;
-    }
+.commentList li {
+    margin: 0;
+    margin-top: 10px;
+}
 
 
 </style>

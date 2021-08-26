@@ -52,9 +52,9 @@ class NumberOfResponsesSubmitted extends CompletionCondition
     public function options(): Form
     {
         return \FormSchema\Generator\Form::make()->withField(
-            \FormSchema\Generator\Field::input('number_of_responses')->inputType('number')->label('Number of Responses')
-                ->required(true)->default(1)->hint('The number of times a user needs to submit a response')
-                ->help('The number of times a user should submit a response before the module is marked as complete. 1 will mark the module as complete on the first submission, 2 on the second etc.')
+            \FormSchema\Generator\Field::number('number_of_responses')->setLabel('Number of Responses')
+                ->setRequired(true)->setValue(1)->setHint('The number of times a user needs to submit a response')
+                ->setTooltip('The number of times a user should submit a response before the module is marked as complete. 1 will mark the module as complete on the first submission, 2 on the second etc.')
         )->getSchema();
     }
 

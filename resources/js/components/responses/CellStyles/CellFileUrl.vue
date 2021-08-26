@@ -12,10 +12,6 @@
             value: {
                 required: true,
                 default: null
-            },
-            queryString: {
-                required: true,
-                type: String
             }
         },
 
@@ -27,7 +23,7 @@
 
         computed: {
             url() {
-                return 'typeform/file/' + this.value + '/download?' + this.queryString;
+                return this.$tools.routes.query.addQueryStringToWebUrl(this.$tools.routes.module.moduleUrl() + '/file' + this.value + '/download');
             }
         }
     }

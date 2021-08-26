@@ -206,41 +206,41 @@ class ModuleServiceProvider extends ServiceProvider
     {
         return FormGenerator::make()->withGroup(
             Group::make('Page Design')->withField(
-                Field::input('title')->inputType('text')->label('Module Title')->default('Page Title')
+                Field::textInput('title')->setLabel('Module Title')->setValue('Page Title')
             )->withField(
-                Field::textArea('description')->label('Description')->hint('This will appear at the top of the page')->rows(4)->default('Description')
+                Field::textArea('description')->setLabel('Description')->setHint('This will appear at the top of the page')->setValue('Description')
             )
         )->withGroup(
             Group::make('Embedded Form')->withField(
-                Field::radios('embed_type')->inputType('text')->label('Type of form embedding')->hint('Embed the form in the page, or show the form as a popup?')
-                    ->values([
-                        ['name' => 'Embed the form in the page', 'value' => 'widget'],
-                        ['name' => 'Show the form as a popup', 'value' => 'popup'],
-                        ['name' => 'Show the form as a drawer from the left', 'value' => 'drawer_left'],
-                        ['name' => 'Show the form as a drawer from the right', 'value' => 'drawer_right'],
-                    ])->default('widget')
+                Field::radios('embed_type')->setLabel('Type of form embedding')->setHint('Embed the form in the page, or show the form as a popup?')
+                    ->setOptions([
+                        ['text' => 'Embed the form in the page', 'id' => 'widget'],
+//                        ['text' => 'Show the form as a popup', 'id' => 'popup'],
+//                        ['text' => 'Show the form as a drawer from the left', 'id' => 'drawer_left'],
+//                        ['text' => 'Show the form as a drawer from the right', 'id' => 'drawer_right'],
+                    ])->setValue('widget')
             )->withField(
-                Field::input('form_url')->inputType('text')->label('Form URL')->hint('The URL of the form. Make sure it\'s published first!')
+                Field::textInput('form_url')->setLabel('Form URL')->setHint('The URL of the form. Make sure it\'s published first!')
             )->withField(
-                Field::switch('hide_headers')->label('Hide form headers?')->hint('Should we hide the form headers? This helps integrate the form into the page.')
-                    ->textOn('Hidden')->textOff('Shown')->default(true)
+                Field::switch('hide_headers')->setLabel('Hide form headers?')->setHint('Should we hide the form headers? This helps integrate the form into the page.')
+                    ->setOnText('Hidden')->setOffText('Shown')->setValue(true)
             )->withField(
-                Field::switch('hide_footer')->label('Hide form footer?')->hint('Should we hide the form footer? This helps integrate the form into the page.')
-                    ->textOn('Hidden')->textOff('Shown')->default(true)
+                Field::switch('hide_footer')->setLabel('Hide form footer?')->setHint('Should we hide the form footer? This helps integrate the form into the page.')
+                    ->setOnText('Hidden')->setOffText('Shown')->setValue(true)
             )
         )->withGroup(
             Group::make('Responses')->withField(
-                Field::switch('collect_responses')->label('Save responses?')->hint('Do you want responses to be saved on the portal? You will always be able to see responses on typeform.')
-                    ->textOn('Save')->textOff('Do not save')->default(false)
+                Field::switch('collect_responses')->setLabel('Save responses?')->setHint('Do you want responses to be saved on the portal? You will always be able to see responses on typeform.')
+                    ->setOnText('Save')->setOffText('Do not save')->setValue(false)
             )->withField(
-                Field::input('form_id')->inputType('text')->label('Form ID')->hint('ID of the form so we can collect responses')
+                Field::textInput('form_id')->setLabel('Form ID')->setHint('ID of the form so we can collect responses')
             )->withField(
-                Field::switch('use_webhook')->label('Use webhook?')->hint('Use a webhook for instant responses?')
-                    ->textOn('Use')->textOff('Do not use')->default(true)
+                Field::switch('use_webhook')->setLabel('Use webhook?')->setHint('Use a webhook for instant responses?')
+                    ->setOnText('Use')->setOffText('Do not use')->setValue(true)
             )->withField(
-                Field::switch('approval')->label('Approval Stage?')->hint('Turn on approval of responses?')
-                ->textOn('Approval Enabled')->textOff('Approval Disabled')->default(false)
-                ->help('Turning on approval allows you to delay completion of the module until you\'ve approved a response')
+                Field::switch('approval')->setLabel('Approval Stage?')->setHint('Turn on approval of responses?')
+                ->setOnText('Approval Enabled')->setOffText('Approval Disabled')->setValue(false)
+                ->setTooltip('Turning on approval allows you to delay completion of the module until you\'ve approved a response')
             )
         )->getSchema();
     }

@@ -2,6 +2,7 @@
 
 namespace BristolSU\Module\Typeform\Events;
 
+use BristolSU\ControlDB\Contracts\Repositories\User;
 use BristolSU\Module\Typeform\Models\Comment;
 use BristolSU\Support\Action\Contracts\TriggerableEvent;
 
@@ -23,13 +24,14 @@ class CommentCreated implements TriggerableEvent
      */
     public function getFields(): array
     {
+        $submittedBy = app(User::class)->getById($this->comment->response->submitted_by);
         return [
             'response_id' => $this->comment->response->id,
-            'response_submitted_by_id' => $this->comment->response->submitted_by->id(),
-            'response_submitted_by_email' => $this->comment->response->submitted_by->data()->email(),
-            'response_submitted_by_first_name' => $this->comment->response->submitted_by->data()->firstName(),
-            'response_submitted_by_last_name' => $this->comment->response->submitted_by->data()->lastName(),
-            'response_submitted_by_preferred_name' => $this->comment->response->submitted_by->data()->preferredName(),
+            'response_submitted_by_id' => $submittedBy->id(),
+            'response_submitted_by_email' => $submittedBy->data()->email(),
+            'response_submitted_by_first_name' => $submittedBy->data()->firstName(),
+            'response_submitted_by_last_name' => $submittedBy->data()->lastName(),
+            'response_submitted_by_preferred_name' => $submittedBy->data()->preferredName(),
             'response_module_instance_id' => $this->comment->response->module_instance_id,
             'response_activity_instance_id' => $this->comment->response->activity_instance_id,
             'response_submitted_at' => $this->comment->response->created_at->format('Y-m-d H:i:s'),

@@ -1,8 +1,8 @@
 <template>
     <div>
-        <b-button @click="showForm">
+        <p-button @click="showForm">
             Show Form
-        </b-button>
+        </p-button>
     </div>
 </template>
 
@@ -41,7 +41,7 @@
                 typeformPopup: null
             }
         },
-        
+
         mounted() {
             this.typeformPopup = typeform.makePopup(
                 this.url,

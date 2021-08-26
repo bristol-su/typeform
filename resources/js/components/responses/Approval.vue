@@ -1,14 +1,8 @@
 <template>
     <div>
-        <b-row>
-            <b-col>
-                <span v-html="statusHtml"></span>
-            </b-col>
-            <b-col v-if="canChange">
-                <b-button variant="success" @click="approve" size="sm"><i class="fa fa-check"></i></b-button>
-                <b-button variant="danger" @click="reject" size="sm"><i class="fa fa-times"></i></b-button>
-            </b-col>
-        </b-row>
+        <span v-html="statusHtml"></span>
+        <a v-if="canChange" href="#" @click.prevent="approve"><i class="fa fa-check"></i><span class="sr-only">Approve</span></a>
+        <a v-if="canChange" href="#" @click.prevent="reject"><i class="fa fa-times"></i><span class="sr-only">Reject</span></a>
     </div>
 </template>
 
@@ -53,7 +47,7 @@
                         window.location.reload();
                     })
                     .catch(error => this.$notify.alert('Could not reject form response: ' + error.message));
-                
+
             }
         },
 
