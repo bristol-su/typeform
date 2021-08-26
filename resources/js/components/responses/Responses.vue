@@ -212,7 +212,9 @@
                     return false;
                 }));
                 fields.push({key: 'submittedAt', label: 'Submitted At', sortable: true})
-                fields.push({key: 'approvals', label: 'Approval'});
+                if(this.allowApproval) {
+                    fields.push({key: 'approvals', label: 'Approval'});
+                }
                 return fields;
             },
 
