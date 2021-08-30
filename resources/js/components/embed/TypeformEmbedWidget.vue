@@ -74,7 +74,7 @@
                 }
                 if(this.$tools.environment.authentication.hasRole()) {
                     hiddenUrl.query.portal_role_name = this.$tools.environment.authentication.getRole().data.role_name;
-                    hiddenUrl.query.portal_role_position_name = this.$tools.environment.authentication.getRole().position.data.name;
+                    hiddenUrl.query.portal_role_position_name = this.$tools.environment.authentication.getPosition().data.name;
                 }
 
                 if(this.$tools.environment.activityInstance.has()) {
