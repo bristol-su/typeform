@@ -17,6 +17,6 @@ Route::post('response/refresh', [\BristolSU\Module\Typeform\Http\Controllers\Adm
 Route::prefix('response/{typeform_response_id}')->group(function() {
     Route::post('approve', [\BristolSU\Module\Typeform\Http\Controllers\AdminApi\StatusController::class, 'approve']);
     Route::post('reject', [\BristolSU\Module\Typeform\Http\Controllers\AdminApi\StatusController::class, 'reject']);
-    Route::apiResource('comment', \BristolSU\Module\Typeform\Http\Controllers\AdminApi\CommentController::class)->only(['index', 'store'])->parameters(['comment' => 'typeform_comment']);
+    Route::apiResource('comment', \BristolSU\Module\Typeform\Http\Controllers\AdminApi\CommentController::class, ['as' => 'admin'])->only(['index', 'store'])->parameters(['comment' => 'typeform_comment']);
 });
-Route::apiResource('comment', \BristolSU\Module\Typeform\Http\Controllers\AdminApi\CommentController::class)->only(['update', 'destroy'])->parameters(['comment' => 'typeform_comment']);
+Route::apiResource('comment', \BristolSU\Module\Typeform\Http\Controllers\AdminApi\CommentController::class, ['as' => 'admin'])->only(['update', 'destroy'])->parameters(['comment' => 'typeform_comment']);
