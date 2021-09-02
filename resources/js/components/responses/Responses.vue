@@ -1,7 +1,7 @@
 <template>
     <div>
-        <div style="text-align: right;" v-if="canRefreshResponses">
-            <p-button variant="secondary" :disabled="refreshingResponses" @click="refreshResponses"><i class="fa fa-refresh" /> Refresh</p-button>
+        <div class="flex justify-end" v-if="canRefreshResponses">
+            <p-button variant="secondary" :disabled="refreshingResponses" @click="refreshResponses"><i class="fa fa-refresh" /> Resync Typeform</p-button>
         </div>
         <p-table :columns="columns" :items="filteredRows">
             <template #head(approvals)>
