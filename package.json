@@ -23,7 +23,7 @@
     },
     "dependencies": {
         "@bristol-su/frontend-toolkit": "github:bristol-su/frontend-toolkit#PR-361",
-        "@typeform/embed": "^0.15.3",
+        "@typeform/embed": "^1.18.1",
         "awesome-notifications": "^2.2.9",
         "bootstrap": "^4.4.1",
         "bootstrap-vue": "^2.10.1",

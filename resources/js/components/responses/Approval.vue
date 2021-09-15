@@ -1,8 +1,8 @@
 <template>
     <div>
         <span v-html="statusHtml"></span>
-        <a v-if="canChange" href="#" @click.prevent="approve"><i class="fa fa-check"></i><span class="sr-only">Approve</span></a>
-        <a v-if="canChange" href="#" @click.prevent="reject"><i class="fa fa-times"></i><span class="sr-only">Reject</span></a>
+        <a v-if="canChange && status !== true" href="#" @click.prevent="approve" role="button"><i class="fa fa-check"></i><span class="sr-only">Approve</span></a>
+        <a v-if="canChange && status !== false" href="#" @click.prevent="reject"><i class="fa fa-times"></i><span class="sr-only">Reject</span></a>
     </div>
 </template>
 
@@ -36,7 +36,7 @@
                 this.$http.post('/response/' + this.responseId + '/approve')
                     .then(response => {
                         this.$notify.success('Approved form response ' + this.responseId);
-                        window.location.reload();
+                        this.$emit('updated', true);
                     })
                     .catch(error => this.$notify.alert('Could not reject form response: ' + error.message));
             },
@@ -44,7 +44,7 @@
                 this.$http.post('/response/' + this.responseId + '/reject')
                     .then(response => {
                         this.$notify.success('Rejected form response ' + this.responseId);
-                        window.location.reload();
+                        this.$emit('updated', false);
                     })
                     .catch(error => this.$notify.alert('Could not reject form response: ' + error.message));
 
@@ -54,11 +54,11 @@
         computed: {
             statusHtml() {
                 if(this.status === true) {
-                    return '<i class="fa fa-check"></i> Approved'
+                    return 'Approved'
                 } else if(this.status === false) {
-                    return '<i class="fa fa-times"></i> Rejected'
+                    return 'Rejected'
                 }
-                return '<i class="fa fa-hourglass ' + this.statusClass + '"></i> Awaiting Approval'
+                return 'Awaiting Approval'
             },
             statusClass() {
                 if(this.status === true) {

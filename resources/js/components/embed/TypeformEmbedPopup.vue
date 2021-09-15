@@ -7,13 +7,12 @@
 </template>
 
 <script>
-    import * as typeform from '@typeform/embed'
 
     export default {
         name: "TypeformEmbedPopup",
 
         props: {
-            formUrl: {
+            formId: {
                 required: false,
                 type: String,
                 default: ''
@@ -43,14 +42,14 @@
         },
 
         mounted() {
-            this.typeformPopup = typeform.makePopup(
-                this.url,
-                {
-                    hideHeaders: this.hideHeaders,
-                    hideFooter: this.hideFooter,
-                    mode: this.mode
-                }
-            )
+            // this.typeformPopup = typeform.makePopup(
+            //     this.url,
+            //     {
+            //         hideHeaders: this.hideHeaders,
+            //         hideFooter: this.hideFooter,
+            //         mode: this.mode
+            //     }
+            // )
         },
 
         methods: {
@@ -61,7 +60,7 @@
 
         computed: {
             url() {
-                return this.formUrl;
+                // return this.formUrl;
             }
         }
     }

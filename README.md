@@ -64,6 +64,15 @@ All you need to do to get started using this module is pull it into the portal o
 composer require bristol-su/typeform
 ```
 
+You should also add the following to your `.env` file if you haven't already
+
+```
+TYPEFORM_CLIENT_ID=
+TYPEFORM_CLIENT_SECRET=
+```
+
+These can be generated through the developer apps setting in Typeform.
+
 <!-- ROADMAP -->
 ## Roadmap
 

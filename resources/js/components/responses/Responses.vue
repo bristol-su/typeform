@@ -1,17 +1,25 @@
 <template>
     <div>
         <div class="flex justify-end" v-if="canRefreshResponses">
-            <p-button variant="secondary" :disabled="refreshingResponses" @click="refreshResponses"><i class="fa fa-refresh" /> Resync Typeform</p-button>
+            <p-button variant="secondary" :disabled="refreshingResponses" @click="refreshResponses"><i class="fa fa-refresh" /> Sync Typeform</p-button>
         </div>
         <p-table :columns="columns" :items="filteredRows">
             <template #head(approvals)>
-                Approval Filter
-                <p-select id="approval-filtering" v-model="approvalFiltering" :select-options="filterOptions" null-label="No Filtering" :null-value="null">
+                <p-select id="approval-filtering" v-model="approvalFiltering" :select-options="filterOptions" null-label="No Filtering" :null-value="null" label="Approval Filter">
                 </p-select>
             </template>
 
+            <template #head()="{column}">
+                <p-hover v-if="fields.filter(f => f.id === column.key).length > 0">
+                    <template #onHover>
+                        {{column.fullLabel}}
+                    </template>
+                    {{column.label}}
+                </p-hover>
+            </template>
+
             <template #cell(approvals)="{row}">
-                <approval v-if="showApprovedStatus" :can-change="allowApproval" :response-id="row.responseId" :status="row.approved"></approval>
+                <approval v-if="showApprovedStatus" :can-change="allowApproval" :response-id="row.responseId" :status="row.approved" @updated="changeStatus(row, $event)"></approval>
             </template>
 
             <template #actions="{row}">
@@ -139,15 +147,20 @@
                 refreshingResponses: false,
                 approvalFiltering: null,
                 filterOptions: [
+                    {id: null, value: '-- No Filtering --'},
                     {id: 'approved', value: 'Only Approved'},
                     {id: 'rejected', value: 'Only Rejected'},
                     {id: 'awaiting', value: 'Awaiting Approval'}
                 ],
-                responseBeingCommented: null
+                responseBeingCommented: null,
+                overriddenStatuses: {}
             }
         },
 
         methods: {
+            changeStatus(response, status) {
+                Vue.set(this.overriddenStatuses, response.responseId, status);
+            },
             componentName(component) {
                 return 'cell-' + component;
             },
@@ -246,7 +259,7 @@
                 })].sort(this.sortCompare);
             },
             filteredRows() {
-                return this.rows.filter(row => {
+                let rows = this.rows.filter(row => {
                     if(this.approvalFiltering === 'approved') {
                         return row.approved === true;
                     } if(this.approvalFiltering === 'rejected') {
@@ -255,6 +268,16 @@
                         return row.approved === null;
                     }
                     return true;
+                })
+                return rows.map(row => {
+                    console.log(row.responseId);
+                    console.log(this.overriddenStatuses);
+                    console.log(this.overriddenStatuses.hasOwnProperty(row.responseId))
+                    if(this.overriddenStatuses.hasOwnProperty(row.responseId)) {
+                        row.approved = this.overriddenStatuses[row.responseId];
+                    }
+                    console.log(row);
+                    return row;
                 })
             }
         }
