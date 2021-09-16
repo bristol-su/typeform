@@ -1176,45 +1176,197 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("span", { domProps: { innerHTML: _vm._s(_vm.statusHtml) } }),
-    _vm._v(" "),
-    _vm.canChange && _vm.status !== true
-      ? _c(
-          "a",
-          {
-            attrs: { href: "#", role: "button" },
-            on: {
-              click: function($event) {
-                $event.preventDefault()
-                return _vm.approve.apply(null, arguments)
-              }
-            }
-          },
-          [
-            _c("i", { staticClass: "fa fa-check" }),
-            _c("span", { staticClass: "sr-only" }, [_vm._v("Approve")])
-          ]
-        )
-      : _vm._e(),
-    _vm._v(" "),
-    _vm.canChange && _vm.status !== false
-      ? _c(
-          "a",
-          {
-            attrs: { href: "#" },
-            on: {
-              click: function($event) {
-                $event.preventDefault()
-                return _vm.reject.apply(null, arguments)
-              }
-            }
-          },
-          [
-            _c("i", { staticClass: "fa fa-times" }),
-            _c("span", { staticClass: "sr-only" }, [_vm._v("Reject")])
-          ]
-        )
-      : _vm._e()
+    _c(
+      "div",
+      {
+        staticClass:
+          "text-xs inline-flex items-center font-bold leading-sm px-3 py-1 text-black rounded-full",
+        class: {
+          "bg-success-light": _vm.status === true,
+          "bg-danger-light": _vm.status === false,
+          "bg-warning-light": _vm.status === null
+        }
+      },
+      [
+        _vm.status === true
+          ? _c("span", [_vm._v("Accepted")])
+          : _vm.status === false
+          ? _c("span", [_vm._v("Rejected")])
+          : _c("span", [_vm._v("Pending")]),
+        _vm._v(" "),
+        _vm.status !== false
+          ? _c(
+              "a",
+              {
+                staticClass: "ml-1",
+                attrs: { href: "#", role: "button" },
+                on: {
+                  keydown: [
+                    function($event) {
+                      if (
+                        !$event.type.indexOf("key") &&
+                        _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                      ) {
+                        return null
+                      }
+                      $event.preventDefault()
+                      return _vm.reject.apply(null, arguments)
+                    },
+                    function($event) {
+                      if (
+                        !$event.type.indexOf("key") &&
+                        _vm._k($event.keyCode, "space", 32, $event.key, [
+                          " ",
+                          "Spacebar"
+                        ])
+                      ) {
+                        return null
+                      }
+                      $event.preventDefault()
+                      return _vm.reject.apply(null, arguments)
+                    }
+                  ],
+                  click: function($event) {
+                    $event.preventDefault()
+                    return _vm.reject.apply(null, arguments)
+                  }
+                }
+              },
+              [
+                _c("span", [
+                  _c(
+                    "svg",
+                    {
+                      directives: [
+                        {
+                          name: "tippy",
+                          rawName: "v-tippy",
+                          value: {
+                            arrow: true,
+                            animation: "fade",
+                            placement: "top-start",
+                            arrow: true,
+                            interactive: true
+                          },
+                          expression:
+                            "{ arrow: true, animation: 'fade', placement: 'top-start', arrow: true, interactive: true}"
+                        }
+                      ],
+                      staticClass: "h-5 w-5",
+                      attrs: {
+                        xmlns: "http://www.w3.org/2000/svg",
+                        viewBox: "0 0 20 20",
+                        fill: "currentColor",
+                        content: "Reject Submission"
+                      }
+                    },
+                    [
+                      _c("path", {
+                        attrs: {
+                          "fill-rule": "evenodd",
+                          d:
+                            "M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z",
+                          "clip-rule": "evenodd"
+                        }
+                      })
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "sr-only" }, [
+                    _vm._v("Reject Submission")
+                  ])
+                ])
+              ]
+            )
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.status !== true
+          ? _c(
+              "a",
+              {
+                staticClass: "ml-1",
+                attrs: { href: "#", role: "button" },
+                on: {
+                  keydown: [
+                    function($event) {
+                      if (
+                        !$event.type.indexOf("key") &&
+                        _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                      ) {
+                        return null
+                      }
+                      $event.preventDefault()
+                      return _vm.approve.apply(null, arguments)
+                    },
+                    function($event) {
+                      if (
+                        !$event.type.indexOf("key") &&
+                        _vm._k($event.keyCode, "space", 32, $event.key, [
+                          " ",
+                          "Spacebar"
+                        ])
+                      ) {
+                        return null
+                      }
+                      $event.preventDefault()
+                      return _vm.approve.apply(null, arguments)
+                    }
+                  ],
+                  click: function($event) {
+                    $event.preventDefault()
+                    return _vm.approve.apply(null, arguments)
+                  }
+                }
+              },
+              [
+                _c("span", [
+                  _c(
+                    "svg",
+                    {
+                      directives: [
+                        {
+                          name: "tippy",
+                          rawName: "v-tippy",
+                          value: {
+                            arrow: true,
+                            animation: "fade",
+                            placement: "top-start",
+                            arrow: true,
+                            interactive: true
+                          },
+                          expression:
+                            "{ arrow: true, animation: 'fade', placement: 'top-start', arrow: true, interactive: true}"
+                        }
+                      ],
+                      staticClass: "h-5 w-5",
+                      attrs: {
+                        xmlns: "http://www.w3.org/2000/svg",
+                        viewBox: "0 0 20 20",
+                        fill: "currentColor",
+                        content: "Approve Submission"
+                      }
+                    },
+                    [
+                      _c("path", {
+                        attrs: {
+                          "fill-rule": "evenodd",
+                          d:
+                            "M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z",
+                          "clip-rule": "evenodd"
+                        }
+                      })
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "sr-only" }, [
+                    _vm._v("Approve Submission")
+                  ])
+                ])
+              ]
+            )
+          : _vm._e()
+      ]
+    )
   ])
 }
 var staticRenderFns = []
@@ -2134,6 +2286,35 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
