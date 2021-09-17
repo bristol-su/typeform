@@ -1194,7 +1194,10 @@ var render = function() {
           ? _c("span", [_vm._v("Rejected")])
           : _c("span", [_vm._v("Pending")]),
         _vm._v(" "),
-        _vm.status !== false
+        _vm.status !== false &&
+        !_vm.$isLoading("approve-submission-" + this.responseId) &&
+        !_vm.$isLoading("reject-submission-" + this.responseId) &&
+        _vm.canChange
           ? _c(
               "a",
               {
@@ -1280,7 +1283,10 @@ var render = function() {
             )
           : _vm._e(),
         _vm._v(" "),
-        _vm.status !== true
+        _vm.status !== true &&
+        !_vm.$isLoading("approve-submission-" + this.responseId) &&
+        !_vm.$isLoading("reject-submission-" + this.responseId) &&
+        _vm.canChange
           ? _c(
               "a",
               {
@@ -1361,6 +1367,134 @@ var render = function() {
                   _c("span", { staticClass: "sr-only" }, [
                     _vm._v("Approve Submission")
                   ])
+                ])
+              ]
+            )
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.$isLoading("approve-submission-" + this.responseId)
+          ? _c(
+              "span",
+              {
+                staticClass: "ml-1",
+                attrs: { "aria-busy": true, "aria-live": "polite" }
+              },
+              [
+                _c(
+                  "svg",
+                  {
+                    directives: [
+                      {
+                        name: "tippy",
+                        rawName: "v-tippy",
+                        value: {
+                          arrow: true,
+                          animation: "fade",
+                          placement: "top-start",
+                          arrow: true,
+                          interactive: true
+                        },
+                        expression:
+                          "{ arrow: true, animation: 'fade', placement: 'top-start', arrow: true, interactive: true}"
+                      }
+                    ],
+                    staticClass: "animate-spin h-4 w-4 mr-3",
+                    attrs: {
+                      xmlns: "http://www.w3.org/2000/svg",
+                      fill: "none",
+                      viewBox: "0 0 24 24",
+                      content: "Approving Submission"
+                    }
+                  },
+                  [
+                    _c("circle", {
+                      staticClass: "opacity-25",
+                      attrs: {
+                        cx: "12",
+                        cy: "12",
+                        r: "10",
+                        stroke: "currentColor",
+                        "stroke-width": "4"
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("path", {
+                      staticClass: "opacity-75",
+                      attrs: {
+                        fill: "currentColor",
+                        d:
+                          "M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      }
+                    })
+                  ]
+                ),
+                _vm._v(" "),
+                _c("span", { staticClass: "sr-only" }, [
+                  _vm._v("Approving Submission")
+                ])
+              ]
+            )
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.$isLoading("reject-submission-" + this.responseId)
+          ? _c(
+              "span",
+              {
+                staticClass: "ml-1 text-black",
+                attrs: { "aria-busy": true, "aria-live": "polite" }
+              },
+              [
+                _c(
+                  "svg",
+                  {
+                    directives: [
+                      {
+                        name: "tippy",
+                        rawName: "v-tippy",
+                        value: {
+                          arrow: true,
+                          animation: "fade",
+                          placement: "top-start",
+                          arrow: true,
+                          interactive: true
+                        },
+                        expression:
+                          "{ arrow: true, animation: 'fade', placement: 'top-start', arrow: true, interactive: true}"
+                      }
+                    ],
+                    staticClass: "animate-spin h-4 w-4 mr-3",
+                    attrs: {
+                      xmlns: "http://www.w3.org/2000/svg",
+                      fill: "none",
+                      viewBox: "0 0 24 24",
+                      content: "Rejecting Submission"
+                    }
+                  },
+                  [
+                    _c("circle", {
+                      staticClass: "opacity-25",
+                      attrs: {
+                        cx: "12",
+                        cy: "12",
+                        r: "10",
+                        stroke: "currentColor",
+                        "stroke-width": "4"
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("path", {
+                      staticClass: "opacity-75",
+                      attrs: {
+                        fill: "currentColor",
+                        d:
+                          "M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      }
+                    })
+                  ]
+                ),
+                _vm._v(" "),
+                _c("span", { staticClass: "sr-only" }, [
+                  _vm._v("Rejecting Submission")
                 ])
               ]
             )
@@ -1792,7 +1926,9 @@ var render = function() {
                 {
                   attrs: {
                     variant: "secondary",
-                    disabled: _vm.refreshingResponses
+                    disabled: _vm.refreshingResponses,
+                    busy: _vm.$isLoading("refreshing-responses"),
+                    "busy-text": "Syncing"
                   },
                   on: { click: _vm.refreshResponses }
                 },
@@ -2323,6 +2459,36 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Approval",
   props: {
@@ -2348,7 +2514,9 @@ __webpack_require__.r(__webpack_exports__);
     approve: function approve() {
       var _this = this;
 
-      this.$http.post('/response/' + this.responseId + '/approve').then(function (response) {
+      this.$http.post('/response/' + this.responseId + '/approve', {}, {
+        name: 'approve-submission-' + this.responseId
+      }).then(function (response) {
         _this.$notify.success('Approved form response ' + _this.responseId);
 
         _this.$emit('updated', true);
@@ -2359,7 +2527,9 @@ __webpack_require__.r(__webpack_exports__);
     reject: function reject() {
       var _this2 = this;
 
-      this.$http.post('/response/' + this.responseId + '/reject').then(function (response) {
+      this.$http.post('/response/' + this.responseId + '/reject', {}, {
+        name: 'reject-submission-' + this.responseId
+      }).then(function (response) {
         _this2.$notify.success('Rejected form response ' + _this2.responseId);
 
         _this2.$emit('updated', false);
@@ -3182,7 +3352,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       var _this = this;
 
       this.refreshingResponses = true;
-      this.$http.post('/response/refresh').then(function (response) {
+      this.$http.post('/response/refresh', {}, {
+        name: 'refreshing-responses'
+      }).then(function (response) {
         return _this.$notify.success('Refresh the page to see any new changes');
       })["catch"](function (error) {
         return _this.$notify.alert('Could not refresh responses: ' + error.message);
@@ -3241,7 +3413,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       }
 
       fields.push({
-        key: 'submittedBy',
+        key: 'user.preferred_name',
         label: 'Submitted By'
       });
       fields = fields.concat(this.fields.map(function (field) {
@@ -3323,15 +3495,10 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         return true;
       });
       return rows.map(function (row) {
-        console.log(row.responseId);
-        console.log(_this2.overriddenStatuses);
-        console.log(_this2.overriddenStatuses.hasOwnProperty(row.responseId));
-
         if (_this2.overriddenStatuses.hasOwnProperty(row.responseId)) {
           row.approved = _this2.overriddenStatuses[row.responseId];
         }
 
-        console.log(row);
         return row;
       });
     }

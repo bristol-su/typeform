@@ -1,11 +1,11 @@
 <template>
     <div>
         <div class="flex justify-end" v-if="canRefreshResponses">
-            <p-button variant="secondary" :disabled="refreshingResponses" @click="refreshResponses"><i class="fa fa-refresh" /> Sync Typeform</p-button>
+            <p-button variant="secondary" :disabled="refreshingResponses" @click="refreshResponses" :busy="$isLoading('refreshing-responses')" busy-text="Syncing"><i class="fa fa-refresh" /> Sync Typeform</p-button>
         </div>
         <p-table :columns="columns" :items="filteredRows">
             <template #head(approvals)>
-                <p-select id="approval-filtering" v-model="approvalFiltering" :select-options="filterOptions" null-label="No Filtering" :null-value="null" label="Approval Filter">
+                <p-select id="approval-filtering" v-model="approvalFiltering" :select-options="filterOptions" null-label="No Filtering" :null-value="null" label="Approval Filter" >
                 </p-select>
             </template>
 
@@ -169,7 +169,7 @@
             },
             refreshResponses() {
                 this.refreshingResponses = true;
-                this.$http.post('/response/refresh')
+                this.$http.post('/response/refresh', {}, {name: 'refreshing-responses'})
                     .then(response => this.$notify.success('Refresh the page to see any new changes'))
                     .catch(error => this.$notify.alert('Could not refresh responses: ' + error.message))
                     .then(() => this.refreshingResponses = false );
@@ -214,7 +214,7 @@
                 if(this.showActivityInstanceBy) {
                     fields.push({key: 'activityInstanceBy', label: 'Submission For', sortable: true})
                 }
-                fields.push({key: 'submittedBy', label: 'Submitted By'});
+                fields.push({key: 'user.preferred_name', label: 'Submitted By'});
                 fields = fields.concat(this.fields.map(field => {
                     return {key: field.id, label: field.title.substring(0, 35), fullLabel: field.title};
                 }).filter(cols => {
@@ -270,13 +270,9 @@
                     return true;
                 })
                 return rows.map(row => {
-                    console.log(row.responseId);
-                    console.log(this.overriddenStatuses);
-                    console.log(this.overriddenStatuses.hasOwnProperty(row.responseId))
                     if(this.overriddenStatuses.hasOwnProperty(row.responseId)) {
                         row.approved = this.overriddenStatuses[row.responseId];
                     }
-                    console.log(row);
                     return row;
                 })
             }
