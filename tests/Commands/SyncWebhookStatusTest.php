@@ -13,12 +13,12 @@ class SyncWebhookStatusTest extends TestCase
     /** @test */
     public function it_dispatches_jobs_for_all_typeform_module_instances(){
         Bus::fake(SyncWebhookStatusJob::class);
-        $moduleInstances = factory(ModuleInstance::class, 8)->create([
+        $moduleInstances = ModuleInstance::factory()->count(8)->create([
             'alias' => 'typeform'
         ]);
-        $otherModules = factory(ModuleInstance::class, 2)->create(['alias' => 'other']);
+        $otherModules = ModuleInstance::factory()->count(2)->create(['alias' => 'other']);
         $this->artisan(SyncWebhookStatus::class);
-        
+
         foreach($moduleInstances as $moduleInstance) {
             Bus::assertDispatched(SyncWebhookStatusJob::class, function($job) use ($moduleInstance) {
                 return $job instanceof SyncWebhookStatusJob && $job->moduleInstance->is($moduleInstance);
@@ -31,24 +31,24 @@ class SyncWebhookStatusTest extends TestCase
             });
         }
     }
-    
+
     /** @test */
     public function it_only_dispatches_the_job_for_the_given_module_instance_if_given(){
         Bus::fake(SyncWebhookStatusJob::class);
-        $module = factory(ModuleInstance::class)->create([
+        $module = ModuleInstance::factory()->create([
             'alias' => 'typeform'
         ]);
-        
-        $moduleInstances = factory(ModuleInstance::class, 8)->create([
+
+        $moduleInstances = ModuleInstance::factory()->count(8)->create([
             'alias' => 'typeform'
         ]);
-        $otherModules = factory(ModuleInstance::class, 2)->create(['alias' => 'other']);
+        $otherModules = ModuleInstance::factory()->count(2)->create(['alias' => 'other']);
         $this->artisan('typeform:webhook ' . $module->id);
 
         Bus::assertDispatched(SyncWebhookStatusJob::class, function($job) use ($module) {
             return $job instanceof SyncWebhookStatusJob && $job->moduleInstance->is($module);
         });
-        
+
         foreach($moduleInstances as $moduleInstance) {
             Bus::assertNotDispatched(SyncWebhookStatusJob::class, function($job) use ($moduleInstance) {
                 return $job instanceof SyncWebhookStatusJob && $job->moduleInstance->is($moduleInstance);

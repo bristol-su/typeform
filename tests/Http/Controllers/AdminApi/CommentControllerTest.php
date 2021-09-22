@@ -18,9 +18,9 @@ class CommentControllerTest extends TestCase
     public function index_returns_403_if_permission_not_given()
     {
         $this->revokePermissionTo('typeform.admin.comment.index');
-        $response = factory(Response::class)->create(['module_instance_id' => $this->getModuleInstance()->id(), 'activity_instance_id' => $this->getActivityInstance()->id]);
+        $response = Response::factory()->create(['module_instance_id' => $this->getModuleInstance()->id(), 'activity_instance_id' => $this->getActivityInstance()->id]);
 
-        $jsonResponse = factory(Response::class)->create(['module_instance_id' => $this->getModuleInstance()->id()]);
+        $jsonResponse = Response::factory()->create(['module_instance_id' => $this->getModuleInstance()->id()]);
 
         $jsonResponse = $this->getJson($this->adminApiUrl('response/' . $response->id . '/comment'));
         $jsonResponse->assertStatus(403);
@@ -30,9 +30,9 @@ class CommentControllerTest extends TestCase
     public function index_returns_200_if_permission_given()
     {
         $this->givePermissionTo('typeform.admin.comment.index');
-        $response = factory(Response::class)->create(['module_instance_id' => $this->getModuleInstance()->id(), 'activity_instance_id' => $this->getActivityInstance()->id]);
+        $response = Response::factory()->create(['module_instance_id' => $this->getModuleInstance()->id(), 'activity_instance_id' => $this->getActivityInstance()->id]);
 
-        $jsonResponse = factory(Response::class)->create(['module_instance_id' => $this->getModuleInstance()->id()]);
+        $jsonResponse = Response::factory()->create(['module_instance_id' => $this->getModuleInstance()->id()]);
 
         $jsonResponse = $this->getJson($this->adminApiUrl('response/' . $response->id . '/comment'));
         $jsonResponse->assertStatus(200);
@@ -43,9 +43,9 @@ class CommentControllerTest extends TestCase
     {
         $this->bypassAuthorization();
 
-        $response = factory(Response::class)->create(['module_instance_id' => $this->getModuleInstance()->id()]);
-        $comments = factory(Comment::class, 5)->create(['response_id' => $response->id]);
-        $otherComments = factory(Comment::class, 3)->create();
+        $response = Response::factory()->create(['module_instance_id' => $this->getModuleInstance()->id()]);
+        $comments = Comment::factory()->count(5)->create(['response_id' => $response->id]);
+        $otherComments = Comment::factory()->count(3)->create();
 
         $jsonResponse = $this->getJson($this->adminApiUrl('/response/' . $response->id . '/comment'));
 
@@ -64,7 +64,7 @@ class CommentControllerTest extends TestCase
     public function store_returns_403_if_permission_not_given()
     {
         $this->revokePermissionTo('typeform.admin.comment.store');
-        $response = factory(Response::class)->create(['module_instance_id' => $this->getModuleInstance()->id()]);
+        $response = Response::factory()->create(['module_instance_id' => $this->getModuleInstance()->id()]);
 
         $jsonResponse = $this->postJson($this->adminApiUrl('response/' . $response->id . '/comment'), ['comment' => 'Test']);
         $jsonResponse->assertStatus(403);
@@ -74,7 +74,7 @@ class CommentControllerTest extends TestCase
     public function store_returns_200_if_permission_given()
     {
         $this->givePermissionTo('typeform.admin.comment.store');
-        $response = factory(Response::class)->create(['module_instance_id' => $this->getModuleInstance()->id()]);
+        $response = Response::factory()->create(['module_instance_id' => $this->getModuleInstance()->id()]);
 
         $jsonResponse = $this->postJson($this->adminApiUrl('response/' . $response->id . '/comment'), ['comment' => 'Test']);
         $jsonResponse->assertStatus(201);
@@ -85,7 +85,7 @@ class CommentControllerTest extends TestCase
     {
         $this->bypassAuthorization();
 
-        $response = factory(Response::class)->create(['module_instance_id' => $this->getModuleInstance()->id()]);
+        $response = Response::factory()->create(['module_instance_id' => $this->getModuleInstance()->id()]);
 
         $this->assertDatabaseMissing('typeform_comments', ['response_id' => $response->id]);
 
@@ -104,7 +104,7 @@ class CommentControllerTest extends TestCase
     {
         $this->bypassAuthorization();
 
-        $response = factory(Response::class)->create(['module_instance_id' => $this->getModuleInstance()->id()]);
+        $response = Response::factory()->create(['module_instance_id' => $this->getModuleInstance()->id()]);
 
         $jsonResponse = $this->postJson($this->adminApiUrl('response/' . $response->id . '/comment'), ['comment' => 'TestComment Here']);
         $jsonResponse->assertStatus(201);
@@ -120,7 +120,7 @@ class CommentControllerTest extends TestCase
         Event::fake(CommentCreated::class);
         $this->bypassAuthorization();
 
-        $response = factory(Response::class)->create(['module_instance_id' => $this->getModuleInstance()->id()]);
+        $response = Response::factory()->create(['module_instance_id' => $this->getModuleInstance()->id()]);
 
         $jsonResponse = $this->postJson($this->adminApiUrl('response/' . $response->id . '/comment'), ['comment' => 'TestComment Here']);
         $jsonResponse->assertStatus(201);
@@ -134,8 +134,8 @@ class CommentControllerTest extends TestCase
     public function destroy_returns_403_if_permission_not_given()
     {
         $this->revokePermissionTo('typeform.admin.comment.destroy');
-        $response = factory(Response::class)->create(['module_instance_id' => $this->getModuleInstance()->id()]);
-        $comment = factory(Comment::class)->create(['response_id' => $response->id]);
+        $response = Response::factory()->create(['module_instance_id' => $this->getModuleInstance()->id()]);
+        $comment = Comment::factory()->create(['response_id' => $response->id]);
 
         $jsonResponse = $this->deleteJson($this->adminApiUrl('/comment/' . $comment->id));
         $jsonResponse->assertStatus(403);
@@ -151,8 +151,8 @@ class CommentControllerTest extends TestCase
     {
         $this->givePermissionTo('typeform.admin.comment.destroy');
 
-        $response = factory(Response::class)->create(['module_instance_id' => $this->getModuleInstance()->id()]);
-        $comment = factory(Comment::class)->create(['response_id' => $response->id]);
+        $response = Response::factory()->create(['module_instance_id' => $this->getModuleInstance()->id()]);
+        $comment = Comment::factory()->create(['response_id' => $response->id]);
 
         $jsonResponse = $this->deleteJson($this->adminApiUrl('/comment/' . $comment->id));
         $jsonResponse->assertStatus(200);
@@ -163,8 +163,8 @@ class CommentControllerTest extends TestCase
     {
         $this->bypassAuthorization();
 
-        $response = factory(Response::class)->create(['module_instance_id' => $this->getModuleInstance()->id()]);
-        $comment = factory(Comment::class)->create(['response_id' => $response->id]);
+        $response = Response::factory()->create(['module_instance_id' => $this->getModuleInstance()->id()]);
+        $comment = Comment::factory()->create(['response_id' => $response->id]);
 
         $jsonResponse = $this->deleteJson($this->adminApiUrl('/comment/' . $comment->id));
         $jsonResponse->assertStatus(200);
@@ -178,8 +178,8 @@ class CommentControllerTest extends TestCase
     public function destroy_returns_the_comment()
     {
         $this->bypassAuthorization();
-        $response = factory(Response::class)->create(['module_instance_id' => $this->getModuleInstance()->id()]);
-        $comment = factory(Comment::class)->create(['response_id' => $response->id]);
+        $response = Response::factory()->create(['module_instance_id' => $this->getModuleInstance()->id()]);
+        $comment = Comment::factory()->create(['response_id' => $response->id]);
         $now = Carbon::now();
         Carbon::setTestNow($now);
 
@@ -198,8 +198,8 @@ class CommentControllerTest extends TestCase
         Event::fake(CommentDeleted::class);
         $this->bypassAuthorization();
 
-        $response = factory(Response::class)->create(['module_instance_id' => $this->getModuleInstance()->id()]);
-        $comment = factory(Comment::class)->create(['response_id' => $response->id]);
+        $response = Response::factory()->create(['module_instance_id' => $this->getModuleInstance()->id()]);
+        $comment = Comment::factory()->create(['response_id' => $response->id]);
 
         $jsonResponse = $this->deleteJson($this->adminApiUrl('comment/' . $comment->id));
         $jsonResponse->assertStatus(200);
@@ -213,8 +213,8 @@ class CommentControllerTest extends TestCase
     public function update_returns_403_if_permission_not_owned()
     {
         $this->revokePermissionTo('typeform.admin.comment.update');
-        $response = factory(Response::class)->create(['module_instance_id' => $this->getModuleInstance()->id()]);
-        $comment = factory(Comment::class)->create(['comment' => 'OldComment', 'response_id' => $response->id]);
+        $response = Response::factory()->create(['module_instance_id' => $this->getModuleInstance()->id()]);
+        $comment = Comment::factory()->create(['comment' => 'OldComment', 'response_id' => $response->id]);
 
         $jsonResponse = $this->patchJson($this->adminApiUrl('/comment/' . $comment->id), ['comment' => 'NewComment']);
         $jsonResponse->assertStatus(403);
@@ -229,8 +229,8 @@ class CommentControllerTest extends TestCase
     public function update_returns_200_if_permission_owned()
     {
         $this->givePermissionTo('typeform.admin.comment.update');
-        $response = factory(Response::class)->create(['module_instance_id' => $this->getModuleInstance()->id()]);
-        $comment = factory(Comment::class)->create(['comment' => 'OldComment', 'response_id' => $response->id]);
+        $response = Response::factory()->create(['module_instance_id' => $this->getModuleInstance()->id()]);
+        $comment = Comment::factory()->create(['comment' => 'OldComment', 'response_id' => $response->id]);
 
         $jsonResponse = $this->patchJson($this->adminApiUrl('/comment/' . $comment->id), ['comment' => 'NewComment']);
         $jsonResponse->assertStatus(200);
@@ -240,8 +240,8 @@ class CommentControllerTest extends TestCase
     public function update_updates_the_comment_text()
     {
         $this->bypassAuthorization();
-        $response = factory(Response::class)->create(['module_instance_id' => $this->getModuleInstance()->id()]);
-        $comment = factory(Comment::class)->create(['comment' => 'OldComment', 'response_id' => $response->id]);
+        $response = Response::factory()->create(['module_instance_id' => $this->getModuleInstance()->id()]);
+        $comment = Comment::factory()->create(['comment' => 'OldComment', 'response_id' => $response->id]);
 
         $jsonResponse = $this->patchJson($this->adminApiUrl('/comment/' . $comment->id), ['comment' => 'NewComment']);
         $jsonResponse->assertStatus(200);
@@ -257,8 +257,8 @@ class CommentControllerTest extends TestCase
     {
         $this->bypassAuthorization();
 
-        $response = factory(Response::class)->create(['module_instance_id' => $this->getModuleInstance()->id()]);
-        $comment = factory(Comment::class)->create(['comment' => 'OldComment', 'response_id' => $response->id]);
+        $response = Response::factory()->create(['module_instance_id' => $this->getModuleInstance()->id()]);
+        $comment = Comment::factory()->create(['comment' => 'OldComment', 'response_id' => $response->id]);
 
         $jsonResponse = $this->patchJson($this->adminApiUrl('/comment/' . $comment->id), ['comment' => 'NewComment']);
         $jsonResponse->assertStatus(200);
@@ -275,8 +275,8 @@ class CommentControllerTest extends TestCase
         Event::fake(CommentUpdated::class);
         $this->bypassAuthorization();
 
-        $response = factory(Response::class)->create(['module_instance_id' => $this->getModuleInstance()->id()]);
-        $comment = factory(Comment::class)->create(['response_id' => $response->id]);
+        $response = Response::factory()->create(['module_instance_id' => $this->getModuleInstance()->id()]);
+        $comment = Comment::factory()->create(['response_id' => $response->id]);
 
         $jsonResponse = $this->patchJson($this->adminApiUrl('comment/' . $comment->id), ['comment' => 'NewComment']);
         $jsonResponse->assertStatus(200);

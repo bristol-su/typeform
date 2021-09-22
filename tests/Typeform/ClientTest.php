@@ -29,12 +29,12 @@ class ClientTest extends TestCase
                 'created_at' => '2016-11-21T12:23:28Z',
                 'updated_at' => '2016-11-21T12:23:28Z'
             ])));
-        
-        $webhook = factory(Webhook::class)->create([
+
+        $webhook = Webhook::factory()->create([
             'form_id' => 'form-id-123',
             'tag' => 'webhook-tag-123'
         ]);
-        
+
         $client = new Client($connector->reveal());
         $this->assertTrue($client->webhookExists($webhook));
     }
@@ -45,13 +45,13 @@ class ClientTest extends TestCase
         $connector = $this->prophesize(Connector::class);
         $connector->request('GET', 'https://api.typeform.com/forms/form-id-123/webhooks/webhook-tag-123')->shouldBeCalled()
             ->willThrow(
-                new ClientException('Webhook not found', 
+                new ClientException('Webhook not found',
                     new Request('GET', 'https//api.typeform.com/forms/form-id-123/webhooks/webhook-tag-123'),
                     new Response(404)
                 )
             );
 
-        $webhook = factory(Webhook::class)->create([
+        $webhook = Webhook::factory()->create([
             'form_id' => 'form-id-123',
             'tag' => 'webhook-tag-123'
         ]);
@@ -59,12 +59,12 @@ class ClientTest extends TestCase
         $client = new Client($connector->reveal());
         $this->assertFalse($client->webhookExists($webhook));
     }
-    
+
     /** @test */
     public function webhookExists_throws_an_exception_if_the_response_code_is_not_a_404(){
         $this->expectException(ClientException::class);
         $this->expectExceptionMessage('Unauthorized');
-        
+
         $connector = $this->prophesize(Connector::class);
         $connector->request('GET', 'https://api.typeform.com/forms/form-id-123/webhooks/webhook-tag-123')->shouldBeCalled()
             ->willThrow(
@@ -74,7 +74,7 @@ class ClientTest extends TestCase
                 )
             );
 
-        $webhook = factory(Webhook::class)->create([
+        $webhook = Webhook::factory()->create([
             'form_id' => 'form-id-123',
             'tag' => 'webhook-tag-123'
         ]);
@@ -82,7 +82,7 @@ class ClientTest extends TestCase
         $client = new Client($connector->reveal());
         $client->webhookExists($webhook);
     }
-    
+
     /** @test */
     public function webhookEnabled_returns_true_if_the_webhook_is_enabled(){
         $connector = $this->prophesize(Connector::class);
@@ -98,7 +98,7 @@ class ClientTest extends TestCase
                 'updated_at' => '2016-11-21T12:23:28Z'
             ])));
 
-        $webhook = factory(Webhook::class)->create([
+        $webhook = Webhook::factory()->create([
             'form_id' => 'form-id-123',
             'tag' => 'webhook-tag-123'
         ]);
@@ -106,7 +106,7 @@ class ClientTest extends TestCase
         $client = new Client($connector->reveal());
         $this->assertTrue($client->webhookEnabled($webhook));
     }
-    
+
     /** @test */
     public function webhookEnabled_returns_false_if_the_webhook_is_not_enabled(){
         $connector = $this->prophesize(Connector::class);
@@ -122,7 +122,7 @@ class ClientTest extends TestCase
                 'updated_at' => '2016-11-21T12:23:28Z'
             ])));
 
-        $webhook = factory(Webhook::class)->create([
+        $webhook = Webhook::factory()->create([
             'form_id' => 'form-id-123',
             'tag' => 'webhook-tag-123'
         ]);
@@ -130,12 +130,12 @@ class ClientTest extends TestCase
         $client = new Client($connector->reveal());
         $this->assertFalse($client->webhookEnabled($webhook));
     }
-    
+
     /** @test */
     public function webhookEnabled_throws_an_exception_if_guzzle_throws_an_exception(){
         $this->expectException(ClientException::class);
         $this->expectExceptionMessage('Webhook not found');
-        
+
         $connector = $this->prophesize(Connector::class);
         $connector->request('GET', 'https://api.typeform.com/forms/form-id-123/webhooks/webhook-tag-123')->shouldBeCalled()
             ->willThrow(
@@ -145,7 +145,7 @@ class ClientTest extends TestCase
                 )
             );
 
-        $webhook = factory(Webhook::class)->create([
+        $webhook = Webhook::factory()->create([
             'form_id' => 'form-id-123',
             'tag' => 'webhook-tag-123'
         ]);
@@ -153,14 +153,14 @@ class ClientTest extends TestCase
         $client = new Client($connector->reveal());
         $client->webhookEnabled($webhook);
     }
-    
+
     /** @test */
     public function webhoookCreate_creates_a_webhook(){
-        $webhook = factory(Webhook::class)->create([
+        $webhook = Webhook::factory()->create([
             'form_id' => 'form-id-123',
             'tag' => 'webhook-tag-123'
         ]);
-        
+
         $connector = $this->prophesize(Connector::class);
         $connector->request('PUT', 'https://api.typeform.com/forms/form-id-123/webhooks/webhook-tag-123', [
             'json' => ['url' => $webhook->url(), 'enabled' => true]
@@ -182,7 +182,7 @@ class ClientTest extends TestCase
 
     /** @test */
     public function webhoookDelete_deletes_a_webhook(){
-        $webhook = factory(Webhook::class)->create([
+        $webhook = Webhook::factory()->create([
             'form_id' => 'form-id-123',
             'tag' => 'webhook-tag-123'
         ]);
@@ -197,7 +197,7 @@ class ClientTest extends TestCase
 
     /** @test */
     public function webhoookEnable_enables_a_webhook(){
-        $webhook = factory(Webhook::class)->create([
+        $webhook = Webhook::factory()->create([
             'form_id' => 'form-id-123',
             'tag' => 'webhook-tag-123'
         ]);
@@ -223,7 +223,7 @@ class ClientTest extends TestCase
 
     /** @test */
     public function webhoookDisable_disables_a_webhook(){
-        $webhook = factory(Webhook::class)->create([
+        $webhook = Webhook::factory()->create([
             'form_id' => 'form-id-123',
             'tag' => 'webhook-tag-123'
         ]);
@@ -246,12 +246,12 @@ class ClientTest extends TestCase
         $client = new Client($connector->reveal());
         $client->webhookDisable($webhook);
     }
-    
+
     /** @test */
     public function allResponses_returns_all_the_responses(){
         $connector = $this->prophesize(Connector::class);
         $connector->request('GET', 'https://api.typeform.com/forms/form-id-123/responses', [
-            'query' => ['page_size' => 1000]
+            'query' => ['page_size' => 1000, 'completed' => true]
         ])->shouldBeCalled()
             ->willReturn(new Response(200, [], json_encode([
                 'items' => [

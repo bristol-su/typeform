@@ -117,6 +117,7 @@ class Client
                     'completed' => true
                 ]
             ]);
+
         } catch (ServerException $e) {
             if($e->getCode() !== 504 && $e->getCode() !== 502) {
                 throw $e;

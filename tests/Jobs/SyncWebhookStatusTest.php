@@ -19,7 +19,7 @@ class SyncWebhookStatusTest extends TestCase
 
     /** @test */
     public function it_returns_null_if_no_connection_available_exception_thrown(){
-        $moduleInstance = factory(ModuleInstance::class)->create();
+        $moduleInstance = ModuleInstance::factory()->create();
 
         $moduleInstanceServiceRepository = $this->prophesize(ModuleInstanceServiceRepository::class);
         $connector = $this->prophesize(Connector::class);
@@ -62,7 +62,7 @@ class SyncWebhookStatusTest extends TestCase
         ModuleInstanceSetting::create(['module_instance_id' => $this->getModuleInstance()->id, 'key' => 'use_webhook', 'value' => true]);
         ModuleInstanceSetting::create(['module_instance_id' => $this->getModuleInstance()->id, 'key' => 'form_id', 'value' => 'a-form-id']);
 
-        $webhook = factory(Webhook::class)->create([
+        $webhook = Webhook::factory()->create([
             'module_instance_id' => $this->getModuleInstance()->id(),
             'tag' => Webhook::generatedTag($this->getModuleInstance()),
             'form_id' => 'a-form-id'
@@ -88,7 +88,7 @@ class SyncWebhookStatusTest extends TestCase
         ModuleInstanceSetting::create(['module_instance_id' => $this->getModuleInstance()->id, 'key' => 'use_webhook', 'value' => true]);
         ModuleInstanceSetting::create(['module_instance_id' => $this->getModuleInstance()->id, 'key' => 'form_id', 'value' => 'a-form-id']);
 
-        $webhook = factory(Webhook::class)->create([
+        $webhook = Webhook::factory()->create([
             'module_instance_id' => $this->getModuleInstance()->id(),
             'tag' => Webhook::generatedTag($this->getModuleInstance()),
             'form_id' => 'a-form-id'
@@ -116,7 +116,7 @@ class SyncWebhookStatusTest extends TestCase
         ModuleInstanceSetting::create(['module_instance_id' => $this->getModuleInstance()->id, 'key' => 'use_webhook', 'value' => true]);
         ModuleInstanceSetting::create(['module_instance_id' => $this->getModuleInstance()->id, 'key' => 'form_id', 'value' => 'a-form-id']);
 
-        $webhook = factory(Webhook::class)->create([
+        $webhook = Webhook::factory()->create([
             'module_instance_id' => $this->getModuleInstance()->id(),
             'tag' => Webhook::generatedTag($this->getModuleInstance()),
             'form_id' => 'a-form-id'
@@ -169,7 +169,7 @@ class SyncWebhookStatusTest extends TestCase
         ModuleInstanceSetting::create(['module_instance_id' => $this->getModuleInstance()->id, 'key' => 'use_webhook', 'value' => false]);
         ModuleInstanceSetting::create(['module_instance_id' => $this->getModuleInstance()->id, 'key' => 'form_id', 'value' => 'a-form-id']);
 
-        $webhook = factory(Webhook::class)->create([
+        $webhook = Webhook::factory()->create([
             'module_instance_id' => $this->getModuleInstance()->id(),
             'tag' => Webhook::generatedTag($this->getModuleInstance()),
             'form_id' => 'a-form-id'
@@ -197,7 +197,7 @@ class SyncWebhookStatusTest extends TestCase
         ModuleInstanceSetting::create(['module_instance_id' => $this->getModuleInstance()->id, 'key' => 'use_webhook', 'value' => false]);
         ModuleInstanceSetting::create(['module_instance_id' => $this->getModuleInstance()->id, 'key' => 'form_id', 'value' => 'a-form-id']);
 
-        $webhook = factory(Webhook::class)->create([
+        $webhook = Webhook::factory()->create([
             'module_instance_id' => $this->getModuleInstance()->id(),
             'tag' => Webhook::generatedTag($this->getModuleInstance()),
             'form_id' => 'a-form-id'

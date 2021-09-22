@@ -14,13 +14,12 @@
         "php": "^8.0",
         "bristol-su/support": "^5.0.0",
         "watr/typeform": "^1.5",
-        "bristol-su/typeform-service": "^2.0.0",
+        "bristol-su/typeform-service": "^3.0.0",
         "ext-json": "*",
         "spatie/laravel-rate-limited-job-middleware": "^1.4"
     },
     "require-dev": {
         "orchestra/testbench": "^6.19",
-        "laravel/legacy-factories": "^1.1",
         "phpspec/prophecy-phpunit": "^2.0"
     },
     "autoload": {
@@ -30,7 +29,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "BristolSU\\Module\\Tests\\Typeform\\": "tests/"
+            "BristolSU\\Module\\Tests\\Typeform\\": "tests/",
+            "Database\\Typeform\\Factories\\": "database/factories/"
         }
     },
     "extra": {

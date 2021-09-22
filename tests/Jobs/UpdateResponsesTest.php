@@ -21,7 +21,7 @@ class UpdateResponsesTest extends TestCase
 
     /** @test */
     public function it_returns_null_if_no_connection_available_exception_thrown(){
-        $moduleInstance = factory(ModuleInstance::class)->create();
+        $moduleInstance = ModuleInstance::factory()->create();
 
         $moduleInstanceServiceRepository = $this->prophesize(ModuleInstanceServiceRepository::class);
         $connector = $this->prophesize(Connector::class);
@@ -40,7 +40,7 @@ class UpdateResponsesTest extends TestCase
         ModuleInstanceSetting::create(['module_instance_id' => $this->getModuleInstance()->id, 'key' => 'collect_responses', 'value' => true]);
         ModuleInstanceSetting::create(['module_instance_id' => $this->getModuleInstance()->id, 'key' => 'use_webhook', 'value' => true]);
 
-        $webhook = factory(Webhook::class)->create([
+        $webhook = Webhook::factory()->create([
             'module_instance_id' => $this->getModuleInstance()->id(),
             'tag' => Webhook::generatedTag($this->getModuleInstance()),
             'form_id' => 'a-form-id'
@@ -61,7 +61,7 @@ class UpdateResponsesTest extends TestCase
         ModuleInstanceSetting::create(['module_instance_id' => $this->getModuleInstance()->id, 'key' => 'use_webhook', 'value' => true]);
         ModuleInstanceSetting::create(['module_instance_id' => $this->getModuleInstance()->id, 'key' => 'form_id', 'value' => '']);
 
-        $webhook = factory(Webhook::class)->create([
+        $webhook = Webhook::factory()->create([
             'module_instance_id' => $this->getModuleInstance()->id(),
             'tag' => Webhook::generatedTag($this->getModuleInstance()),
             'form_id' => 'dd'
@@ -78,13 +78,13 @@ class UpdateResponsesTest extends TestCase
 
     /** @test */
     public function it_handles_all_responses_which_have_not_been_handled_and_have_the_right_module_instance(){
-        $otherModuleInstance = factory(ModuleInstance::class)->create();
+        $otherModuleInstance = ModuleInstance::factory()->create();
 
         ModuleInstanceSetting::create(['module_instance_id' => $this->getModuleInstance()->id, 'key' => 'collect_responses', 'value' => true]);
         ModuleInstanceSetting::create(['module_instance_id' => $this->getModuleInstance()->id, 'key' => 'use_webhook', 'value' => true]);
         ModuleInstanceSetting::create(['module_instance_id' => $this->getModuleInstance()->id, 'key' => 'form_id', 'value' => 'form-123']);
 
-        $webhook = factory(Webhook::class)->create([
+        $webhook = Webhook::factory()->create([
             'module_instance_id' => $this->getModuleInstance()->id(),
             'tag' => Webhook::generatedTag($this->getModuleInstance()),
             'form_id' => 'a-form-id'
@@ -116,7 +116,7 @@ class UpdateResponsesTest extends TestCase
                 'token' => '12345678'
             ],
         ]);
-        factory(Response::class)->create(['id' => '1234567']);
+        Response::factory()->create(['id' => '1234567']);
         $client->allFields('form-123')->shouldBeCalled()->willReturn([]);
 
         $handler = $this->prophesize(ResponseHandler::class);

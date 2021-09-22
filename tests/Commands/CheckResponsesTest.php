@@ -14,8 +14,8 @@ class CheckResponsesTest extends TestCase
     /** @test */
     public function it_dispatches_jobs_for_all_typeform_module_instances(){
         Bus::fake(CheckResponsesJob::class);
-        
-        $moduleInstances = factory(ModuleInstance::class, 8)->create([
+
+        $moduleInstances = ModuleInstance::factory()->count(8)->create([
             'alias' => 'typeform'
         ]);
         foreach($moduleInstances as $moduleInstance) {
@@ -24,35 +24,35 @@ class CheckResponsesTest extends TestCase
             ModuleInstanceSetting::create(['module_instance_id' => $moduleInstance->id, 'key' => 'form_id', 'value' => 'dd']);
         }
 
-        $otherModule1 = factory(ModuleInstance::class)->create([
+        $otherModule1 = ModuleInstance::factory()->create([
             'alias' => 'typeform'
         ]);
         ModuleInstanceSetting::create(['module_instance_id' => $otherModule1->id, 'key' => 'collect_responses', 'value' => true]);
         ModuleInstanceSetting::create(['module_instance_id' => $otherModule1->id, 'key' => 'use_webhook', 'value' => false]);
         ModuleInstanceSetting::create(['module_instance_id' => $otherModule1->id, 'key' => 'form_id', 'value' => null]);
 
-        $otherModule2 = factory(ModuleInstance::class)->create([
+        $otherModule2 = ModuleInstance::factory()->create([
             'alias' => 'typeform'
         ]);
         ModuleInstanceSetting::create(['module_instance_id' => $otherModule2->id, 'key' => 'collect_responses', 'value' => true]);
         ModuleInstanceSetting::create(['module_instance_id' => $otherModule2->id, 'key' => 'use_webhook', 'value' => true]);
         ModuleInstanceSetting::create(['module_instance_id' => $otherModule2->id, 'key' => 'form_id', 'value' => 'id_here']);
 
-        $otherModule3 = factory(ModuleInstance::class)->create([
+        $otherModule3 = ModuleInstance::factory()->create([
             'alias' => 'typeform'
         ]);
         ModuleInstanceSetting::create(['module_instance_id' => $otherModule3->id, 'key' => 'collect_responses', 'value' => false]);
         ModuleInstanceSetting::create(['module_instance_id' => $otherModule3->id, 'key' => 'use_webhook', 'value' => false]);
-        ModuleInstanceSetting::create(['module_instance_id' => $otherModule2->id, 'key' => 'form_id', 'value' => 'id_here']);    
-        
-        $otherModule4 = factory(ModuleInstance::class)->create(['alias' => 'other']);
+        ModuleInstanceSetting::create(['module_instance_id' => $otherModule2->id, 'key' => 'form_id', 'value' => 'id_here']);
+
+        $otherModule4 = ModuleInstance::factory()->create(['alias' => 'other']);
         ModuleInstanceSetting::create(['module_instance_id' => $otherModule4->id, 'key' => 'collect_responses', 'value' => true]);
         ModuleInstanceSetting::create(['module_instance_id' => $otherModule4->id, 'key' => 'use_webhook', 'value' => false]);
         ModuleInstanceSetting::create(['module_instance_id' => $otherModule4->id, 'key' => 'form_id', 'value' => 'dddd']);
-        
-        
+
+
         $this->artisan(CheckResponses::class);
-        
+
         foreach($moduleInstances as $moduleInstance) {
             Bus::assertDispatched(CheckResponsesJob::class, function($job) use ($moduleInstance) {
                 return $job instanceof CheckResponsesJob && $job->moduleInstance->is($moduleInstance);
@@ -65,12 +65,12 @@ class CheckResponsesTest extends TestCase
             });
         }
     }
-    
+
     /** @test */
     public function it_only_dispatches_the_job_for_the_given_module_instance_if_given(){
         Bus::fake(CheckResponsesJob::class);
 
-        $moduleInstances = factory(ModuleInstance::class, 8)->create([
+        $moduleInstances = ModuleInstance::factory()->count(8)->create([
             'alias' => 'typeform'
         ]);
         foreach($moduleInstances as $moduleInstance) {
@@ -78,7 +78,7 @@ class CheckResponsesTest extends TestCase
             ModuleInstanceSetting::create(['module_instance_id' => $moduleInstance->id, 'key' => 'use_webhook', 'value' => false]);
             ModuleInstanceSetting::create(['module_instance_id' => $moduleInstance->id, 'key' => 'form_id', 'value' => 'dd']);
         }
-        $moduleInstance1 = factory(ModuleInstance::class)->create([
+        $moduleInstance1 = ModuleInstance::factory()->create([
             'alias' => 'typeform'
         ]);
         ModuleInstanceSetting::create(['module_instance_id' => $moduleInstance1->id, 'key' => 'collect_responses', 'value' => true]);

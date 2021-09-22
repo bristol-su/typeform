@@ -21,18 +21,18 @@ class IncomingWebhookControllerTest extends TestCase
                 ]
             ]
         ];
-        
-        $formResponse = factory(Response::class)->create();
-        
+
+        $formResponse = Response::factory()->create();
+
         $handler = $this->prophesize(ResponseHandler::class);
         $handler->handle(Argument::that(function($arg) {
             return $arg instanceof WebhookPayload && $arg->responseId() === 'response_id';
         }))->shouldBeCalled()->willReturn($formResponse);
         $this->instance(ResponseHandler::class, $handler->reveal());
-        
+
         $response = $this->post($this->adminApiUrl('webhook/responses'), $bundle);
         $response->assertStatus(201);
-        
+
     }
-    
+
 }
