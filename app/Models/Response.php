@@ -4,11 +4,14 @@ namespace BristolSU\Module\Typeform\Models;
 
 use BristolSU\Support\ActivityInstance\Contracts\ActivityInstanceRepository;
 use BristolSU\Support\Authentication\HasResource;
+use Database\Typeform\Factories\TypeformResponsesFactory;
+use Database\Typeform\Factories\TypeformWebhookFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Response extends Model
 {
-    use HasResource;
+    use HasResource, HasFactory;
 
     protected $table = 'typeform_responses';
 
@@ -74,6 +77,16 @@ class Response extends Model
     protected function serializeDate(\DateTimeInterface $date)
     {
         return $date->format('Y-m-d H:i:s');
+    }
+
+    /**
+     * Create a new factory instance for the model.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    protected static function newFactory()
+    {
+        return new TypeformResponsesFactory();
     }
 
 }

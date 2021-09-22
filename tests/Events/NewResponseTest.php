@@ -15,16 +15,16 @@ class NewResponseTest extends TestCase
     /** @test */
     public function it_returns_the_correct_fields()
     {
-        $dataUser = factory(DataUser::class)->create([
+        $dataUser = DataUser::factory()->create([
             'first_name' => 'Toby',
             'last_name' => 'Twigger',
             'email' => 'tobytwigger@example.com',
             'preferred_name' => 'Toby Twigger2'
         ]);
-        $user = factory(User::class)->create(['data_provider_id' => $dataUser->id()]);
+        $user = User::factory()->create(['data_provider_id' => $dataUser->id()]);
         $submittedAt = Carbon::now()->subMinutes(15);
 
-        $response = factory(Response::class)->create([
+        $response = Response::factory()->create([
             'id' => 'a-response-id',
             'form_id' => 'some-form-id',
             'submitted_by' => $user->id(),
@@ -52,7 +52,7 @@ class NewResponseTest extends TestCase
 
     /** @test */
     public function it_returns_metadata_for_the_fields(){
-        $response = factory(Response::class)->create();
+        $response = Response::factory()->create();
 
         $event = new NewResponse($response);
         $fields = array_keys($event->getFields());

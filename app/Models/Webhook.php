@@ -4,7 +4,9 @@ namespace BristolSU\Module\Typeform\Models;
 
 use BristolSU\Support\ModuleInstance\Contracts\ModuleInstanceRepository;
 use BristolSU\Support\ModuleInstance\ModuleInstance;
+use Database\Typeform\Factories\TypeformWebhookFactory;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -15,7 +17,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Webhook extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HasFactory;
 
     protected $table = 'typeform_webhooks';
 
@@ -71,6 +73,16 @@ class Webhook extends Model
     protected function serializeDate(\DateTimeInterface $date)
     {
         return $date->format('Y-m-d H:i:s');
+    }
+
+    /**
+     * Create a new factory instance for the model.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    protected static function newFactory()
+    {
+        return new TypeformWebhookFactory();
     }
 
 }

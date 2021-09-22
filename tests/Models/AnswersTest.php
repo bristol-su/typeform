@@ -12,28 +12,28 @@ class AnswersTest extends TestCase
 
     /** @test */
     public function it_has_a_field(){
-        $field = factory(Field::class)->create();
-        $answer = factory(Answer::class)->create(['field_id' => $field->id]);
-        
+        $field = Field::factory()->create();
+        $answer = Answer::factory()->create(['field_id' => $field->id]);
+
         $this->assertInstanceOf(Field::class, $answer->field);
         $this->assertModelEquals($field, $answer->field);
     }
-    
+
     /** @test */
     public function it_has_a_response(){
-        $response = factory(Response::class)->create();
-        $answer = factory(Answer::class)->create(['response_id' => $response->id]);
+        $response = Response::factory()->create();
+        $answer = Answer::factory()->create(['response_id' => $response->id]);
 
         $this->assertInstanceOf(Response::class, $answer->response);
         $this->assertModelEquals($response, $answer->response);
     }
-    
+
     /** @test */
     public function it_sets_and_gets_a_non_array_value_with_a_mutator_and_accessor(){
-        $answer = factory(Answer::class)->create([
+        $answer = Answer::factory()->create([
             'answer' => 'SomeValue'
         ]);
-        
+
         $this->assertDatabaseHas('typeform_answers', [
             'id' => $answer->id,
             'answer' => 'SomeValue',
@@ -41,10 +41,10 @@ class AnswersTest extends TestCase
         ]);
         $this->assertEquals('SomeValue', $answer->answer);
     }
-    
+
     /** @test */
     public function it_encodes_and_decodes_an_array_value_with_a_mutator_and_accessor(){
-        $answer = factory(Answer::class)->make();
+        $answer = Answer::factory()->make();
         $answer->answer = ['SomeKey' => 'SomeValue'];
         $answer->save();
 
@@ -53,9 +53,9 @@ class AnswersTest extends TestCase
             'answer' => '{"SomeKey":"SomeValue"}',
             'encoded' => true
         ]);
-        
+
         $this->assertIsArray($answer->answer);
         $this->assertEquals(['SomeKey' => 'SomeValue'], $answer->answer);
     }
-    
+
 }

@@ -4,12 +4,14 @@ namespace BristolSU\Module\Typeform\Models;
 
 use BristolSU\ControlDB\Contracts\Repositories\User as UserRepository;
 use BristolSU\Support\Revision\HasRevisions;
+use Database\Typeform\Factories\TypeformCommentFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Comment extends Model
 {
-    use SoftDeletes, HasRevisions;
+    use SoftDeletes, HasRevisions, HasFactory;
 
     protected $table = 'typeform_comments';
 
@@ -38,5 +40,15 @@ class Comment extends Model
     protected function serializeDate(\DateTimeInterface $date)
     {
         return $date->format('Y-m-d H:i:s');
+    }
+
+    /**
+     * Create a new factory instance for the model.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    protected static function newFactory()
+    {
+        return new TypeformCommentFactory();
     }
 }

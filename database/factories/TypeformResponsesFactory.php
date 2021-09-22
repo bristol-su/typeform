@@ -1,19 +1,25 @@
 <?php
 
-$factory->define(\BristolSU\Module\Typeform\Models\Response::class, function(\Faker\Generator $faker) {
-    return [
-        'id' => $faker->unique()->uuid,
-        'form_id' => $faker->unique()->numberBetween(0, 1000000),
-        'submitted_by' => function() {
-            return factory(\BristolSU\ControlDB\Models\User::class)->create()->id();
-        },
-        'module_instance_id' => function() {
-            return factory(\BristolSU\Support\ModuleInstance\ModuleInstance::class)->create()->id();
-        },
-        'activity_instance_id' => function() {
-            return factory(\BristolSU\Support\ActivityInstance\ActivityInstance::class)->create()->id;
-        },
-        'submitted_at' => $faker->dateTime,
-        'approved' => $faker->boolean
-    ];
-});
+namespace Database\Typeform\Factories;
+
+use BristolSU\Module\Typeform\Models\Response;
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+class TypeformResponsesFactory extends Factory
+{
+
+    protected $model = Response::class;
+
+    public function definition()
+    {
+        return [
+            'id' => $this->faker->unique()->uuid,
+            'form_id' => $this->faker->unique()->numberBetween(0, 1000000),
+            'submitted_by' => fn() => \BristolSU\ControlDB\Models\User::factory()->create()->id(),
+            'module_instance_id' => fn() => \BristolSU\Support\ModuleInstance\ModuleInstance::factory()->create()->id(),
+            'activity_instance_id' => fn() => \BristolSU\Support\ActivityInstance\ActivityInstance::factory()->create()->id,
+            'submitted_at' => $this->faker->dateTime,
+            'approved' => $this->faker->boolean
+        ];
+    }
+}

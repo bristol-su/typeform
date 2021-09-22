@@ -29,7 +29,7 @@ class CommentController extends Controller
 
         $comment = $response->comments()->create([
             'comment' => $request->input('comment'),
-            'posted_by' => app(Authentication::class)->getUser()->id
+            'posted_by' => app(Authentication::class)->getUser()->id()
         ]);
 
         event(new CommentCreated($comment));
@@ -60,5 +60,5 @@ class CommentController extends Controller
 
         return $comment;
     }
-    
+
 }

@@ -7,11 +7,11 @@ use BristolSU\Module\Typeform\Models\Response;
 
 class AdminPageControllerTest extends TestCase
 {
-    
+
     /** @test */
     public function index_returns_a_403_if_the_permission_is_not_owned(){
         $this->revokePermissionTo('typeform.admin.view-form');
-        
+
         $response = $this->get($this->adminUrl('/'));
         $response->assertStatus(403);
     }
@@ -23,11 +23,11 @@ class AdminPageControllerTest extends TestCase
         $response = $this->get($this->adminUrl('/'));
         $response->assertStatus(200);
     }
-    
+
     /** @test */
     public function index_returns_the_correct_view(){
         $this->bypassAuthorization();
-        
+
         $response = $this->get($this->adminUrl('/'));
         $response->assertViewIs('typeform::admin');
     }
@@ -36,8 +36,8 @@ class AdminPageControllerTest extends TestCase
     public function index_passes_the_responses_to_the_view(){
         $this->bypassAuthorization();
 
-        $responses = factory(Response::class, 5)->create(['module_instance_id' => $this->getModuleInstance()->id()]);
-        factory(Response::class, 4)->create();
+        $responses = Response::factory()->count(5)->create(['module_instance_id' => $this->getModuleInstance()->id()]);
+        Response::factory()->count(4)->create();
         $response = $this->get($this->adminUrl('/'));
         $response->assertViewHas('responses');
         $viewData = $response->viewData('responses');

@@ -20,10 +20,10 @@ class ResponseHandlerTest extends TestCase
         $payload = new DummyPayload([
             'fields' => [], 'answers' => []
         ]);
-        
+
         $handler = new ResponseHandler();
         $handler->handle($payload);
-        
+
         $this->assertDatabaseHas('typeform_responses', [
             'id' => 'some-response-id',
             'form_id' => 'form-id-123',
@@ -51,7 +51,7 @@ class ResponseHandlerTest extends TestCase
 
         $this->assertModelEquals($responseFromDatabase, $response);
     }
-    
+
     /** @test */
     public function it_creates_all_the_fields(){
         $payload = new DummyPayload([
@@ -85,20 +85,20 @@ class ResponseHandlerTest extends TestCase
             'type' => 'boolean',
             'title' => 'Field 3'
         ]);
-        
+
         $this->assertEquals(3, Field::count());
     }
-    
+
     /** @test */
     public function it_does_not_create_duplicate_fields(){
-        
-        $field1 = factory(Field::class)->create([
+
+        $field1 = Field::factory()->create([
             'form_id' => 'form-id-123',
             'id' => 'field1',
             'type' => 'boolean',
             'title' => 'Field 1'
         ]);
-        
+
         $payload = new DummyPayload([
             'fields' => [
                 ['id' => 'field1', 'type' => 'boolean', 'title' => 'Field 1'],
@@ -126,7 +126,7 @@ class ResponseHandlerTest extends TestCase
 
         $this->assertEquals(3, Field::count());
     }
-    
+
     /** @test */
     public function it_creates_an_answer_model_for_each_field(){
         $payload = new DummyPayload([
@@ -166,7 +166,7 @@ class ResponseHandlerTest extends TestCase
 
         $this->assertEquals(2, Answer::count());
     }
-    
+
     /** @test */
     public function it_does_not_create_an_answer_model_if_the_field_is_not_found(){
         $payload = new DummyPayload([
@@ -198,7 +198,7 @@ class ResponseHandlerTest extends TestCase
 
         $this->assertEquals(1, Answer::count());
     }
-    
+
     /** @test */
     public function it_does_not_create_an_answer_model_if_no_answer_found(){
         $payload = new DummyPayload([
@@ -226,12 +226,12 @@ class ResponseHandlerTest extends TestCase
 
         $this->assertEquals(1, Answer::count());
     }
-    
+
     /** @test */
     public function it_returns_null_if_the_payload_activity_instance_id_returns_null(){
         $payload = $this->prophesize(Payload::class);
         $payload->activityInstanceId()->shouldBeCalled()->willReturn(null);
-        
+
         $handler = new ResponseHandler();
         $this->assertNull($handler->handle($payload->reveal()));
     }
@@ -260,7 +260,7 @@ class ResponseHandlerTest extends TestCase
     /** @test */
     public function it_fires_an_event_for_a_new_response_created(){
         Event::fake(NewResponse::class);
-        
+
         $payload = new DummyPayload([
             'fields' => [], 'answers' => []
         ]);

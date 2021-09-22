@@ -2,6 +2,12 @@ const mix = require('laravel-mix');
 
 mix.setPublicPath('./public');
 
-mix.js('resources/js/module.js', 'public/modules/typeform/js')
-    .js('resources/js/components.js', 'public/modules/typeform/js')
+mix.js('resources/js/module.js', 'public/modules/typeform/js').vue()
     .sass('resources/sass/module.scss', 'public/modules/typeform/css');
+
+mix.webpackConfig({
+    externals: {
+        '@bristol-su/frontend-toolkit': 'Toolkit',
+        'vue': 'Vue',
+    }
+});

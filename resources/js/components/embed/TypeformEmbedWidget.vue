@@ -1,89 +1,105 @@
 <template>
-    <div ref="embedDomNode" style="margin: auto; height: 100%; width: 100%; min-height: 350px;">
-        
+    <div ref="embedDomNode" style="margin: auto; height: 100%; width: 100%; min-height: 700px;">
+
     </div>
 </template>
 
 <script>
-    import * as typeform from '@typeform/embed'
-    import Url from 'domurl';
-    
-    export default {
-        name: "TypeformEmbedWidget",
+import {createWidget} from '@typeform/embed'
+import '@typeform/embed/build/css/widget.css'
 
-        props: {
-            formUrl: {
-                required: false,
-                type: String,
-                default: ''
-            },
-            hideHeaders: {
-                required: false,
-                type: Boolean,
-                default: true
-            },
-            hideFooter: {
-                required: false,
-                type: Boolean,
-                default: true
-            },
-            opacity: {
-                required: false,
-                type: Number,
-                default: 0
-            }
-            
-        },
+export default {
+    name: "TypeformEmbedWidget",
 
-        data() {
-            return {}
+    props: {
+        formId: {
+            required: false,
+            type: String,
+            default: ''
         },
+        hideHeaders: {
+            required: false,
+            type: Boolean,
+            default: true
+        },
+        hideFooter: {
+            required: false,
+            type: Boolean,
+            default: true
+        },
+        opacity: {
+            required: false,
+            type: Number,
+            default: 0
+        }
 
-        mounted() {
-            this.embedForm();
-        },
-        
-        methods: {
-            embedForm() {
-                typeform.makeWidget(
-                    this.$refs.embedDomNode,
-                    this.url,
-                    {
-                        hideHeaders: this.hideHeaders,
-                        hideFooter: this.hideFooter,
-                        opacity: this.opacity,
-                    }
-                )
-            },
-            getPortalProperty(...args) {
-                let obj = portal;
-                let result = args.reduce((obj, level) => obj && obj[level], obj);
-                if(result === undefined) {
-                    return null;
+    },
+
+    data() {
+        return {}
+    },
+
+    mounted() {
+        this.embedForm();
+    },
+
+    methods: {
+        embedForm() {
+            createWidget(this.formId, {
+                container: this.$refs.embedDomNode,
+                hideHeaders: this.hideHeaders,
+                hideFooter: this.hideFooter,
+                opacity: this.opacity,
+                hidden: this.hiddenFields,
+                onSubmit: (data) => {
+                    this.$notify.success('Your responmse has been saved. It may take a few minutes to show on the page.')
                 }
-                return result;
-            }
-        },
+            })
 
-        computed: {
-            url() {
-                let hiddenUrl = new Url(this.formUrl);
-                hiddenUrl.query.portal_user_id = this.getPortalProperty('user', 'id');
-                hiddenUrl.query.portal_user_forename = this.getPortalProperty('data_user', 'first_name');
-                hiddenUrl.query.portal_user_surname = this.getPortalProperty('data_user', 'last_name');
-                hiddenUrl.query.portal_user_preferred_name = this.getPortalProperty('data_user', 'preferred_name');
-                hiddenUrl.query.portal_user_email = this.getPortalProperty('data_user', 'email');
-                hiddenUrl.query.portal_group_name = this.getPortalProperty('group', 'data', 'name');
-                hiddenUrl.query.portal_group_id = this.getPortalProperty('group', 'id');
-                hiddenUrl.query.portal_group_email = this.getPortalProperty('group', 'data', 'email');
-                hiddenUrl.query.portal_role_name = this.getPortalProperty('role', 'data', 'role_name');
-                hiddenUrl.query.activity_instance = this.getPortalProperty('activityinstance', 'id');
-                hiddenUrl.query.module_instance = this.getPortalProperty('moduleinstance', 'id');
-                hiddenUrl.query.portal_role_position_name = this.getPortalProperty('role', 'position', 'data', 'name');
-                return hiddenUrl;
+            // typeform.createWidget(
+            //     this.$refs.embedDomNode,
+            //     this.url.toString(),
+            //     {
+            //         hideHeaders: this.hideHeaders,
+            //         hideFooter: this.hideFooter,
+            //         opacity: this.opacity,
+            //     }
+            // )
+        }
+    },
+
+    computed: {
+        hiddenFields() {
+            let hiddenFields = {};
+            if (this.$tools.environment.authentication.hasUser()) {
+                hiddenFields.portal_user_id = this.$tools.environment.authentication.getUser().id;
+                hiddenFields.portal_user_forename = this.$tools.environment.authentication.getUser().data.first_name;
+                hiddenFields.portal_user_surname = this.$tools.environment.authentication.getUser().data.last_name;
+                hiddenFields.portal_user_preferred_name = this.$tools.environment.authentication.getUser().data.preferred_name;
+                hiddenFields.portal_user_email = this.$tools.environment.authentication.getUser().data.email;
             }
+            if (this.$tools.environment.authentication.hasGroup()) {
+                hiddenFields.portal_group_id = this.$tools.environment.authentication.getGroup().id
+                hiddenFields.portal_group_name = this.$tools.environment.authentication.getGroup().data.name;
+                hiddenFields.portal_group_email = this.$tools.environment.authentication.getGroup().data.email;
+            }
+            if (this.$tools.environment.authentication.hasRole()) {
+                hiddenFields.portal_role_name = this.$tools.environment.authentication.getRole().data.role_name;
+                hiddenFields.portal_role_position_name = this.$tools.environment.authentication.getPosition().data.name;
+            }
+
+            if (this.$tools.environment.activityInstance.has()) {
+                hiddenFields.activity_instance = this.$tools.environment.activityInstance.get().id;
+            }
+
+            if (this.$tools.environment.moduleInstance.has()) {
+                hiddenFields.module_instance = this.$tools.environment.moduleInstance.get().id;
+            }
+
+            return hiddenFields;
         }
     }
+}
 </script>
 
 <style scoped>

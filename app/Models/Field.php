@@ -2,10 +2,13 @@
 
 namespace BristolSU\Module\Typeform\Models;
 
+use Database\Typeform\Factories\TypeformFieldsFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Field extends Model
 {
+    use HasFactory;
 
     protected $keyType = 'string';
 
@@ -31,6 +34,16 @@ class Field extends Model
     protected function serializeDate(\DateTimeInterface $date)
     {
         return $date->format('Y-m-d H:i:s');
+    }
+
+    /**
+     * Create a new factory instance for the model.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    protected static function newFactory()
+    {
+        return new TypeformFieldsFactory();
     }
 
 }

@@ -30,21 +30,21 @@ class NumberOfResponsesApprovedTest extends TestCase
         $this->assertIsString($condition->name());
         $this->assertEquals('number_of_responses_approved', $condition->alias());
     }
-    
+
     /** @test */
     public function options_returns_a_form_schema(){
         $condition = new NumberOfResponsesApproved('typeform');
         $this->assertInstanceOf(Form::class, $condition->options());
     }
-    
+
     /** @test */
     public function isComplete_returns_true_if_the_num_of_responses_is_equal_to_the_setting(){
-        $activityInstance = factory(ActivityInstance::class)->create();
-        $moduleInstance = factory(ModuleInstance::class)->create();
+        $activityInstance = ActivityInstance::factory()->create();
+        $moduleInstance = ModuleInstance::factory()->create();
 
-        factory(Response::class, 2)->create(['activity_instance_id' => $activityInstance->id, 'module_instance_id' => $moduleInstance->id(), 'approved' => true]);
-        factory(Response::class, 2)->create(['activity_instance_id' => $activityInstance->id, 'module_instance_id' => $moduleInstance->id(), 'approved' => false]);
-        
+        Response::factory()->count(2)->create(['activity_instance_id' => $activityInstance->id, 'module_instance_id' => $moduleInstance->id(), 'approved' => true]);
+        Response::factory()->count(2)->create(['activity_instance_id' => $activityInstance->id, 'module_instance_id' => $moduleInstance->id(), 'approved' => false]);
+
         $condition = new NumberOfResponsesApproved('typeform');
         $this->assertTrue(
             $condition->isComplete(['number_of_responses' => 2], $activityInstance, $moduleInstance)
@@ -53,11 +53,11 @@ class NumberOfResponsesApprovedTest extends TestCase
 
     /** @test */
     public function isComplete_returns_true_if_the_num_of_responses_is_greater_than_the_setting(){
-        $activityInstance = factory(ActivityInstance::class)->create();
-        $moduleInstance = factory(ModuleInstance::class)->create();
+        $activityInstance = ActivityInstance::factory()->create();
+        $moduleInstance = ModuleInstance::factory()->create();
 
-        factory(Response::class, 5)->create(['activity_instance_id' => $activityInstance->id, 'module_instance_id' => $moduleInstance->id(), 'approved' => true]);
-        factory(Response::class, 2)->create(['activity_instance_id' => $activityInstance->id, 'module_instance_id' => $moduleInstance->id(), 'approved' => false]);
+        Response::factory()->count(5)->create(['activity_instance_id' => $activityInstance->id, 'module_instance_id' => $moduleInstance->id(), 'approved' => true]);
+        Response::factory()->count(2)->create(['activity_instance_id' => $activityInstance->id, 'module_instance_id' => $moduleInstance->id(), 'approved' => false]);
 
         $condition = new NumberOfResponsesApproved('typeform');
         $this->assertTrue(
@@ -67,51 +67,51 @@ class NumberOfResponsesApprovedTest extends TestCase
 
     /** @test */
     public function isComplete_returns_false_if_the_num_of_responses_is_less_than_the_setting(){
-        $activityInstance = factory(ActivityInstance::class)->create();
-        $moduleInstance = factory(ModuleInstance::class)->create();
+        $activityInstance = ActivityInstance::factory()->create();
+        $moduleInstance = ModuleInstance::factory()->create();
 
-        factory(Response::class, 1)->create(['activity_instance_id' => $activityInstance->id, 'module_instance_id' => $moduleInstance->id(), 'approved' => true]);
-        factory(Response::class, 2)->create(['activity_instance_id' => $activityInstance->id, 'module_instance_id' => $moduleInstance->id(), 'approved' => false]);
+        Response::factory()->count(1)->create(['activity_instance_id' => $activityInstance->id, 'module_instance_id' => $moduleInstance->id(), 'approved' => true]);
+        Response::factory()->count(2)->create(['activity_instance_id' => $activityInstance->id, 'module_instance_id' => $moduleInstance->id(), 'approved' => false]);
 
         $condition = new NumberOfResponsesApproved('typeform');
         $this->assertFalse(
             $condition->isComplete(['number_of_responses' => 2], $activityInstance, $moduleInstance)
         );
     }
-    
+
     /** @test */
     public function percentage_returns_100_if_the_num_of_responses_is_equal_to_the_setting(){
-        $activityInstance = factory(ActivityInstance::class)->create();
-        $moduleInstance = factory(ModuleInstance::class)->create();
+        $activityInstance = ActivityInstance::factory()->create();
+        $moduleInstance = ModuleInstance::factory()->create();
 
-        factory(Response::class, 2)->create(['activity_instance_id' => $activityInstance->id, 'module_instance_id' => $moduleInstance->id(), 'approved' => true]);
-
-        $condition = new NumberOfResponsesApproved('typeform');
-        $this->assertEquals(100, 
-            $condition->percentage(['number_of_responses' => 2], $activityInstance, $moduleInstance)
-        );
-    }
-
-    /** @test */
-    public function percentage_returns_100_if_the_num_of_responses_is_greater_than_the_setting(){
-        $activityInstance = factory(ActivityInstance::class)->create();
-        $moduleInstance = factory(ModuleInstance::class)->create();
-
-        factory(Response::class, 6)->create(['activity_instance_id' => $activityInstance->id, 'module_instance_id' => $moduleInstance->id(), 'approved' => true]);
+        Response::factory()->count(2)->create(['activity_instance_id' => $activityInstance->id, 'module_instance_id' => $moduleInstance->id(), 'approved' => true]);
 
         $condition = new NumberOfResponsesApproved('typeform');
         $this->assertEquals(100,
             $condition->percentage(['number_of_responses' => 2], $activityInstance, $moduleInstance)
         );
     }
-    
+
+    /** @test */
+    public function percentage_returns_100_if_the_num_of_responses_is_greater_than_the_setting(){
+        $activityInstance = ActivityInstance::factory()->create();
+        $moduleInstance = ModuleInstance::factory()->create();
+
+        Response::factory()->count(6)->create(['activity_instance_id' => $activityInstance->id, 'module_instance_id' => $moduleInstance->id(), 'approved' => true]);
+
+        $condition = new NumberOfResponsesApproved('typeform');
+        $this->assertEquals(100,
+            $condition->percentage(['number_of_responses' => 2], $activityInstance, $moduleInstance)
+        );
+    }
+
     /** @test */
     public function percentage_returns_50_if_the_num_of_responses_is_half_the_setting(){
-        $activityInstance = factory(ActivityInstance::class)->create();
-        $moduleInstance = factory(ModuleInstance::class)->create();
+        $activityInstance = ActivityInstance::factory()->create();
+        $moduleInstance = ModuleInstance::factory()->create();
 
-        factory(Response::class, 1)->create(['activity_instance_id' => $activityInstance->id, 'module_instance_id' => $moduleInstance->id(), 'approved' => true]);
-        factory(Response::class, 2)->create(['activity_instance_id' => $activityInstance->id, 'module_instance_id' => $moduleInstance->id(), 'approved' => false]);
+        Response::factory()->count(1)->create(['activity_instance_id' => $activityInstance->id, 'module_instance_id' => $moduleInstance->id(), 'approved' => true]);
+        Response::factory()->count(2)->create(['activity_instance_id' => $activityInstance->id, 'module_instance_id' => $moduleInstance->id(), 'approved' => false]);
 
         $condition = new NumberOfResponsesApproved('typeform');
         $this->assertEquals(50,
@@ -121,10 +121,10 @@ class NumberOfResponsesApprovedTest extends TestCase
 
     /** @test */
     public function percentage_returns_25_if_the_num_of_responses_is_a_quarter_of_the_setting(){
-        $activityInstance = factory(ActivityInstance::class)->create();
-        $moduleInstance = factory(ModuleInstance::class)->create();
+        $activityInstance = ActivityInstance::factory()->create();
+        $moduleInstance = ModuleInstance::factory()->create();
 
-        factory(Response::class, 2)->create(['activity_instance_id' => $activityInstance->id, 'module_instance_id' => $moduleInstance->id(), 'approved' => true]);
+        Response::factory()->count(2)->create(['activity_instance_id' => $activityInstance->id, 'module_instance_id' => $moduleInstance->id(), 'approved' => true]);
 
         $condition = new NumberOfResponsesApproved('typeform');
         $this->assertEquals(25,
@@ -134,14 +134,14 @@ class NumberOfResponsesApprovedTest extends TestCase
 
     /** @test */
     public function percentage_returns_0_if_no_responses_submitted(){
-        $activityInstance = factory(ActivityInstance::class)->create();
-        $moduleInstance = factory(ModuleInstance::class)->create();
-        factory(Response::class, 2)->create(['activity_instance_id' => $activityInstance->id, 'module_instance_id' => $moduleInstance->id(), 'approved' => false]);
+        $activityInstance = ActivityInstance::factory()->create();
+        $moduleInstance = ModuleInstance::factory()->create();
+        Response::factory()->count(2)->create(['activity_instance_id' => $activityInstance->id, 'module_instance_id' => $moduleInstance->id(), 'approved' => false]);
 
         $condition = new NumberOfResponsesApproved('typeform');
         $this->assertEquals(0,
             $condition->percentage(['number_of_responses' => 2], $activityInstance, $moduleInstance)
         );
     }
-    
+
 }

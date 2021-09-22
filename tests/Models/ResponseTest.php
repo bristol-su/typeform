@@ -15,12 +15,12 @@ class ResponseTest extends TestCase
 
     /** @test */
     public function it_can_be_created(){
-        $user = factory(User::class)->create();
-        $moduleInstance = factory(ModuleInstance::class)->create();
-        $activityInstance = factory(ActivityInstance::class)->create();
+        $user = User::factory()->create();
+        $moduleInstance = ModuleInstance::factory()->create();
+        $activityInstance = ActivityInstance::factory()->create();
         $submittedAt = Carbon::now()->subDay();
-        
-        $response = factory(Response::class)->create([
+
+        $response = Response::factory()->create([
             'id' => 'jt5sdfkh38ns9h',
             'form_id' => 'abc1234',
             'submitted_by' => $user->id,
@@ -28,8 +28,8 @@ class ResponseTest extends TestCase
             'activity_instance_id' => $activityInstance->id,
             'submitted_at' => $submittedAt
         ]);
-        
-        
+
+
         $this->assertDatabaseHas('typeform_responses', [
             'id' => $response->id,
             'form_id' => 'abc1234',
@@ -39,13 +39,13 @@ class ResponseTest extends TestCase
             'submitted_at' => $submittedAt->format('Y-m-d H:i:s')
         ]);
     }
-    
+
     /** @test */
     public function it_has_many_answers(){
-        $response = factory(Response::class)->create();
-        $answers = factory(Answer::class, 5)->create(['response_id' => $response->id]);
-        $nonAnswers = factory(Answer::class, 2)->create();
-        
+        $response = Response::factory()->create();
+        $answers = Answer::factory()->count(5)->create(['response_id' => $response->id]);
+        $nonAnswers = Answer::factory()->count(2)->create();
+
         $result = $response->answers;
         $this->assertCount(5, $result);
         $this->assertContainsOnlyInstancesOf(Answer::class, $result);
@@ -53,5 +53,5 @@ class ResponseTest extends TestCase
             $this->assertModelEquals($answer, $result->shift());
         }
     }
-    
+
 }

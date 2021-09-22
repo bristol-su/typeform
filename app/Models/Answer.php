@@ -3,10 +3,14 @@
 namespace BristolSU\Module\Typeform\Models;
 
 use BristolSU\Support\Authentication\HasResource;
+use Database\Typeform\Factories\TypeformAnswersFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Answer extends Model
 {
+    use HasFactory;
+
     protected $table = 'typeform_answers';
 
     protected $fillable = [
@@ -54,6 +58,16 @@ class Answer extends Model
     protected function serializeDate(\DateTimeInterface $date)
     {
         return $date->format('Y-m-d H:i:s');
+    }
+
+    /**
+     * Create a new factory instance for the model.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    protected static function newFactory()
+    {
+        return new TypeformAnswersFactory();
     }
 
 }
