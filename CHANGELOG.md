@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.0.1] - (03/11/2021)
+
+### Fixed
+- Actions not appearing if not editable or deletable
+
 ## [3.0.0] - (18/10/2021)
 
 ### Changed

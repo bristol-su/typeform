@@ -3,7 +3,7 @@
         <div class="flex justify-end" v-if="canRefreshResponses">
             <p-button variant="secondary" :disabled="refreshingResponses" @click="refreshResponses" :busy="$isLoading('refreshing-responses')" busy-text="Syncing"><i class="fa fa-refresh" /> Sync Typeform</p-button>
         </div>
-        <p-table :columns="columns" :items="filteredRows">
+        <p-table :columns="columns" :items="filteredRows" :actions="true">
             <template #head(approvals)>
                 <p-select id="approval-filtering" v-model="approvalFiltering" :select-options="filterOptions" null-label="No Filtering" :null-value="null" label="Approval Filter" >
                 </p-select>
