@@ -18,7 +18,7 @@ class SyncWebhookStatus extends Command
      *
      * @var string
      */
-    protected $signature = 'typeform:webhook 
+    protected $signature = 'typeform:webhook
                             {moduleinstance? : The ID of the module instance. Leave blank to run for all module instances}';
 
     /**
@@ -40,14 +40,18 @@ class SyncWebhookStatus extends Command
      */
     public function handle()
     {
-        foreach ($this->moduleInstances() as $moduleInstance) {
-            dispatch(new \BristolSU\Module\Typeform\Jobs\SyncWebhookStatus($moduleInstance));
+        $moduleInstances = $this->moduleInstances();
+        foreach ($moduleInstances as $moduleInstance) {
+            $lastUpdated = $moduleInstance->moduleInstanceSettings()->latest('updated_at')->first()?->updated_at;
+            if(count($moduleInstances) === 1 || ($lastUpdated !== null && $lastUpdated->addDay()->isFuture())) {
+                dispatch(new \BristolSU\Module\Typeform\Jobs\SyncWebhookStatus($moduleInstance));
+            }
         }
     }
 
     /**
      * Get the module instances to syncronise
-     * 
+     *
      * @return array|ModuleInstance[]
      */
     private function moduleInstances()

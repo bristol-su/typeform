@@ -28,7 +28,8 @@ use FormSchema\Schema\Form;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Route;
 
-class ModuleServiceProvider extends ServiceProvider
+class
+ModuleServiceProvider extends ServiceProvider
 {
 
     protected $permissions = [
