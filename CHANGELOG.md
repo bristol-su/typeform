@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.0.2] - (30/11/2021)
+
+### Changed
+- Only run webhook jobs if the module settings have been updated in the last week
+
 ## [3.0.1] - (03/11/2021)
 
 ### Fixed

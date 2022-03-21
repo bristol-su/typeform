@@ -6,6 +6,8 @@ use BristolSU\Module\Tests\Typeform\TestCase;
 use BristolSU\Module\Typeform\Commands\SyncWebhookStatus;
 use BristolSU\Module\Typeform\Jobs\SyncWebhookStatus as SyncWebhookStatusJob;
 use BristolSU\Support\ModuleInstance\ModuleInstance;
+use BristolSU\Support\ModuleInstance\Settings\ModuleInstanceSetting;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Bus;
 
 class SyncWebhookStatusTest extends TestCase
@@ -15,7 +17,17 @@ class SyncWebhookStatusTest extends TestCase
         Bus::fake(SyncWebhookStatusJob::class);
         $moduleInstances = ModuleInstance::factory()->count(8)->create([
             'alias' => 'typeform'
+        ])->each(fn(ModuleInstance $moduleInstance) =>  ModuleInstanceSetting::create(['module_instance_id' => $moduleInstance->id, 'key' => 'collect_responses', 'value' => true, 'updated_at' => Carbon::now()]));
+
+        $otherModuleInstances1 = ModuleInstance::factory()->count(8)->create([
+            'alias' => 'typeform'
         ]);
+        foreach($otherModuleInstances1 as $module) {
+            $setting = ModuleInstanceSetting::create(['module_instance_id' => $module->id, 'key' => 'collect_responses', 'value' => true]);
+            $setting->updated_at = Carbon::now()->subWeek();
+            $setting->save();
+        }
+
         $otherModules = ModuleInstance::factory()->count(2)->create(['alias' => 'other']);
         $this->artisan(SyncWebhookStatus::class);
 
@@ -25,7 +37,7 @@ class SyncWebhookStatusTest extends TestCase
             });
         }
 
-        foreach($otherModules as $otherModuleInstance) {
+        foreach(array_merge($otherModuleInstances1->all(), $otherModules->all()) as $otherModuleInstance) {
             Bus::assertNotDispatched(SyncWebhookStatusJob::class, function($job) use ($otherModuleInstance) {
                 return $job instanceof SyncWebhookStatusJob && $job->moduleInstance->is($otherModuleInstance);
             });
@@ -43,7 +55,10 @@ class SyncWebhookStatusTest extends TestCase
             'alias' => 'typeform'
         ]);
         $otherModules = ModuleInstance::factory()->count(2)->create(['alias' => 'other']);
+
         $this->artisan('typeform:webhook ' . $module->id);
+
+
 
         Bus::assertDispatched(SyncWebhookStatusJob::class, function($job) use ($module) {
             return $job instanceof SyncWebhookStatusJob && $job->moduleInstance->is($module);
