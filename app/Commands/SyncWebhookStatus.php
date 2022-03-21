@@ -19,14 +19,15 @@ class SyncWebhookStatus extends Command
      * @var string
      */
     protected $signature = 'typeform:webhook
-                            {moduleinstance? : The ID of the module instance. Leave blank to run for all module instances}';
+                            {moduleinstance? : The ID of the module instance. Leave blank to run for all module instances}
+                            {--all : Whether to only update recently updated modules or all modules.}';
 
     /**
      * The console command name.
      *
      * @var string
      */
-    protected $name = 'typeform:webhook {--all : Whether to only update recently updated modules or all modules.}';
+    protected $name = 'typeform:webhook';
 
     /**
      * The console command description.
