@@ -26,7 +26,7 @@ class SyncWebhookStatus extends Command
      *
      * @var string
      */
-    protected $name = 'typeform:webhook {--all : Whether to only update recently updated modules or all modules.)';
+    protected $name = 'typeform:webhook {--all : Whether to only update recently updated modules or all modules.}';
 
     /**
      * The console command description.
