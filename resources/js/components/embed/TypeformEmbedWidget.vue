@@ -52,7 +52,7 @@ export default {
                 opacity: this.opacity,
                 hidden: this.hiddenFields,
                 onSubmit: (data) => {
-                    this.$notify.success('Your responmse has been saved. It may take a few minutes to show on the page.')
+                    this.$notify.success('Your response has been saved. It may take a few minutes to show on the page.')
                 }
             })
 
