@@ -44,7 +44,8 @@ class SyncWebhookStatus extends Command
         $moduleInstances = $this->moduleInstances();
         foreach ($moduleInstances as $moduleInstance) {
             $lastUpdated = $moduleInstance->moduleInstanceSettings()->latest('updated_at')->first()?->updated_at;
-            if(count($moduleInstances) === 1 || ($lastUpdated !== null && $lastUpdated->addDay()->isFuture())) {
+            if(count($moduleInstances) === 1
+                || (($lastUpdated !== null && $lastUpdated->addDay()->isFuture()) || $this->option('all'))) {
                 dispatch(new \BristolSU\Module\Typeform\Jobs\SyncWebhookStatus($moduleInstance));
             }
         }
