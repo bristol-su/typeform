@@ -21,6 +21,6 @@
         "@bristol-su/frontend-toolkit": "^1.0.0",
         "@typeform/embed": "^1.18.1",
         "lodash": "^4.17.14",
-        "moment": "^2.24.0"
+        "moment": "^2.29.2"
     }
 }
