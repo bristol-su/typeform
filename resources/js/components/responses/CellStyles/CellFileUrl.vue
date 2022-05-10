@@ -23,7 +23,7 @@
 
         computed: {
             url() {
-                return this.$tools.routes.query.addQueryStringToWebUrl(this.$tools.routes.module.moduleUrl() + '/file' + this.value + '/download');
+                return this.$tools.routes.query.addQueryStringToWebUrl(this.$tools.routes.module.moduleUrl() + '/file/' + this.value + '/download');
             }
         }
     }
